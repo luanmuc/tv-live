@@ -2,9 +2,13 @@ name: build-apk
 
 on:
   push:
-    branches: [main]
     tags: ["v*"]
   workflow_dispatch:
+
+# 同一时间只跑一个构建，新的覆盖旧的
+concurrency:
+  group: build-apk-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -21,8 +25,21 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      - name: 缓存 Android SDK
+        uses: actions/cache@v4
+        with:
+          path: ~/android-sdk
+          key: android-sdk-36-cmdline11076708-v1
+
       - name: Android SDK
         run: |
+          if [ -x "$HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager" ]; then
+            echo "SDK 缓存命中，跳过下载"
+            echo "ANDROID_HOME=$HOME/android-sdk" >> "$GITHUB_ENV"
+            echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> "$GITHUB_ENV"
+            echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
+            exit 0
+          fi
           mkdir -p "$HOME/android-sdk/cmdline-tools"
           curl -sSL -o /tmp/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
           unzip -q /tmp/cmdline-tools.zip -d "$HOME/android-sdk/cmdline-tools"
@@ -38,6 +55,8 @@ jobs:
 
       - name: Gradle 缓存
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
 
       - name: 内置源健康检查
         run: python3 scripts/refresh_sources.py --check
@@ -61,7 +80,7 @@ jobs:
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > keystore.jks
           export KEYSTORE="$PWD/keystore.jks"
-          ./gradlew :tv:assembleOriginalRelease --no-daemon --stacktrace
+          ./gradlew :tv:assembleOriginalRelease --no-daemon --build-cache --stacktrace
 
       - name: 收集产物
         run: |
@@ -71,15 +90,12 @@ jobs:
           cp -v "$APK" "out/doubao-tv-${VERSION}.apk"
           ls -lh out
 
-      # push 到 main 只验证构建，不发布；发版走 tag
-      - name: 上传构建产物（仅 Actions 页面留档）
-        if: startsWith(github.ref, 'refs/heads/main')
+      - name: 留档构建产物
         uses: actions/upload-artifact@v4
         with:
           name: doubao-tv-release
           path: out/*.apk
           retention-days: 7
-
       - name: 发布正式版（打 tag 时）
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2

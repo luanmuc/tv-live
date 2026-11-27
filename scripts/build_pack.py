@@ -100,6 +100,42 @@ SATELLITE = {
     "CETV4": ["cetv4", "中国教育四台"],
 }
 
+# 港澳台并入央视/卫视包：只收这批有中文名的台，购物台与锁区台不要
+HKMOTW = {
+    # 香港
+    "Jade.hk": "翡翠台",
+    "PhoenixChineseChannel.hk": "凤凰卫视中文台",
+    "PhoenixInfoNewsChannel.hk": "凤凰卫视资讯台",
+    "ViuTV.hk": "ViuTV",
+    "CelestialMovies.hk": "天映频道",
+    "MeiAhMovieChannel.hk": "美亚电影台",
+    # 澳门
+    "TDMOuMun.mo": "澳视澳门",
+    "TDMInformation.mo": "澳视资讯",
+    "TDMSports.mo": "澳视体育",
+    "TDMEntertainment.mo": "澳视娱乐",
+    "LotusTV.mo": "莲花卫视",
+    # 台湾
+    "TTV.tw": "台视",
+    "TTVNews.tw": "台视新闻",
+    "CTS.tw": "华视",
+    "CTiVariety.tw": "中天综合台",
+    "FTV.tw": "民视",
+    "FTVOne.tw": "民视第一台",
+    "EBCNews.tw": "东森新闻",
+    "EBCFinancialNews.tw": "东森财经新闻",
+    "EBCForeignMovie.tw": "东森洋片台",
+    "TVBSAsia.tw": "TVBS-Asia",
+    "PTS3.tw": "公视三台",
+    "HakkaTV.tw": "客家电视台",
+    "IndigenousTV.tw": "原住民族电视台",
+    "DaAi1.tw": "大爱一台",
+    "DaAi2.tw": "大爱二台",
+    "GoodTV.tw": "好消息电视台",
+}
+
+HKMOTW_GROUP = "港澳台"
+
 
 def standard_name(raw: str) -> str | None:
     """把别名收敛成标准频道名；认不出来返回 None。"""
@@ -137,8 +173,10 @@ def parse(text: str) -> list[dict]:
             name = line.split(",")[-1].strip()
             cur = {
                 "raw_name": name,
+                "tvg_id": (re.search(r'tvg-id="(.*?)"', line) or [None, ""])[1].split("@")[0],
                 "tvg_name": (re.search(r'tvg-name="(.*?)"', line) or [None, ""])[1] or name,
                 "logo": (re.search(r'tvg-logo="(.*?)"', line) or [None, ""])[1],
+                "group": (re.search(r'group-title="(.*?)"', line) or [None, ""])[1],
             }
         elif line.startswith("#"):
             continue
@@ -197,6 +235,40 @@ def probe_all(items: list[dict]) -> list[dict]:
         return list(pool.map(probe, items))
 
 
+def collect_hkmotw() -> list[dict]:
+    """从 iptv-org 的 hk/mo/tw 里取指定频道，换成中文名。"""
+    items: list[dict] = []
+    for code in ("hk", "mo", "tw"):
+        try:
+            raw = fetch(IPTV_ORG + f"{code}.m3u")
+        except Exception as exc:  # noqa: BLE001
+            print(f"  [警告] iptv-org {code} 拉取失败：{exc}")
+            continue
+        for it in parse(raw):
+            cn = HKMOTW.get(it["tvg_id"])
+            if not cn or not it["url"]:
+                continue
+            if "[Geo-blocked]" in it["raw_name"] or it["group"].lower() == "shop":
+                continue
+            items.append({
+                "name": cn,
+                "url": it["url"],
+                "logo": it["logo"],
+            })
+    print(f"  港澳台命中 {len(items)} 条")
+    return items
+
+
+def hkmotw_blocks(items: list[dict]) -> list[str]:
+    blocks = []
+    for it in items:
+        blocks.append(
+            f'#EXTINF:-1 tvg-id="{it["name"]}" tvg-name="{it["name"]}" tvg-logo="{it["logo"]}" '
+            f'group-title="{HKMOTW_GROUP}",{it["name"]}\n{it["url"]}'
+        )
+    return blocks
+
+
 def build(items: list[dict]) -> None:
     by_channel: dict[str, list[dict]] = {}
     for it in items:
@@ -216,20 +288,67 @@ def build(items: list[dict]) -> None:
                 f'group-title="{group}",{std}\n{it["url"]}'
             )
 
+    existing = {b.splitlines()[-1] for b in blocks}
+    hk_blocks = [b for b in hkmotw_blocks(collect_hkmotw()) if b.splitlines()[-1] not in existing]
+
     header = f'#EXTM3U x-tvg-url="{FM_RAW}/e.xml"'
     DIST.mkdir(parents=True, exist_ok=True)
     out = DIST / "pack-cctv-satellite.m3u"
+    if not hk_blocks and out.exists():
+        # iptv-org 抽风时，沿用上一版里的港澳台，别把分组弄丢
+        old = out.read_text(encoding="utf-8").splitlines()
+        hk_blocks = [
+            "\n".join(old[i:i + 2])
+            for i, ln in enumerate(old)
+            if f'group-title="{HKMOTW_GROUP}"' in ln
+        ]
+        print(f"  [警告] 港澳台拉取为空，沿用旧文件 {len(hk_blocks)} 条")
+    blocks.extend(hk_blocks)
     out.write_text("\n".join([header] + blocks) + "\n", encoding="utf-8")
-    print(f"  pack-cctv-satellite.m3u: {len(by_channel)} 个频道 / {len(blocks)} 条线路")
+    print(f"  pack-cctv-satellite.m3u: {len(by_channel)} 个频道 + 港澳台 {len(hk_blocks)} 条 / 共 {len(blocks)} 条线路")
 
     ASSETS.mkdir(parents=True, exist_ok=True)
     (ASSETS / out.name).write_bytes(out.read_bytes())
 
 
+def merge_hkmotw_only() -> int:
+    """在现有包末尾追加港澳台，不动已探测好的央视/卫视线路。"""
+    out = DIST / "pack-cctv-satellite.m3u"
+    lines = out.read_text(encoding="utf-8").splitlines()
+    header = lines[0]
+    body = [ln for ln in lines[1:] if ln.strip()]
+    blocks, cur = [], []
+    for ln in body:
+        if ln.startswith("#EXTINF"):
+            if cur:
+                blocks.append("\n".join(cur))
+            cur = [ln]
+        elif ln.startswith("#"):
+            cur.append(ln)
+        else:
+            cur.append(ln)
+            blocks.append("\n".join(cur))
+            cur = []
+    if cur:
+        blocks.append("\n".join(cur))
+    blocks = [b for b in blocks if f'group-title="{HKMOTW_GROUP}"' not in b]
+    existing = {b.splitlines()[-1] for b in blocks}
+    hk_blocks = [b for b in hkmotw_blocks(collect_hkmotw()) if b.splitlines()[-1] not in existing]
+    out.write_text("\n".join([header] + blocks + hk_blocks) + "\n", encoding="utf-8")
+    ASSETS.mkdir(parents=True, exist_ok=True)
+    (ASSETS / out.name).write_bytes(out.read_bytes())
+    print(f"  追加港澳台 {len(hk_blocks)} 条，当前共 {len(blocks) + len(hk_blocks)} 条线路")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-probe", action="store_true")
+    ap.add_argument("--hkmotw-only", action="store_true")
     args = ap.parse_args()
+
+    if args.hkmotw_only:
+        return merge_hkmotw_only()
 
     print("收集候选源…")
     items = collect()

@@ -3,9 +3,9 @@
 电视端直播应用 + 内置直播源，单仓库维护。
 
 - 应用名：豆包定制
-- 版本：1.1
+- 版本：1.2
 - 包名：`com.doubao.tv`
-- 内置源：央视/卫视多线路包（56 频道 / 260 线路）+ 港澳台及国际（216 频道）
+- 内置源：央视/卫视/港澳台多线路包（83 频道 / 287 线路）+ 港澳台及国际（216 频道）
 - 源随 APK 打包，首次启动释放到应用私有目录，装完即可离线使用
 - 播放失败自动切下一条线路，整轮失败才停在错误页
 
@@ -28,14 +28,14 @@ tv-live/
 │   └── SOURCES.md           # 接入点与维护说明
 └── .github/workflows/
     ├── refresh-sources.yml  # 每天 03:00（北京时间）刷新源
-    └── build-apk.yml        # 构建 APK，push 更新 latest，打 tag 出正式版
+    └── build-apk.yml        # 打 tag 出正式版（release 签名）
 ```
 
 ## 内置源
 
 | 订阅名 | 规模 | 节目单 |
 | --- | --- | --- |
-| 内置·央视卫视（多线路） | 56 个频道 / 260 条线路 | m3u 自带 `x-tvg-url` |
+| 内置·央视卫视（多线路） | 83 个频道 / 287 条线路（含港澳台分组） | m3u 自带 `x-tvg-url` |
 | 内置·港澳台及国际 | 216 个频道 | m3u 自带 `x-tvg-url` |
 
 每个频道最多 6 条线路，按「实测可播 → 响应快 → 其他」排序。节目单按频道名匹配，台标优先用 m3u 内的 `tvg-logo`，缺省回落到台标模板。
@@ -45,7 +45,7 @@ tv-live/
 ```bash
 # 云端：push 到 main 自动构建，产物更新到 latest Release
 # 正式版：打 tag 触发
-git tag v1.1 && git push origin v1.1
+git tag v1.2 && git push origin v1.2
 
 # 本地（JDK 17 + Android SDK 36）
 ./gradlew :tv:assembleOriginalDebug

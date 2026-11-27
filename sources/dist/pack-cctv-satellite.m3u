@@ -519,3 +519,57 @@ http://gslbserv.itv.cmvideo.cn/6000000001000016510/1.m3u8?channel-id=wasusyt&Con
 http://gslbserv.itv.cmvideo.cn/1000000001000001925/1.m3u8?channel-id=ystenlive&Contentid=1000000001000001925&livemode=1&stbId=3
 #EXTINF:-1 tvg-id="黑龙江卫视" tvg-name="黑龙江卫视" tvg-logo="https://raw.githubusercontent.com/fanmingming/live/main/tv/黑龙江卫视.png" group-title="卫视",黑龙江卫视
 http://gslbserv.itv.cmvideo.cn/1000000005000265029/1.m3u8?channel-id=ystenlive&Contentid=1000000005000265029&livemode=1&stbId=3
+#EXTINF:-1 tvg-id="天映频道" tvg-name="天映频道" tvg-logo="https://i.imgur.com/Mb5ssnu.png" group-title="港澳台",天映频道
+http://103.58.160.157:8278/720-CELESTIALMOVIES/playlist.m3u8
+#EXTINF:-1 tvg-id="翡翠台" tvg-name="翡翠台" tvg-logo="https://raw.githubusercontent.com/wanglindl/TVlogo/main/img/TVB1.png" group-title="港澳台",翡翠台
+http://103.172.187.30:12000/stream/mytv/null-1/master.m3u8
+#EXTINF:-1 tvg-id="美亚电影台" tvg-name="美亚电影台" tvg-logo="https://i.imgur.com/laGiFM1.png" group-title="港澳台",美亚电影台
+http://103.172.187.30:12000/stream/mytv/null-2/master.m3u8
+#EXTINF:-1 tvg-id="凤凰卫视中文台" tvg-name="凤凰卫视中文台" tvg-logo="https://raw.githubusercontent.com/wanglindl/TVlogo/main/img/Phoenix1.png" group-title="港澳台",凤凰卫视中文台
+http://223.110.245.139/ott.js.chinamobile.com/PLTV/3/224/3221226922/index.m3u8
+#EXTINF:-1 tvg-id="凤凰卫视资讯台" tvg-name="凤凰卫视资讯台" tvg-logo="https://i.imgur.com/mt4h3VO.png" group-title="港澳台",凤凰卫视资讯台
+http://223.110.245.167/ott.js.chinamobile.com/PLTV/3/224/3221226923/index.m3u8
+#EXTINF:-1 tvg-id="ViuTV" tvg-name="ViuTV" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/ViuTV_logo.svg/960px-ViuTV_logo.svg.png" group-title="港澳台",ViuTV
+http://php.jdshipin.com/TVOD/iptv.php?id=viutv
+#EXTINF:-1 tvg-id="莲花卫视" tvg-name="莲花卫视" tvg-logo="https://i.imgur.com/7j8Lnog.png" group-title="港澳台",莲花卫视
+https://cdn4.skygo.mn/live/disk1/Lotus/HLSv3-FTA/Lotus.m3u8
+#EXTINF:-1 tvg-id="澳视娱乐" tvg-name="澳视娱乐" tvg-logo="https://i.imgur.com/7ml2bfx.png" group-title="港澳台",澳视娱乐
+https://live3.tdm.com.mo/ch6/hd_ch6.live/playlist.m3u8
+#EXTINF:-1 tvg-id="澳视资讯" tvg-name="澳视资讯" tvg-logo="https://i.imgur.com/h7HfsLx.png" group-title="港澳台",澳视资讯
+https://live3.tdm.com.mo/ch5/info_ch5.live/playlist.m3u8
+#EXTINF:-1 tvg-id="澳视澳门" tvg-name="澳视澳门" tvg-logo="https://i.imgur.com/qDI3aMp.png" group-title="港澳台",澳视澳门
+http://61.244.22.4/ch1/ch1.live/playlist.m3u8
+#EXTINF:-1 tvg-id="澳视体育" tvg-name="澳视体育" tvg-logo="https://i.imgur.com/AsWLf8S.png" group-title="港澳台",澳视体育
+https://live3.tdm.com.mo/ch4/sport_ch4.live/playlist.m3u8
+#EXTINF:-1 tvg-id="中天综合台" tvg-name="中天综合台" tvg-logo="https://i.imgur.com/tqsKObw.png" group-title="港澳台",中天综合台
+http://23.237.10.66:16372
+#EXTINF:-1 tvg-id="华视" tvg-name="华视" tvg-logo="https://upload.wikimedia.org/wikipedia/zh/8/8a/CTS_Logo.png" group-title="港澳台",华视
+rtmp://59.124.75.138:1935/sat/tv111
+#EXTINF:-1 tvg-id="大爱一台" tvg-name="大爱一台" tvg-logo="https://i.imgur.com/KdJi9af.png" group-title="港澳台",大爱一台
+https://pulltv1.wanfudaluye.com/live/tv1.m3u8
+#EXTINF:-1 tvg-id="大爱二台" tvg-name="大爱二台" tvg-logo="https://i.imgur.com/KdJi9af.png" group-title="港澳台",大爱二台
+http://nmk.ioapk.com:5050/4gtv-live106/index.m3u8
+#EXTINF:-1 tvg-id="东森财经新闻" tvg-name="东森财经新闻" tvg-logo="https://i.imgur.com/uFDkOhV.png" group-title="港澳台",东森财经新闻
+http://seb.sason.top/sc/dscjxw_fhd.m3u8
+#EXTINF:-1 tvg-id="东森洋片台" tvg-name="东森洋片台" tvg-logo="https://i.imgur.com/oUhYdea.png" group-title="港澳台",东森洋片台
+http://111.59.139.85:11888/tsfile/live/1217_1.m3u8?key=txiptv
+#EXTINF:-1 tvg-id="东森新闻" tvg-name="东森新闻" tvg-logo="https://i.imgur.com/QFZs80p.png" group-title="港澳台",东森新闻
+http://seb.sason.top/sc/dsxw_fhd.m3u8
+#EXTINF:-1 tvg-id="民视" tvg-name="民视" tvg-logo="https://i.imgur.com/q8ahtbT.png" group-title="港澳台",民视
+http://seb.sason.top/ptv/ftv.php?id=ms
+#EXTINF:-1 tvg-id="民视第一台" tvg-name="民视第一台" tvg-logo="https://i.imgur.com/HBT2o0I.png" group-title="港澳台",民视第一台
+http://seb.sason.top/ptv/ftv.php?id=dy
+#EXTINF:-1 tvg-id="好消息电视台" tvg-name="好消息电视台" tvg-logo="https://i.imgur.com/k28Kc3o.png" group-title="港澳台",好消息电视台
+https://live.streamingfast.net/osmflivech1.m3u8
+#EXTINF:-1 tvg-id="客家电视台" tvg-name="客家电视台" tvg-logo="https://i.imgur.com/1CdGSbU.png" group-title="港澳台",客家电视台
+https://h5cul1yar48um3t.wcetv.com/hls/hakkatv.m3u8
+#EXTINF:-1 tvg-id="原住民族电视台" tvg-name="原住民族电视台" tvg-logo="https://i.imgur.com/vmk4F9u.png" group-title="港澳台",原住民族电视台
+http://streamipcf.akamaized.net/live/_definst_/smil:liveabr.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="公视三台" tvg-name="公视三台" tvg-logo="https://i.imgur.com/I6sVDDt.png" group-title="港澳台",公视三台
+http://111.59.139.85:11888/tsfile/live/1222_1.m3u8?key=txiptv
+#EXTINF:-1 tvg-id="台视" tvg-name="台视" tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/TTV_2nd_logo.svg/960px-TTV_2nd_logo.svg.png" group-title="港澳台",台视
+http://162.19.247.76:22222/live/taishi/index.m3u8
+#EXTINF:-1 tvg-id="台视新闻" tvg-name="台视新闻" tvg-logo="https://i.imgur.com/AfkK0gv.png" group-title="港澳台",台视新闻
+https://live.wcetv.com/hls/master-ttvnews.m3u8
+#EXTINF:-1 tvg-id="TVBS-Asia" tvg-name="TVBS-Asia" tvg-logo="https://i.imgur.com/4S1rkhm.png" group-title="港澳台",TVBS-Asia
+http://38.64.72.148/hls/modn/list/4005/playlist.m3u8
