@@ -1,3 +1,8 @@
+# 1.4.1
+
+- 修正 1.4：ijk 模块自带的 RTS/AVS3/Ambeo/WsRTC 厂商库不进包，体积回到 28MB 量级
+- 版本 1.4.1（versionCode 6）
+
 # 1.4
 
 ## 工程

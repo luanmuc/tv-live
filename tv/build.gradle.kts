@@ -20,8 +20,8 @@ android {
         applicationId = "com.doubao.tv"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 5
-        versionName = "1.4"
+        versionCode = 6
+        versionName = "1.4.1"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -72,6 +72,15 @@ android {
         // 16KB 页设备要求：so 不压缩、按 16KB 对齐打包
         jniLibs {
             useLegacyPackaging = false
+            // ijk 模块自带的阿里云 RTS / AVS3 / WsRTC 等厂商库本项目用不到，不进包
+            excludes += listOf(
+                "**/libRtsSDK.so",
+                "**/libSennheiserAmbeoDecoder.so",
+                "**/libambeoempty.so",
+                "**/libavs3a_decoder.so",
+                "**/libavs3a_renderer.so",
+                "**/libwsrtcsdk.so",
+            )
         }
     }
 
