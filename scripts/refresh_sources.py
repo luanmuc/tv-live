@@ -26,6 +26,8 @@ import time
 import urllib.error
 import urllib.request
 
+from hkmotw_ids import HKMOTW
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DIST = ROOT / "sources" / "dist"
 ASSETS = ROOT / "core" / "data" / "src" / "main" / "assets" / "sources"
@@ -130,8 +132,15 @@ def build_intl() -> bool:
             print(f"  [警告] iptv-org {code} 拉取失败：{exc}")
             failed.append(code)
             continue
-        print(f"  iptv-org {code}: {len(part)} 个频道")
-        blocks.extend(part)
+        # 港澳台里并入总包的那批，不再在 intl 里重复出现
+        kept = []
+        for block in part:
+            m = re.search(r'tvg-id="([^"]*?)@', block)
+            if m and m.group(1) in HKMOTW:
+                continue
+            kept.append(block)
+        print(f"  iptv-org {code}: {len(part)} 个频道，保留 {len(kept)} 个")
+        blocks.extend(kept)
 
     if failed:
         print(f"  [警告] 缺少 {', '.join(failed)}，本轮不覆盖国际源")

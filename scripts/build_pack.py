@@ -100,41 +100,36 @@ SATELLITE = {
     "CETV4": ["cetv4", "中国教育四台"],
 }
 
-# 港澳台并入央视/卫视包：只收这批有中文名的台，购物台与锁区台不要
-HKMOTW = {
-    # 香港
-    "Jade.hk": "翡翠台",
-    "PhoenixChineseChannel.hk": "凤凰卫视中文台",
-    "PhoenixInfoNewsChannel.hk": "凤凰卫视资讯台",
-    "ViuTV.hk": "ViuTV",
-    "CelestialMovies.hk": "天映频道",
-    "MeiAhMovieChannel.hk": "美亚电影台",
-    # 澳门
-    "TDMOuMun.mo": "澳视澳门",
-    "TDMInformation.mo": "澳视资讯",
-    "TDMSports.mo": "澳视体育",
-    "TDMEntertainment.mo": "澳视娱乐",
-    "LotusTV.mo": "莲花卫视",
-    # 台湾
-    "TTV.tw": "台视",
-    "TTVNews.tw": "台视新闻",
-    "CTS.tw": "华视",
-    "CTiVariety.tw": "中天综合台",
-    "FTV.tw": "民视",
-    "FTVOne.tw": "民视第一台",
-    "EBCNews.tw": "东森新闻",
-    "EBCFinancialNews.tw": "东森财经新闻",
-    "EBCForeignMovie.tw": "东森洋片台",
-    "TVBSAsia.tw": "TVBS-Asia",
-    "PTS3.tw": "公视三台",
-    "HakkaTV.tw": "客家电视台",
-    "IndigenousTV.tw": "原住民族电视台",
-    "DaAi1.tw": "大爱一台",
-    "DaAi2.tw": "大爱二台",
-    "GoodTV.tw": "好消息电视台",
-}
+from hkmotw_ids import HKMOTW, HKMOTW_GROUP, HKMOTW_ORDER, HKMOTW_BACKUP
 
-HKMOTW_GROUP = "港澳台"
+
+# 卫视显示顺序：先一线卫视，再按大区，最后教育台
+SATELLITE_ORDER = [
+    "湖南卫视", "浙江卫视", "江苏卫视", "东方卫视", "北京卫视", "深圳卫视", "广东卫视",
+    "安徽卫视", "山东卫视", "湖北卫视", "天津卫视", "四川卫视", "重庆卫视", "河南卫视",
+    "河北卫视", "辽宁卫视", "黑龙江卫视", "吉林卫视", "江西卫视", "东南卫视", "贵州卫视",
+    "云南卫视", "广西卫视", "山西卫视", "陕西卫视", "甘肃卫视", "宁夏卫视", "青海卫视",
+    "新疆卫视", "西藏卫视", "内蒙古卫视", "海南卫视", "三沙卫视", "厦门卫视", "延边卫视",
+    "康巴卫视", "安多卫视", "CETV1", "CETV2", "CETV4",
+]
+
+
+def channel_sort_key(std: str) -> tuple:
+    """频道排序：央视按数字，卫视按习惯顺序，港澳台按地区顺序。"""
+    if std.startswith("CCTV"):
+        m = re.match(r"^CCTV(\d+)([+K]?)$", std)
+        if m:
+            tag_rank = {"": 0, "+": 1, "K": 2}.get(m.group(2), 3)
+            return (0, int(m.group(1)), tag_rank, std)
+        return (0, 99, 9, std)
+    if std.startswith("CETV"):
+        m = re.match(r"^CETV(\d+)$", std)
+        return (1, int(m.group(1)) if m else 99, 0, std)
+    if std in SATELLITE_ORDER:
+        return (2, SATELLITE_ORDER.index(std), 0, std)
+    if std in HKMOTW_ORDER:
+        return (3, HKMOTW_ORDER.index(std), 0, std)
+    return (4, 0, 0, std)
 
 
 def standard_name(raw: str) -> str | None:
@@ -254,19 +249,61 @@ def collect_hkmotw() -> list[dict]:
                 "name": cn,
                 "url": it["url"],
                 "logo": it["logo"],
+                "backup": HKMOTW_BACKUP.get(cn, []),
             })
     print(f"  港澳台命中 {len(items)} 条")
     return items
 
 
 def hkmotw_blocks(items: list[dict]) -> list[str]:
+    """按固定顺序输出港澳台，每个台主线路 + 备用线路（最多 3 条）。"""
+    by_name = {it["name"]: it for it in items}
     blocks = []
-    for it in items:
-        blocks.append(
-            f'#EXTINF:-1 tvg-id="{it["name"]}" tvg-name="{it["name"]}" tvg-logo="{it["logo"]}" '
-            f'group-title="{HKMOTW_GROUP}",{it["name"]}\n{it["url"]}'
-        )
+    for name in HKMOTW_ORDER:
+        it = by_name.get(name)
+        if not it:
+            continue
+        urls = [it["url"]] + [u for u in it.get("backup", []) if u != it["url"]]
+        urls = list(dict.fromkeys(urls))[:3]
+        for url in urls:
+            blocks.append(
+                f'#EXTINF:-1 tvg-id="{name}" tvg-name="{name}" tvg-logo="{it["logo"]}" '
+                f'group-title="{HKMOTW_GROUP}",{name}\n{url}'
+            )
     return blocks
+
+
+def sort_blocks(blocks: list[str]) -> list[str]:
+    """按 channel_sort_key 重排整份文件（同频道内保持原线路顺序）。"""
+    def name_of(block: str) -> str:
+        first = block.splitlines()[0]
+        return first.split(",")[-1].strip() if "," in first else first
+
+    buckets: dict[str, list[str]] = {}
+    for b in blocks:
+        buckets.setdefault(name_of(b), []).append(b)
+    ordered = []
+    for name in sorted(buckets, key=channel_sort_key):
+        ordered.extend(buckets[name])
+    return ordered
+
+
+def fill_missing_hkmotw(fresh: list[str], old_path: pathlib.Path) -> list[str]:
+    """上游某个地区拉挂时，用旧文件补回缺失的港澳台频道。"""
+    names = {b.splitlines()[0].split(",")[-1].strip() for b in fresh}
+    missing = [n for n in HKMOTW_ORDER if n not in names]
+    if not missing or not old_path.exists():
+        return fresh
+    old = old_path.read_text(encoding="utf-8").splitlines()
+    recovered = []
+    for i, ln in enumerate(old):
+        if f'group-title="{HKMOTW_GROUP}"' in ln:
+            name = ln.split(",")[-1].strip()
+            if name in missing and i + 1 < len(old):
+                recovered.append(f"{ln}\n{old[i + 1]}")
+    if recovered:
+        print(f"  [警告] 用旧文件补回 {len(recovered)} 条港澳台")
+    return fresh + recovered
 
 
 def build(items: list[dict]) -> None:
@@ -275,7 +312,7 @@ def build(items: list[dict]) -> None:
         by_channel.setdefault(it["std"], []).append(it)
 
     blocks = []
-    for std in sorted(by_channel, key=lambda s: (0 if s.startswith(("CCTV", "CETV")) else 1, s)):
+    for std in sorted(by_channel, key=channel_sort_key):
         lines = sorted(
             by_channel[std],
             key=lambda x: (not x.get("alive", False), x.get("cost", 99)),
@@ -288,21 +325,12 @@ def build(items: list[dict]) -> None:
                 f'group-title="{group}",{std}\n{it["url"]}'
             )
 
-    existing = {b.splitlines()[-1] for b in blocks}
-    hk_blocks = [b for b in hkmotw_blocks(collect_hkmotw()) if b.splitlines()[-1] not in existing]
-
     header = f'#EXTM3U x-tvg-url="{FM_RAW}/e.xml"'
     DIST.mkdir(parents=True, exist_ok=True)
     out = DIST / "pack-cctv-satellite.m3u"
-    if not hk_blocks and out.exists():
-        # iptv-org 抽风时，沿用上一版里的港澳台，别把分组弄丢
-        old = out.read_text(encoding="utf-8").splitlines()
-        hk_blocks = [
-            "\n".join(old[i:i + 2])
-            for i, ln in enumerate(old)
-            if f'group-title="{HKMOTW_GROUP}"' in ln
-        ]
-        print(f"  [警告] 港澳台拉取为空，沿用旧文件 {len(hk_blocks)} 条")
+    existing = {b.splitlines()[-1] for b in blocks}
+    hk_blocks = [b for b in hkmotw_blocks(collect_hkmotw()) if b.splitlines()[-1] not in existing]
+    hk_blocks = fill_missing_hkmotw(hk_blocks, out)
     blocks.extend(hk_blocks)
     out.write_text("\n".join([header] + blocks) + "\n", encoding="utf-8")
     print(f"  pack-cctv-satellite.m3u: {len(by_channel)} 个频道 + 港澳台 {len(hk_blocks)} 条 / 共 {len(blocks)} 条线路")
@@ -331,10 +359,14 @@ def merge_hkmotw_only() -> int:
             cur = []
     if cur:
         blocks.append("\n".join(cur))
+    old_hk = [b for b in blocks if f'group-title="{HKMOTW_GROUP}"' in b]
     blocks = [b for b in blocks if f'group-title="{HKMOTW_GROUP}"' not in b]
     existing = {b.splitlines()[-1] for b in blocks}
-    hk_blocks = [b for b in hkmotw_blocks(collect_hkmotw()) if b.splitlines()[-1] not in existing]
-    out.write_text("\n".join([header] + blocks + hk_blocks) + "\n", encoding="utf-8")
+    fresh = hkmotw_blocks(collect_hkmotw())
+    fresh = fill_missing_hkmotw(fresh, out)
+    hk_blocks = [b for b in fresh if b.splitlines()[-1] not in existing]
+    blocks = sort_blocks(blocks + hk_blocks)
+    out.write_text("\n".join([header] + blocks) + "\n", encoding="utf-8")
     ASSETS.mkdir(parents=True, exist_ok=True)
     (ASSETS / out.name).write_bytes(out.read_bytes())
     print(f"  追加港澳台 {len(hk_blocks)} 条，当前共 {len(blocks) + len(hk_blocks)} 条线路")
@@ -345,7 +377,31 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-probe", action="store_true")
     ap.add_argument("--hkmotw-only", action="store_true")
+    ap.add_argument("--reorder-only", action="store_true")
     args = ap.parse_args()
+
+    if args.reorder_only:
+        out = DIST / "pack-cctv-satellite.m3u"
+        lines = out.read_text(encoding="utf-8").splitlines()
+        header, blocks, cur = lines[0], [], []
+        for ln in lines[1:]:
+            if not ln.strip():
+                continue
+            if ln.startswith("#EXTINF"):
+                if cur:
+                    blocks.append("\n".join(cur))
+                cur = [ln]
+            else:
+                cur.append(ln)
+                if not ln.startswith("#"):
+                    blocks.append("\n".join(cur))
+                    cur = []
+        if cur:
+            blocks.append("\n".join(cur))
+        out.write_text("\n".join([header] + sort_blocks(blocks)) + "\n", encoding="utf-8")
+        (ASSETS / out.name).write_bytes(out.read_bytes())
+        print(f"  重排完成，共 {len(blocks)} 条线路")
+        return 0
 
     if args.hkmotw_only:
         return merge_hkmotw_only()

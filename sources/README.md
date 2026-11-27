@@ -4,8 +4,8 @@
 
 ```
 sources/dist/                       # 源快照，进 git
-├── pack-cctv-satellite.m3u         # 央视 + 卫视 + 港澳台多线路包（83 频道 / 287 线路）
-└── intl-hkmo-tw.m3u                # 港澳台及国际（216 个）
+├── pack-cctv-satellite.m3u         # 央视 + 卫视 + 港澳台多线路包（83 频道 / 297 线路）
+└── intl-hkmo-tw.m3u                # 港澳台及国际（189 个，已去重）
 
 core/data/src/main/assets/sources/  # 打包进 APK 的副本（脚本自动同步，勿手改）
 ```

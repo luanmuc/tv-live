@@ -39,3 +39,4 @@ release/
 .idea/
 cmdline-tools.zip
 jdk17.tar.gz
+__pycache__/
