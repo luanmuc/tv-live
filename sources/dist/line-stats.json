@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T14:57:51+00:00",
+  "generated_at": "2026-11-27T15:16:43+00:00",
   "lines": [
     {
       "channel": "三沙卫视",
@@ -10,56 +10,140 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 737,
+      "latency_ms": 1354,
       "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "channel": "CCTV4",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/CCTV4HD/index.m3u8?gMac=unknown&livodToken=a2076a91d4ab3e3a8d96df561854b17563ddc027aec6e893eac3be4e11830fb7_1720507863_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 1144,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "东方卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/DONGFHD/index.m3u8?gMac=unknown&livodToken=4cb7770cf7195c2891acab71a8b5139c0f4abf80546956b07e6b8dd94b49e4e8_1720508420_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 444,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "黑龙江卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/HEILJHD/index.m3u8?gMac=unknown&livodToken=64cde00fa51eb520daec6aa6c1e3e90225906560d67b2607381a34d4431ebcc6_1720508553_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 442,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "吉林卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/JILHD/index.m3u8?gMac=unknown&livodToken=aef69bf8c1b273132c0131c77a30e70de412ec16260723968deb9a2b8a769e5a_1720508592_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 443,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "辽宁卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/LIAONHD/index.m3u8?gMac=unknown&livodToken=33bd64ae442debde91e9f2e25fd1087a9924ad3708258c548faf04b8a757b0d4_1720508620_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 442,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "内蒙古卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/NMGWS/index.m3u8?gMac=unknown&livodToken=a09588cc53538af6402a57be79ed9490f6cdcdaef12f38888e5a3365a7a4d7c1_1720508643_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 441,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "甘肃卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/GSWS/index.m3u8?gMac=unknown&livodToken=171a8342304b3c81ad3c96545782987d838c6b9fb512cc6905270159a52113c2_1720508692_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 442,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "青海卫视",
       "source": "fanmingming index",
-      "url": "http://stream.qhbtv.com/qhws/sd/live.m3u8?_upt=f35a89681647856030",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/QHWS/index.m3u8?gMac=unknown&livodToken=495e44fa15aa6f066ed03ad059c8141856fd0591fd05036b71f202d50d2ee91f_1720508709_604800&fromCDN=ws",
       "alive": false,
       "playable": null,
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 549,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 442,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
-      "channel": "浙江卫视",
+      "channel": "陕西卫视",
       "source": "fanmingming index",
-      "url": "http://ali-m-l.cztv.com/channels/lantian/channel001/1080p.m3u8",
-      "alive": true,
-      "playable": true,
-      "kind": "hls",
-      "status_code": 206,
-      "content_type": "application/x-mpegurl",
-      "latency_ms": 137,
-      "error": ""
-    },
-    {
-      "channel": "延边卫视",
-      "source": "fanmingming index",
-      "url": "http://live.ybtvyun.com/video/s10006-44f040627ca1/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "other",
-      "status_code": 206,
-      "content_type": "text/html",
-      "latency_ms": 195,
-      "error": ""
-    },
-    {
-      "channel": "安徽卫视",
-      "source": "fanmingming index",
-      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/ANHUIHD/index.m3u8?gMac=unknown&livodToken=02a806c27a6d5b383b7e327402a6c5d9be864ee6bda1277c84b8bc14c914a579_1720508862_604800&fromCDN=ws",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/SXTV/index.m3u8?gMac=unknown&livodToken=c553bb820ba0fceee866c695e3e7ca27fc9cd874769c2d9c16cadad386c4a71e_1720508744_604800&fromCDN=ws",
       "alive": false,
       "playable": null,
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 602,
-      "error": "HTTP Error 403: Forbidden"
+      "latency_ms": 441,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "河北卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/HAIBHD/index.m3u8?gMac=unknown&livodToken=e80bcd155eabf8e0dbe4c1fa52d05d048c86c1398334b5085f6c985eb88548ca_1720508762_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 442,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "河南卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/HENHD/index.m3u8?gMac=unknown&livodToken=c7713f989c35d7b798afec34071e72743fa784617458f4679369d1842cd422ac_1720508889_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 449,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "湖北卫视",
@@ -70,8 +154,116 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 597,
-      "error": "HTTP Error 403: Forbidden"
+      "latency_ms": 448,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "湖南卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/HUNANHD/index.m3u8?gMac=unknown&livodToken=d70b57aaeb691e28be8f737e9f9efa413979b27dfc97da8bc6b321c828e47010_1720508965_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 445,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "江西卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/JXWSHD/index.m3u8?gMac=unknown&livodToken=84e38030fc4f1248603777a24ade5ab82ef30103522330bb3444634a1b66307f_1720509019_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 448,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "东南卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/DONGNHD/index.m3u8?gMac=unknown&livodToken=5fc20660dbcb940d20412d743ece597d91c8b06af193d6a9b81ad2781b1b8a54_1720509176_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 446,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "广东卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/GUANGDHD/index.m3u8?gMac=unknown&livodToken=59fd71bc9ab8ccb098e20dba7502351a73b4a120648316b836686754ebd7dbd2_1720509211_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 446,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "深圳卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/SHENZHD/index.m3u8?gMac=unknown&livodToken=6b52c18155b74d913b2a3060db6d74f2a29dd8a824d70f648a9882dca63fd962_1720509238_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 446,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "广西卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/GUANGXHD/index.m3u8?gMac=unknown&livodToken=a71e93bbbb5e737e3ca6045ab8958d7b1f6b03b2cfcc398439f6b9111e29a053_1720509270_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 444,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "云南卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/YUNNHD/index.m3u8?gMac=unknown&livodToken=bd74183e409c86a54debf6f2452fcadd940a4b90a2e1f981832970d2f916a945_1720509300_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 445,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "贵州卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/GUIZHD/index.m3u8?gMac=unknown&livodToken=c2389ebe3248f5e8bb2be6ba564202250815c1ffce8bf911a01e5e09705f6576_1720509315_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 445,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "四川卫视",
+      "source": "fanmingming index",
+      "url": "http://jxcbn.ws-cdn.gitv.tv/hls/SICHD/index.m3u8?gMac=unknown&livodToken=539d7323a2cbb4240388051e285321f2684e79db2a7c484168b386d99dc393b3_1720509350_604800&fromCDN=ws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 444,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "CETV1",
@@ -82,7 +274,7 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 8722,
+      "latency_ms": 4462,
       "error": "HTTP Error 403: Forbidden"
     },
     {
@@ -94,7 +286,19 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 921,
+      "latency_ms": 3589,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "channel": "哈哈炫动",
+      "source": "fanmingming itv",
+      "url": "http://gslbserv.itv.cmvideo.cn/5000000011000031123/1.m3u8?channel-id=bestzb&Contentid=5000000011000031123&livemode=1&stbId=3",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 1882,
       "error": "HTTP Error 403: Forbidden"
     },
     {
@@ -718,7 +922,7 @@
       "kind": "hls",
       "status_code": 200,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 181,
+      "latency_ms": 1683,
       "error": ""
     },
     {
@@ -730,7 +934,19 @@
       "kind": "hls",
       "status_code": 200,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 354,
+      "latency_ms": 3193,
+      "error": ""
+    },
+    {
+      "channel": "北京卫视",
+      "source": "iptv-org cn",
+      "url": "http://go.bkpcp.top/mg/bjws",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 3823,
       "error": ""
     },
     {
@@ -738,11 +954,11 @@
       "source": "iptv-org cn",
       "url": "http://74.91.26.218:82/live/cctv1hd.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 7328,
+      "latency_ms": 134,
       "error": ""
     },
     {
@@ -751,35 +967,59 @@
       "url": "http://69.30.245.50/live/cctv1.m3u8",
       "alive": false,
       "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 542,
-      "error": "HTTP Error 503: Service Unavailable"
+      "kind": "other",
+      "status_code": 200,
+      "content_type": "text/html; charset=utf-8",
+      "latency_ms": 72,
+      "error": ""
+    },
+    {
+      "channel": "CCTV2",
+      "source": "iptv-org cn",
+      "url": "http://74.91.26.218:82/live/cctv2hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 131,
+      "error": ""
     },
     {
       "channel": "CCTV3",
       "source": "iptv-org cn",
       "url": "http://74.91.26.218:82/live/cctv3hd.m3u8",
       "alive": true,
-      "playable": true,
+      "playable": false,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1139,
+      "latency_ms": 127,
+      "error": ""
+    },
+    {
+      "channel": "CCTV5+",
+      "source": "iptv-org cn",
+      "url": "https://php.jdshipin.com/TVOD/iptv.php?id=cctv5p",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 143,
       "error": ""
     },
     {
       "channel": "CCTV6",
       "source": "iptv-org cn",
       "url": "http://69.30.245.50/live/cctv6.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 498,
-      "error": "HTTP Error 503: Service Unavailable"
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 134,
+      "error": ""
     },
     {
       "channel": "CCTV7",
@@ -790,7 +1030,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1050,
+      "latency_ms": 131,
       "error": ""
     },
     {
@@ -802,7 +1042,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 4215,
+      "latency_ms": 130,
       "error": ""
     },
     {
@@ -814,7 +1054,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1543,
+      "latency_ms": 17,
+      "error": ""
+    },
+    {
+      "channel": "CCTV10",
+      "source": "iptv-org cn",
+      "url": "http://74.91.26.218:82/live/cctv10hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 135,
       "error": ""
     },
     {
@@ -826,7 +1078,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1755,
+      "latency_ms": 135,
       "error": ""
     },
     {
@@ -838,7 +1090,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2184,
+      "latency_ms": 127,
       "error": ""
     },
     {
@@ -850,7 +1102,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 7628,
+      "latency_ms": 128,
+      "error": ""
+    },
+    {
+      "channel": "CCTV14",
+      "source": "iptv-org cn",
+      "url": "http://74.91.26.218:82/live/cctv14hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 135,
       "error": ""
     },
     {
@@ -862,19 +1126,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 3522,
+      "latency_ms": 127,
       "error": ""
     },
     {
       "channel": "CCTV16",
       "source": "iptv-org cn",
       "url": "http://74.91.26.218:82/live/cctv16hd.m3u8",
-      "alive": true,
-      "playable": false,
-      "kind": "hls",
-      "status_code": 206,
-      "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 9038,
+      "alive": false,
+      "playable": null,
+      "kind": "other",
+      "status_code": 200,
+      "content_type": "text/html; charset=utf-8",
+      "latency_ms": 63,
       "error": ""
     },
     {
@@ -886,7 +1150,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1106,
+      "latency_ms": 126,
       "error": ""
     },
     {
@@ -898,7 +1162,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 333,
+      "latency_ms": 988,
       "error": ""
     },
     {
@@ -910,20 +1174,8 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 115,
+      "latency_ms": 537,
       "error": ""
-    },
-    {
-      "channel": "四川卫视",
-      "source": "iptv-org cn",
-      "url": "http://scgctvshow.sctv.com/hdlive/sctv7/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 508,
-      "error": "HTTP Error 503: Service Unavailable"
     },
     {
       "channel": "新疆卫视",
@@ -934,19 +1186,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl;charset=utf-8",
-      "latency_ms": 247,
+      "latency_ms": 677,
       "error": ""
     },
     {
-      "channel": "东方卫视",
-      "source": "suxiang ipv4",
-      "url": "http://bp-resource-dfl.bestv.cn/148/3/video.m3u8",
+      "channel": "广东卫视",
+      "source": "iptv-org zho",
+      "url": "https://h5cul1yar48um3t.wcetv.com/hls/gdtv.m3u8",
       "alive": true,
       "playable": true,
       "kind": "hls",
       "status_code": 206,
-      "content_type": "application/x-mpegurl",
-      "latency_ms": 181,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 235,
       "error": ""
     },
     {
@@ -954,11 +1206,11 @@
       "source": "suxiang ipv4",
       "url": "http://8.138.7.223/tv/jsws4k.php",
       "alive": true,
-      "playable": true,
-      "kind": "ts",
-      "status_code": 206,
-      "content_type": "video/mp4",
-      "latency_ms": 1179,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 2051,
       "error": ""
     },
     {
@@ -970,19 +1222,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 150,
-      "error": ""
-    },
-    {
-      "channel": "黑龙江卫视",
-      "source": "suxiang ipv4",
-      "url": "https://idclive.hljtv.com:4430/live/hljws_own.m3u8",
-      "alive": true,
-      "playable": true,
-      "kind": "hls",
-      "status_code": 206,
-      "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 290,
+      "latency_ms": 547,
       "error": ""
     },
     {
@@ -994,8 +1234,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 616,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 429,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "CETV2",
@@ -1006,8 +1246,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 566,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 429,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "CETV4",
@@ -1018,8 +1258,80 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16418,
-      "error": "timed out"
+      "latency_ms": 16693,
+      "error": "<urlopen error [Errno 101] Network is unreachable>"
+    },
+    {
+      "channel": "CCTV4",
+      "source": "suxiang ipv4",
+      "url": "http://t.061899.xyz/tl/tl.php?id=cctv4",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 2431,
+      "error": ""
+    },
+    {
+      "channel": "CCTV14",
+      "source": "suxiang ipv4",
+      "url": "http://t.061899.xyz/tl/tl.php?id=cctv14",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 454,
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "channel": "CCTV17",
+      "source": "suxiang ipv4",
+      "url": "http://t.061899.xyz/tl/tl.php?id=cctv17",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 457,
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "channel": "宁夏卫视",
+      "source": "suxiang ipv4",
+      "url": "http://t.061899.xyz/tl/tl.php?id=nxws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 812,
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "channel": "山东卫视",
+      "source": "suxiang ipv4",
+      "url": "http://t.061899.xyz/tl/tl.php?id=sdws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 462,
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "channel": "河南卫视",
+      "source": "suxiang ipv4",
+      "url": "http://t.061899.xyz/tl/tl.php?id=hnws",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 463,
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "channel": "优漫卡通",
@@ -1030,8 +1342,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 1015,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 458,
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "channel": "东方卫视",
@@ -1042,7 +1354,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/x-mpegurl",
-      "latency_ms": 213,
+      "latency_ms": 66052,
       "error": ""
     },
     {
@@ -1050,11 +1362,11 @@
       "source": "suxiang ipv4",
       "url": "http://120.76.248.139/live/bfgd/4200000108.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 136,
+      "latency_ms": 478,
       "error": ""
     },
     {
@@ -1062,11 +1374,11 @@
       "source": "suxiang ipv4",
       "url": "http://120.76.248.139/live/bfgd/4200000110.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 226,
+      "latency_ms": 588,
       "error": ""
     },
     {
@@ -1074,11 +1386,11 @@
       "source": "suxiang ipv4",
       "url": "http://120.76.248.139/live/bfgd/4200000473.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 171,
+      "latency_ms": 485,
       "error": ""
     },
     {
@@ -1086,11 +1398,11 @@
       "source": "suxiang ipv4",
       "url": "http://120.76.248.139/live/bfgd/4200000118.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 119,
+      "latency_ms": 488,
       "error": ""
     },
     {
@@ -1098,72 +1410,12 @@
       "source": "suxiang ipv4",
       "url": "http://120.76.248.139/live/bfgd/4200000117.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 134,
+      "latency_ms": 602,
       "error": ""
-    },
-    {
-      "channel": "CCTV11",
-      "source": "suxiang ipv4",
-      "url": "http://112.27.235.94:8000/hls/12/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 629,
-      "error": "HTTP Error 500: Internal Server Error"
-    },
-    {
-      "channel": "浙江卫视",
-      "source": "suxiang ipv4",
-      "url": "http://112.27.235.94:8000/hls/29/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 575,
-      "error": "HTTP Error 500: Internal Server Error"
-    },
-    {
-      "channel": "重庆卫视",
-      "source": "suxiang ipv4",
-      "url": "http://112.27.235.94:8000/hls/36/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 572,
-      "error": "HTTP Error 500: Internal Server Error"
-    },
-    {
-      "channel": "河南卫视",
-      "source": "suxiang ipv4",
-      "url": "http://112.27.235.94:8000/hls/37/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 546,
-      "error": "HTTP Error 500: Internal Server Error"
-    },
-    {
-      "channel": "云南卫视",
-      "source": "suxiang ipv4",
-      "url": "http://112.27.235.94:8000/hls/40/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 533,
-      "error": "HTTP Error 500: Internal Server Error"
     },
     {
       "channel": "山西卫视",
@@ -1174,20 +1426,32 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 577,
+      "latency_ms": 1213,
       "error": "HTTP Error 500: Internal Server Error"
     },
     {
-      "channel": "内蒙古卫视",
+      "channel": "CCTV6",
       "source": "suxiang ipv4",
-      "url": "http://112.27.235.94:8000/hls/49/index.m3u8",
+      "url": "https://zby.130519.xyz/PLTV/11/224/3221225741/index.m3u8",
       "alive": false,
       "playable": null,
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 591,
-      "error": "HTTP Error 500: Internal Server Error"
+      "latency_ms": 1081,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1018)>"
+    },
+    {
+      "channel": "哈哈炫动",
+      "source": "suxiang ipv4",
+      "url": "https://zby.130519.xyz/PLTV/11/224/3221226161/index.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 1258,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1018)>"
     },
     {
       "channel": "动漫秀场",
@@ -1198,8 +1462,20 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 1343,
-      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1010)>"
+      "latency_ms": 1168,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1018)>"
+    },
+    {
+      "channel": "卡酷少儿",
+      "source": "suxiang ipv4",
+      "url": "https://zby.130519.xyz/PLTV/11/224/3221226019/index.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 1103,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1018)>"
     },
     {
       "channel": "金鹰卡通",
@@ -1210,8 +1486,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 2693,
-      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1010)>"
+      "latency_ms": 1069,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1018)>"
     },
     {
       "channel": "动漫秀场",
@@ -1222,8 +1498,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 536,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 956,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "哈哈炫动",
@@ -1234,20 +1510,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 587,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "金鹰卡通",
-      "source": "suxiang ipv4",
-      "url": "http://tvbox6.icu/tv/mgtv.php?id=287",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 9386,
-      "error": "HTTP Error 410: Gone"
+      "latency_ms": 962,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "厦门卫视",
@@ -1258,116 +1522,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 1896,
+      "latency_ms": 2665,
       "error": "HTTP Error 502: Bad Gateway"
-    },
-    {
-      "channel": "CCTV2",
-      "source": "suxiang ipv6",
-      "url": "http://218.13.14.6:60050/tsfile/live/1002_1.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 593,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "CCTV4",
-      "source": "suxiang ipv6",
-      "url": "http://218.13.14.6:60050/tsfile/live/1004_1.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 618,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "CCTV9",
-      "source": "suxiang ipv6",
-      "url": "http://218.13.14.6:60050/tsfile/live/1009_1.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 592,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "CCTV10",
-      "source": "suxiang ipv6",
-      "url": "http://218.13.14.6:60050/tsfile/live/1010_1.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 568,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "CCTV12",
-      "source": "suxiang ipv6",
-      "url": "http://218.13.14.6:60050/tsfile/live/1012_1.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 575,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "CCTV13",
-      "source": "suxiang ipv6",
-      "url": "http://218.13.14.6:60050/tsfile/live/1013_1.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 574,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "CCTV14",
-      "source": "suxiang ipv6",
-      "url": "http://218.13.14.6:60050/tsfile/live/1014_1.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 544,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "CCTV16",
-      "source": "suxiang ipv6",
-      "url": "http://www.lizhinas.top:1009/rtp/239.252.220.237:5140",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 555,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "CCTV17",
-      "source": "suxiang ipv6",
-      "url": "http://tv.20191209.xyz:37377/migu/673168256.m3u8?migutoken=eb3fbda758006d66837b5b6ef1b7ab6847a99f05f6b3303861d81e6e1335349499a40c8479d9a801327519db10547f9870398da6796159db51812e236c1b6c07d2c0f7e5bc32101c9cc222dc",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 609,
-      "error": "HTTP Error 503: Service Unavailable"
     },
     {
       "channel": "CETV1",
@@ -1418,208 +1574,28 @@
       "error": ""
     },
     {
-      "channel": "湖南卫视",
+      "channel": "浙江卫视",
       "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000005000265024.m3u8?cdn=ystenlive",
+      "url": "http://home.wwang.pw:35455/itv/1000000005000265031.m3u8?cdn=ystenlive",
       "alive": false,
       "playable": null,
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 552,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 982,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
-      "channel": "江苏卫视",
+      "channel": "重庆卫视",
       "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000005000265030.m3u8?cdn=ystenlive",
+      "url": "http://home.wwang.pw:35455/itv/1000000005000265017.m3u8?cdn=ystenlive",
       "alive": false,
       "playable": null,
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 609,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "东方卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000005000265018.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 617,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "山东卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000005000265019.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 557,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "广东卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000005000265034.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 560,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "广西卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/5000000011000031118.m3u8?cdn=bestzb",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 568,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "江西卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000005000265032.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 555,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "河北卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/5000000006000040016.m3u8?cdn=bestzb",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 546,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "河南卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000002000027731.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 611,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "东南卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000005000265033.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 562,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "贵州卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/5000000004000025843.m3u8?cdn=bestzb",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 544,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "辽宁卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000005000265022.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 585,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "黑龙江卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000005000265029.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 592,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "宁夏卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000002000031451.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 562,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "吉林卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/5000000011000031117.m3u8?cdn=bestzb",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 573,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "甘肃卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/5000000011000031121.m3u8?cdn=bestzb",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 551,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "海南卫视",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/5000000004000006211.m3u8?cdn=bestzb",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 573,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 998,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "三沙卫视",
@@ -1630,8 +1606,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 538,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 1997,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "西藏卫视",
@@ -1642,8 +1618,20 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 546,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 959,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "延边卫视",
+      "source": "suxiang ipv6",
+      "url": "http://home.wwang.pw:35455/itv/1000000005000266008.m3u8?cdn=ystenlive",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 959,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "安多卫视",
@@ -1654,8 +1642,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 646,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 2970,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "厦门卫视",
@@ -1666,8 +1654,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 552,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 941,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "康巴卫视",
@@ -1678,8 +1666,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 562,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 919,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "安多卫视",
@@ -1690,8 +1678,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 529,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 1314,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "动漫秀场",
@@ -1702,8 +1690,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 607,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 945,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "金鹰卡通",
@@ -1714,32 +1702,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 599,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "优漫卡通",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/1000000002000010063.m3u8?cdn=ystenlive",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 564,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "哈哈炫动",
-      "source": "suxiang ipv6",
-      "url": "http://home.wwang.pw:35455/itv/5000000011000031123.m3u8?cdn=bestzb",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 545,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 1983,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "嘉佳卡通",
@@ -1750,8 +1714,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 582,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 925,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "CCTV13",
@@ -1762,7 +1726,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/x-mpegurl",
-      "latency_ms": 125,
+      "latency_ms": 697,
+      "error": ""
+    },
+    {
+      "channel": "CCTV17",
+      "source": "vbskycn ipv4",
+      "url": "https://live.264788.xyz/channel/cctv17?streamid=f9c36f1e95b5b35eac89cc89583e7c0a&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 1411,
       "error": ""
     },
     {
@@ -1774,7 +1750,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 712,
+      "latency_ms": 1154,
       "error": ""
     },
     {
@@ -1786,7 +1762,19 @@
       "kind": "ts",
       "status_code": 206,
       "content_type": "video/mp4",
-      "latency_ms": 367,
+      "latency_ms": 778,
+      "error": ""
+    },
+    {
+      "channel": "贵州卫视",
+      "source": "vbskycn ipv4",
+      "url": "https://live.264788.xyz/channel/guizhouweishi?streamid=091bd59ea031989839c23459bb8cc9d4&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 1340,
       "error": ""
     },
     {
@@ -1798,7 +1786,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl;charset=utf-8",
-      "latency_ms": 448,
+      "latency_ms": 494,
+      "error": ""
+    },
+    {
+      "channel": "江西卫视",
+      "source": "vbskycn ipv4",
+      "url": "https://live.264788.xyz/channel/jiangxiweishi?streamid=555198f31caa33506ac6abb70d788959&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 920,
       "error": ""
     },
     {
@@ -1810,7 +1810,43 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl; charset=utf-8",
-      "latency_ms": 184,
+      "latency_ms": 608,
+      "error": ""
+    },
+    {
+      "channel": "陕西卫视",
+      "source": "vbskycn ipv4",
+      "url": "https://live.264788.xyz/channel/shaanxiweishi?streamid=9dc887dba8ecb4e4143baf4f2373800c&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 770,
+      "error": ""
+    },
+    {
+      "channel": "四川卫视",
+      "source": "vbskycn ipv4",
+      "url": "https://live.264788.xyz/channel/sichuanweishi4k?streamid=401bf692a1a8b91298f26077d53316d6&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 694,
+      "error": ""
+    },
+    {
+      "channel": "西藏卫视",
+      "source": "vbskycn ipv4",
+      "url": "https://live.264788.xyz/channel/xizangweishi?streamid=4b4e8ea919f1cfd5e43deed1d1675251&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 669,
       "error": ""
     },
     {
@@ -1822,7 +1858,7 @@
       "kind": "hls",
       "status_code": 200,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 205,
+      "latency_ms": 624,
       "error": ""
     },
     {
@@ -1830,11 +1866,11 @@
       "source": "vbskycn ipv4",
       "url": "http://l.cztvcloud.com/channels/lantian/SXxinchang2/720p.m3u8#",
       "alive": true,
-      "playable": true,
+      "playable": false,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/x-mpegurl",
-      "latency_ms": 193,
+      "latency_ms": 2836,
       "error": ""
     },
     {
@@ -1842,11 +1878,11 @@
       "source": "vbskycn ipv4",
       "url": "http://ali-vl.cztv.com/channels/lantian/channel001/360p.m3u8",
       "alive": true,
-      "playable": true,
+      "playable": false,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/x-mpegurl",
-      "latency_ms": 328,
+      "latency_ms": 1306,
       "error": ""
     },
     {
@@ -1858,7 +1894,43 @@
       "kind": "hls",
       "status_code": 200,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 99,
+      "latency_ms": 1000,
+      "error": ""
+    },
+    {
+      "channel": "东方卫视",
+      "source": "vbskycn ipv4",
+      "url": "https://bp-resource-dfl.bestv.cn/148/3/video.m3u8",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/x-mpegurl",
+      "latency_ms": 65314,
+      "error": ""
+    },
+    {
+      "channel": "CCTV1",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv1hd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 200,
+      "error": ""
+    },
+    {
+      "channel": "CCTV1",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqbv/cctv1hd.m3u8?auth=test20251009",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 190,
       "error": ""
     },
     {
@@ -1870,8 +1942,44 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 9483,
+      "latency_ms": 127,
       "error": ""
+    },
+    {
+      "channel": "CCTV1",
+      "source": "guovin result",
+      "url": "http://198.204.228.26/live/cctv1hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 137,
+      "error": ""
+    },
+    {
+      "channel": "CCTV2",
+      "source": "guovin result",
+      "url": "http://204.12.221.218:8181/3m1080p/cctv2.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 142,
+      "error": ""
+    },
+    {
+      "channel": "CCTV2",
+      "source": "guovin result",
+      "url": "http://bztv.tvbus.cc:8081/cdnlive/cctv2.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 574,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "CCTV2",
@@ -1882,7 +1990,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11765,
+      "latency_ms": 134,
       "error": ""
     },
     {
@@ -1894,20 +2002,68 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2063,
+      "latency_ms": 135,
+      "error": ""
+    },
+    {
+      "channel": "CCTV2",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/cctv2hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 128,
       "error": ""
     },
     {
       "channel": "CCTV3",
       "source": "guovin result",
-      "url": "http://69.30.245.50/live/cctv3.m3u8",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv3hd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 191,
+      "error": ""
+    },
+    {
+      "channel": "CCTV3",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/cctv3hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
+      "error": ""
+    },
+    {
+      "channel": "CCTV3",
+      "source": "guovin result",
+      "url": "http://112.30.73.119:229/tsfile/live/0003_2.m3u8?key=txiptv&playlive=0&authid=0",
       "alive": false,
       "playable": null,
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 516,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 832,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "CCTV3",
+      "source": "guovin result",
+      "url": "http://69.30.245.50/live/cctv3.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 128,
+      "error": ""
     },
     {
       "channel": "CCTV4",
@@ -1918,7 +2074,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1882,
+      "latency_ms": 135,
+      "error": ""
+    },
+    {
+      "channel": "CCTV4",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/cctv4hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 126,
       "error": ""
     },
     {
@@ -1926,11 +2094,11 @@
       "source": "guovin result",
       "url": "http://173.208.212.130:8181/1080p/cctv4.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11593,
+      "latency_ms": 128,
       "error": ""
     },
     {
@@ -1942,7 +2110,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 10155,
+      "latency_ms": 182,
+      "error": ""
+    },
+    {
+      "channel": "CCTV5",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/cctv5hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
       "error": ""
     },
     {
@@ -1954,7 +2134,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1337,
+      "latency_ms": 190,
       "error": ""
     },
     {
@@ -1966,7 +2146,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1014,
+      "latency_ms": 193,
       "error": ""
     },
     {
@@ -1978,7 +2158,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl; charset=utf-8",
-      "latency_ms": 67,
+      "latency_ms": 804,
       "error": ""
     },
     {
@@ -1986,11 +2166,23 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000246.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 134,
+      "latency_ms": 486,
+      "error": ""
+    },
+    {
+      "channel": "CCTV6",
+      "source": "guovin result",
+      "url": "http://198.204.240.250:82/live/cctv6.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 187,
       "error": ""
     },
     {
@@ -2002,7 +2194,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1034,
+      "latency_ms": 128,
       "error": ""
     },
     {
@@ -2014,7 +2206,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 14226,
+      "latency_ms": 128,
+      "error": ""
+    },
+    {
+      "channel": "CCTV6",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv6hd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 191,
+      "error": ""
+    },
+    {
+      "channel": "CCTV7",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv7hd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 192,
       "error": ""
     },
     {
@@ -2026,8 +2242,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 555,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 592,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "CCTV7",
@@ -2038,32 +2254,104 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1089,
+      "latency_ms": 136,
       "error": ""
     },
     {
       "channel": "CCTV8",
       "source": "guovin result",
-      "url": "http://69.30.245.50/live/cctv8.m3u8",
+      "url": "http://bztv.tvbus.cc:8081/cdnlive/cctv8.m3u8",
       "alive": false,
       "playable": null,
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 499,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 567,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "CCTV8",
+      "source": "guovin result",
+      "url": "http://69.30.245.50/live/cctv8.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 126,
+      "error": ""
+    },
+    {
+      "channel": "CCTV8",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv8k",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 199,
+      "error": ""
+    },
+    {
+      "channel": "CCTV9",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv9hd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 208,
+      "error": ""
+    },
+    {
+      "channel": "CCTV9",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/cctv9hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 136,
+      "error": ""
     },
     {
       "channel": "CCTV9",
       "source": "guovin result",
       "url": "http://74.91.26.218:82/live/cctv9hd.m3u8",
       "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
+      "error": ""
+    },
+    {
+      "channel": "CCTV9",
+      "source": "guovin result",
+      "url": "http://192.151.150.154/live/cctv9hd.m3u8",
+      "alive": true,
       "playable": false,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2157,
+      "latency_ms": 135,
       "error": ""
+    },
+    {
+      "channel": "CCTV9",
+      "source": "guovin result",
+      "url": "http://198.204.228.26/live/cctv9hd.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 596,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "CCTV10",
@@ -2074,8 +2362,56 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1008,
+      "latency_ms": 181,
       "error": ""
+    },
+    {
+      "channel": "CCTV10",
+      "source": "guovin result",
+      "url": "http://204.12.221.218:8181/3m1080p/cctv10.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 597,
+      "error": "<urlopen error [Errno 111] Connection refused>"
+    },
+    {
+      "channel": "CCTV10",
+      "source": "guovin result",
+      "url": "http://69.30.245.50/live/cctv10.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 1121,
+      "error": ""
+    },
+    {
+      "channel": "CCTV11",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqbv/cctv11hd.m3u8?auth=test20251009",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 182,
+      "error": ""
+    },
+    {
+      "channel": "CCTV11",
+      "source": "guovin result",
+      "url": "http://198.204.228.26/live/cctv11hd.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 592,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "CCTV11",
@@ -2086,8 +2422,44 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1093,
+      "latency_ms": 1170,
       "error": ""
+    },
+    {
+      "channel": "CCTV12",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/cctv12hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 140,
+      "error": ""
+    },
+    {
+      "channel": "CCTV12",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqpub/cctv12hd.m3u8?auth=testpub",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 182,
+      "error": ""
+    },
+    {
+      "channel": "CCTV12",
+      "source": "guovin result",
+      "url": "http://204.12.221.218:8181/3m1080p/cctv12.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 591,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "CCTV12",
@@ -2098,7 +2470,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1001,
+      "latency_ms": 183,
+      "error": ""
+    },
+    {
+      "channel": "CCTV13",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqbv/cctv13hd.m3u8?auth=test20251009",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 182,
+      "error": ""
+    },
+    {
+      "channel": "CCTV13",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv13hd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 207,
       "error": ""
     },
     {
@@ -2106,12 +2502,24 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000067.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 156,
+      "latency_ms": 490,
       "error": ""
+    },
+    {
+      "channel": "CCTV13",
+      "source": "guovin result",
+      "url": "http://bztv.tvbus.cc:8081/cdnlive/cctv13.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 563,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "CCTV14",
@@ -2122,7 +2530,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1128,
+      "latency_ms": 127,
+      "error": ""
+    },
+    {
+      "channel": "CCTV14",
+      "source": "guovin result",
+      "url": "http://204.12.221.218:8181/3m1080p/cctv14.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 128,
       "error": ""
     },
     {
@@ -2134,7 +2554,67 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1074,
+      "latency_ms": 183,
+      "error": ""
+    },
+    {
+      "channel": "CCTV14",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv14hd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 203,
+      "error": ""
+    },
+    {
+      "channel": "CCTV15",
+      "source": "guovin result",
+      "url": "http://204.12.221.218:8181/3m1080p/cctv15.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 128,
+      "error": ""
+    },
+    {
+      "channel": "CCTV15",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqbv/cctv15hd.m3u8?auth=test20251009",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 182,
+      "error": ""
+    },
+    {
+      "channel": "CCTV15",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv15hd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 198,
+      "error": ""
+    },
+    {
+      "channel": "CCTV15",
+      "source": "guovin result",
+      "url": "http://198.204.228.26/live/cctv15hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 136,
       "error": ""
     },
     {
@@ -2146,7 +2626,43 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 10968,
+      "latency_ms": 183,
+      "error": ""
+    },
+    {
+      "channel": "CCTV16",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqpub/cctv16hd.m3u8?auth=testpub",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 190,
+      "error": ""
+    },
+    {
+      "channel": "CCTV17",
+      "source": "guovin result",
+      "url": "https://live.264788.xyz/channel/cctv17?streamid=348c8c0c04a6d2b900e5a3bcb4af8ce1&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 174,
+      "error": ""
+    },
+    {
+      "channel": "CCTV17",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv17hd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 204,
       "error": ""
     },
     {
@@ -2158,7 +2674,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 12087,
+      "latency_ms": 192,
+      "error": ""
+    },
+    {
+      "channel": "广东卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=gdwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 193,
+      "error": ""
+    },
+    {
+      "channel": "广东卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/gdwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
       "error": ""
     },
     {
@@ -2166,11 +2706,11 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000092.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 128,
+      "latency_ms": 486,
       "error": ""
     },
     {
@@ -2182,7 +2722,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 10385,
+      "latency_ms": 1175,
+      "error": ""
+    },
+    {
+      "channel": "浙江卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=zjwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 203,
       "error": ""
     },
     {
@@ -2194,7 +2746,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 14837,
+      "latency_ms": 1134,
       "error": ""
     },
     {
@@ -2206,7 +2758,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2268,
+      "latency_ms": 183,
       "error": ""
     },
     {
@@ -2218,7 +2770,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/x-mpegurl",
-      "latency_ms": 137,
+      "latency_ms": 699,
       "error": ""
     },
     {
@@ -2230,7 +2782,67 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 224,
+      "latency_ms": 446,
+      "error": ""
+    },
+    {
+      "channel": "湖南卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/hnwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 136,
+      "error": ""
+    },
+    {
+      "channel": "湖南卫视",
+      "source": "guovin result",
+      "url": "http://74.91.26.218:82/live/hnwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 135,
+      "error": ""
+    },
+    {
+      "channel": "湖南卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=hnwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 204,
+      "error": ""
+    },
+    {
+      "channel": "北京卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=bjwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 202,
+      "error": ""
+    },
+    {
+      "channel": "北京卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/bjwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 144,
       "error": ""
     },
     {
@@ -2242,7 +2854,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 6937,
+      "latency_ms": 193,
       "error": ""
     },
     {
@@ -2250,11 +2862,35 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000083.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 172,
+      "latency_ms": 492,
+      "error": ""
+    },
+    {
+      "channel": "湖北卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/hbwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
+      "error": ""
+    },
+    {
+      "channel": "湖北卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=hbwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 204,
       "error": ""
     },
     {
@@ -2266,7 +2902,31 @@
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 136,
+      "latency_ms": 483,
+      "error": ""
+    },
+    {
+      "channel": "黑龙江卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/hljwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 126,
+      "error": ""
+    },
+    {
+      "channel": "黑龙江卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=hljwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 192,
       "error": ""
     },
     {
@@ -2274,11 +2934,11 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000095.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 102,
+      "latency_ms": 491,
       "error": ""
     },
     {
@@ -2290,7 +2950,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 9955,
+      "latency_ms": 190,
       "error": ""
     },
     {
@@ -2302,7 +2962,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11336,
+      "latency_ms": 135,
+      "error": ""
+    },
+    {
+      "channel": "安徽卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=ahwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 192,
+      "error": ""
+    },
+    {
+      "channel": "安徽卫视",
+      "source": "guovin result",
+      "url": "http://104.152.209.49:8181/720p/ahws.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "other",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 296,
       "error": ""
     },
     {
@@ -2314,7 +2998,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 10495,
+      "latency_ms": 134,
+      "error": ""
+    },
+    {
+      "channel": "安徽卫视",
+      "source": "guovin result",
+      "url": "http://198.204.228.26/live/ahwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 144,
+      "error": ""
+    },
+    {
+      "channel": "重庆卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cqwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 193,
       "error": ""
     },
     {
@@ -2326,7 +3034,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1255,
+      "latency_ms": 127,
       "error": ""
     },
     {
@@ -2338,7 +3046,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1351,
+      "latency_ms": 185,
+      "error": ""
+    },
+    {
+      "channel": "东方卫视",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqpub/dfwshd.m3u8?auth=testpub",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 182,
+      "error": ""
+    },
+    {
+      "channel": "东方卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=dfwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 201,
       "error": ""
     },
     {
@@ -2350,7 +3082,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1878,
+      "latency_ms": 136,
+      "error": ""
+    },
+    {
+      "channel": "东南卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=dnwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 209,
+      "error": ""
+    },
+    {
+      "channel": "东南卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/dnwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 135,
       "error": ""
     },
     {
@@ -2358,11 +3114,11 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000483.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 213,
+      "latency_ms": 602,
       "error": ""
     },
     {
@@ -2374,7 +3130,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 13764,
+      "latency_ms": 182,
       "error": ""
     },
     {
@@ -2386,7 +3142,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 12309,
+      "latency_ms": 190,
+      "error": ""
+    },
+    {
+      "channel": "甘肃卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=gswshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 209,
       "error": ""
     },
     {
@@ -2394,11 +3162,35 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000119.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 124,
+      "latency_ms": 497,
+      "error": ""
+    },
+    {
+      "channel": "广西卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=gxwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 194,
+      "error": ""
+    },
+    {
+      "channel": "广西卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/gxwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 136,
       "error": ""
     },
     {
@@ -2406,11 +3198,11 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000116.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 300,
+      "latency_ms": 492,
       "error": ""
     },
     {
@@ -2422,7 +3214,55 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11099,
+      "latency_ms": 134,
+      "error": ""
+    },
+    {
+      "channel": "广西卫视",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqpub/gxwshd.m3u8?auth=testpub",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 184,
+      "error": ""
+    },
+    {
+      "channel": "贵州卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/gzwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
+      "error": ""
+    },
+    {
+      "channel": "贵州卫视",
+      "source": "guovin result",
+      "url": "http://204.12.221.218:8181/3m1080p/gzws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 126,
+      "error": ""
+    },
+    {
+      "channel": "贵州卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=gzwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 201,
       "error": ""
     },
     {
@@ -2434,7 +3274,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 9873,
+      "latency_ms": 182,
+      "error": ""
+    },
+    {
+      "channel": "河北卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=hewshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 201,
       "error": ""
     },
     {
@@ -2446,7 +3298,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1001,
+      "latency_ms": 183,
       "error": ""
     },
     {
@@ -2458,7 +3310,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11557,
+      "latency_ms": 136,
       "error": ""
     },
     {
@@ -2470,7 +3322,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2691,
+      "latency_ms": 202,
+      "error": ""
+    },
+    {
+      "channel": "河南卫视",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqpub/hawshd.m3u8?auth=testpub",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 181,
+      "error": ""
+    },
+    {
+      "channel": "吉林卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=jlwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 211,
       "error": ""
     },
     {
@@ -2482,7 +3358,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 9780,
+      "latency_ms": 126,
+      "error": ""
+    },
+    {
+      "channel": "吉林卫视",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqpub/jlwshd.m3u8?auth=testpub",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 183,
+      "error": ""
+    },
+    {
+      "channel": "江苏卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=jswshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 201,
       "error": ""
     },
     {
@@ -2494,7 +3394,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11138,
+      "latency_ms": 134,
       "error": ""
     },
     {
@@ -2506,7 +3406,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 6471,
+      "latency_ms": 193,
+      "error": ""
+    },
+    {
+      "channel": "江苏卫视",
+      "source": "guovin result",
+      "url": "http://104.152.209.49:8181/720p/jsws.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "other",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 444,
       "error": ""
     },
     {
@@ -2518,7 +3430,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2040,
+      "latency_ms": 182,
       "error": ""
     },
     {
@@ -2530,7 +3442,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 12472,
+      "latency_ms": 208,
+      "error": ""
+    },
+    {
+      "channel": "江西卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/jxwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 135,
       "error": ""
     },
     {
@@ -2542,7 +3466,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl; charset=utf-8",
-      "latency_ms": 122,
+      "latency_ms": 473,
       "error": ""
     },
     {
@@ -2554,7 +3478,55 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2674,
+      "latency_ms": 182,
+      "error": ""
+    },
+    {
+      "channel": "辽宁卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=lnwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 201,
+      "error": ""
+    },
+    {
+      "channel": "辽宁卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/lnwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 128,
+      "error": ""
+    },
+    {
+      "channel": "辽宁卫视",
+      "source": "guovin result",
+      "url": "http://198.204.228.26/live/lnwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 139,
+      "error": ""
+    },
+    {
+      "channel": "辽宁卫视",
+      "source": "guovin result",
+      "url": "http://204.12.221.218:8181/3m1080p/lnws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
       "error": ""
     },
     {
@@ -2566,7 +3538,79 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2098,
+      "latency_ms": 187,
+      "error": ""
+    },
+    {
+      "channel": "内蒙古卫视",
+      "source": "guovin result",
+      "url": "https://live.264788.xyz/channel/neimengguweishi?streamid=81a015dbecf3031d7d847b7a9b059f67&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 133,
+      "error": ""
+    },
+    {
+      "channel": "内蒙古卫视",
+      "source": "guovin result",
+      "url": "https://live.264788.xyz/channel/neimengguweishi?streamid=3e7340acf8869ac1c7dad1bb836dcd35&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 225,
+      "error": ""
+    },
+    {
+      "channel": "内蒙古卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=nmgws",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 192,
+      "error": ""
+    },
+    {
+      "channel": "内蒙古卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/nmgws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 130,
+      "error": ""
+    },
+    {
+      "channel": "宁夏卫视",
+      "source": "guovin result",
+      "url": "https://live.264788.xyz/channel/ningxiaweishi?streamid=e1236348f815c36a0429357e5b5c5f10&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 134,
+      "error": ""
+    },
+    {
+      "channel": "宁夏卫视",
+      "source": "guovin result",
+      "url": "https://live.264788.xyz/channel/ningxiaweishi?streamid=1b2952717a920173e66d4a348f9dcb5c&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 114,
       "error": ""
     },
     {
@@ -2578,7 +3622,43 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2888,
+      "latency_ms": 137,
+      "error": ""
+    },
+    {
+      "channel": "宁夏卫视",
+      "source": "guovin result",
+      "url": "http://198.204.228.26/live/nxws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
+      "error": ""
+    },
+    {
+      "channel": "青海卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/qhws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 133,
+      "error": ""
+    },
+    {
+      "channel": "青海卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=qhws",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 202,
       "error": ""
     },
     {
@@ -2586,11 +3666,11 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000111.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 259,
+      "latency_ms": 486,
       "error": ""
     },
     {
@@ -2602,7 +3682,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 12901,
+      "latency_ms": 192,
+      "error": ""
+    },
+    {
+      "channel": "山东卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/sdwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
       "error": ""
     },
     {
@@ -2614,7 +3706,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1127,
+      "latency_ms": 141,
       "error": ""
     },
     {
@@ -2622,11 +3714,11 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000099.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 128,
+      "latency_ms": 504,
       "error": ""
     },
     {
@@ -2638,7 +3730,55 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 3101,
+      "latency_ms": 193,
+      "error": ""
+    },
+    {
+      "channel": "山西卫视",
+      "source": "guovin result",
+      "url": "https://live.264788.xyz/channel/shanxiweishi?streamid=eeb7d60ca6e0db131ea7a092a3cd28d2&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 141,
+      "error": ""
+    },
+    {
+      "channel": "山西卫视",
+      "source": "guovin result",
+      "url": "https://live.264788.xyz/channel/shanxiweishi?streamid=69e002ac7467d661ff7ad0671ed43f16&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 151,
+      "error": ""
+    },
+    {
+      "channel": "山西卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=sxwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 201,
+      "error": ""
+    },
+    {
+      "channel": "山西卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/sxwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 135,
       "error": ""
     },
     {
@@ -2650,7 +3790,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1852,
+      "latency_ms": 127,
+      "error": ""
+    },
+    {
+      "channel": "陕西卫视",
+      "source": "guovin result",
+      "url": "http://192.151.150.154/live/snwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 128,
       "error": ""
     },
     {
@@ -2662,7 +3814,43 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 10036,
+      "latency_ms": 1102,
+      "error": ""
+    },
+    {
+      "channel": "陕西卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=snwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 192,
+      "error": ""
+    },
+    {
+      "channel": "四川卫视",
+      "source": "guovin result",
+      "url": "https://live.264788.xyz/channel/sichuanweishi4k?streamid=21be5901ee81559c827dc84e46f26452&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 118,
+      "error": ""
+    },
+    {
+      "channel": "四川卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=scwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 191,
       "error": ""
     },
     {
@@ -2674,7 +3862,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 4182,
+      "latency_ms": 194,
       "error": ""
     },
     {
@@ -2686,7 +3874,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 3726,
+      "latency_ms": 138,
       "error": ""
     },
     {
@@ -2698,7 +3886,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 2941,
+      "latency_ms": 128,
+      "error": ""
+    },
+    {
+      "channel": "深圳卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=szwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 201,
       "error": ""
     },
     {
@@ -2710,7 +3910,7 @@
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 149,
+      "latency_ms": 486,
       "error": ""
     },
     {
@@ -2722,20 +3922,56 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11968,
+      "latency_ms": 182,
+      "error": ""
+    },
+    {
+      "channel": "三沙卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/ssws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
+      "error": ""
+    },
+    {
+      "channel": "三沙卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=ssws",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 203,
       "error": ""
     },
     {
       "channel": "三沙卫视",
       "source": "guovin result",
       "url": "http://198.204.228.26/live/ssws.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 16991,
-      "error": "timed out"
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 130,
+      "error": ""
+    },
+    {
+      "channel": "三沙卫视",
+      "source": "guovin result",
+      "url": "http://38.75.136.137:98/gslb/dsdqpub/ssws.m3u8?auth=testpub",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 184,
+      "error": ""
     },
     {
       "channel": "天津卫视",
@@ -2746,7 +3982,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1598,
+      "latency_ms": 196,
+      "error": ""
+    },
+    {
+      "channel": "天津卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/tjwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 1140,
       "error": ""
     },
     {
@@ -2758,7 +4006,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11226,
+      "latency_ms": 185,
+      "error": ""
+    },
+    {
+      "channel": "西藏卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/xzws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 134,
+      "error": ""
+    },
+    {
+      "channel": "西藏卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=xzws",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 204,
       "error": ""
     },
     {
@@ -2770,7 +4042,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl; charset=utf-8",
-      "latency_ms": 79,
+      "latency_ms": 415,
       "error": ""
     },
     {
@@ -2778,11 +4050,59 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000121.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 147,
+      "latency_ms": 500,
+      "error": ""
+    },
+    {
+      "channel": "新疆卫视",
+      "source": "guovin result",
+      "url": "https://live.264788.xyz/channel/xinjiangweishi?streamid=4f481f56ae39ce5d24203471de9df635&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk",
+      "alive": true,
+      "playable": true,
+      "kind": "ts",
+      "status_code": 200,
+      "content_type": "video/mp4",
+      "latency_ms": 140,
+      "error": ""
+    },
+    {
+      "channel": "新疆卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=xjws",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 193,
+      "error": ""
+    },
+    {
+      "channel": "新疆卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/xjws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 129,
+      "error": ""
+    },
+    {
+      "channel": "新疆卫视",
+      "source": "guovin result",
+      "url": "http://198.204.228.26/live/xjws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 129,
       "error": ""
     },
     {
@@ -2794,7 +4114,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 10189,
+      "latency_ms": 184,
+      "error": ""
+    },
+    {
+      "channel": "云南卫视",
+      "source": "guovin result",
+      "url": "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=ynwshd",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 192,
+      "error": ""
+    },
+    {
+      "channel": "云南卫视",
+      "source": "guovin result",
+      "url": "http://192.151.150.154/live/ynwshd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
       "error": ""
     },
     {
@@ -2806,7 +4150,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 12356,
+      "latency_ms": 134,
       "error": ""
     },
     {
@@ -2814,24 +4158,12 @@
       "source": "guovin result",
       "url": "http://120.76.248.139/live/bfgd/4200000482.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 155,
+      "latency_ms": 491,
       "error": ""
-    },
-    {
-      "channel": "深圳卫视",
-      "source": "guovin result",
-      "url": "https://smart.pendy.dpdns.org/Smart.php?id=shenzhen",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 571,
-      "error": "<urlopen error Tunnel connection failed: 502 Bad Gateway>"
     },
     {
       "channel": "卡酷少儿",
@@ -2858,30 +4190,6 @@
       "error": ""
     },
     {
-      "channel": "卡酷少儿",
-      "source": "guovin result",
-      "url": "https://migu.188766.xyz/?migutoken=1023983db6b5249e61d4950c1654cd84&id=%E5%8C%97%E4%BA%AC%E5%8D%A1%E9%85%B7%E5%B0%91%E5%84%BF&type=yy",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 581,
-      "error": "<urlopen error Tunnel connection failed: 502 Bad Gateway>"
-    },
-    {
-      "channel": "卡酷少儿",
-      "source": "guovin result",
-      "url": "https://migu.188766.xyz/?migutoken=2c51384549aec8a85219fdc0c475e40b&id=%E5%8C%97%E4%BA%AC%E5%8D%A1%E9%85%B7%E5%B0%91%E5%84%BF&type=yy",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 570,
-      "error": "<urlopen error Tunnel connection failed: 502 Bad Gateway>"
-    },
-    {
       "channel": "动漫秀场",
       "source": "guovin result",
       "url": "http://php.jdshipin.com/itv6.php?cid=bestzb&id=5000000011000031113",
@@ -2890,20 +4198,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 1036,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "哈哈炫动",
-      "source": "guovin result",
-      "url": "http://php.jdshipin.com/TVOD/hnyd.php?id=200000001898/460000089800010117",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 2016,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 1590,
+      "error": "HTTP Error 403: Forbidden"
     },
     {
       "channel": "哈哈炫动",
@@ -2938,7 +4234,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 12420,
+      "latency_ms": 136,
+      "error": ""
+    },
+    {
+      "channel": "厦门卫视",
+      "source": "guovin result",
+      "url": "http://107.150.60.122/live/xmws.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 136,
       "error": ""
     },
     {
@@ -2950,7 +4258,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 10523,
+      "latency_ms": 1127,
       "error": ""
     },
     {
@@ -2962,7 +4270,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11686,
+      "latency_ms": 191,
       "error": ""
     },
     {
@@ -2986,7 +4294,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 329,
+      "latency_ms": 2895,
       "error": ""
     },
     {
@@ -2998,7 +4306,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 335,
+      "latency_ms": 2882,
       "error": ""
     },
     {
@@ -3010,7 +4318,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 391,
+      "latency_ms": 1488,
       "error": ""
     },
     {
@@ -3038,16 +4346,16 @@
       "error": ""
     },
     {
-      "channel": "金鹰卡通",
+      "channel": "优漫卡通",
       "source": "guovin result",
-      "url": "https://stream1.freetv.fun/jin-ying-qia-tong-19.m3u8",
+      "url": "https://www.freetv.top/migu/626064703.m3u8?migutoken=deac6c5275081b54ad412a195e499b7c0cb8f04446b6c80aaa9d3eb1063d620261c68202d59aea05060007b58a62d5d208f16379d861d6f1627c10c9dd894f0bf7e3ca97b04696255e193e871c",
       "alive": false,
       "playable": null,
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16416,
-      "error": "<urlopen error timed out>"
+      "latency_ms": 497,
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1018)>"
     },
     {
       "channel": "CCTV15",
@@ -3066,11 +4374,11 @@
       "source": "wwb521 live",
       "url": "http://222.169.85.8:9901/tsfile/live/0003_1.m3u8?key=txiptv&playlive=1&authid=0",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl; charset=utf-8",
-      "latency_ms": 2795,
+      "latency_ms": 7559,
       "error": ""
     },
     {
@@ -3082,7 +4390,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 102,
+      "latency_ms": 507,
       "error": ""
     },
     {
@@ -3094,7 +4402,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 97,
+      "latency_ms": 522,
       "error": ""
     },
     {
@@ -3106,7 +4414,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 294,
+      "latency_ms": 1935,
       "error": ""
     },
     {
@@ -3118,7 +4426,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 408,
+      "latency_ms": 771,
       "error": ""
     },
     {
@@ -3126,11 +4434,11 @@
       "source": "wwb521 live",
       "url": "http://120.76.248.139/live/bfgd/4200000133.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 275,
+      "latency_ms": 492,
       "error": ""
     },
     {
@@ -3138,11 +4446,11 @@
       "source": "wwb521 live",
       "url": "http://120.76.248.139/live/bfgd/4200000204.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
-      "latency_ms": 261,
+      "latency_ms": 492,
       "error": ""
     },
     {
@@ -3154,43 +4462,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/x-mpegurl",
-      "latency_ms": 258,
+      "latency_ms": 1450,
       "error": ""
-    },
-    {
-      "channel": "山西卫视",
-      "source": "wwb521 live",
-      "url": "http://m3u8.channel.wsrtv.com.cn/cms/videos/nmip-media/channellive/channel7/playlist.m3u8",
-      "alive": true,
-      "playable": true,
-      "kind": "hls",
-      "status_code": 206,
-      "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 221,
-      "error": ""
-    },
-    {
-      "channel": "陕西卫视",
-      "source": "wwb521 live",
-      "url": "http://hlsbkmgsplive.miguvideo.com/migu/kailu/shan3xiws/57/20220809/index.m3u8?msisdn=&mtv_session=&HlsSubType=1&HlsProfileId=1&nphaid=0&encrypt=",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 605,
-      "error": "HTTP Error 403: Forbidden"
     },
     {
       "channel": "延边卫视",
       "source": "wwb521 live",
       "url": "http://l.cztvcloud.com/channels/lantian/SXxinchang2/720p.m3u8",
       "alive": true,
-      "playable": true,
+      "playable": false,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/x-mpegurl",
-      "latency_ms": 138,
+      "latency_ms": 2241,
       "error": ""
     },
     {
@@ -3200,9 +4484,9 @@
       "alive": true,
       "playable": true,
       "kind": "hls",
-      "status_code": 206,
+      "status_code": 200,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 207,
+      "latency_ms": 3150,
       "error": ""
     },
     {
@@ -3214,7 +4498,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/x-mpegurl",
-      "latency_ms": 174,
+      "latency_ms": 636,
       "error": ""
     },
     {
@@ -3222,11 +4506,11 @@
       "source": "et6jt3 ipv4",
       "url": "http://gmxw.7766.org:808/hls/169/index.m3u8",
       "alive": true,
-      "playable": true,
+      "playable": false,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 360,
+      "latency_ms": 5889,
       "error": ""
     },
     {
@@ -3238,8 +4522,20 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl; charset=utf-8",
-      "latency_ms": 143,
+      "latency_ms": 518,
       "error": ""
+    },
+    {
+      "channel": "金鹰卡通",
+      "source": "et6jt3 ipv4",
+      "url": "http://101.66.194.125:9901/tsfile/live/1000_1.m3u8?key=txiptv&playlive=0&authid=0",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 16416,
+      "error": "<urlopen error timed out>"
     },
     {
       "channel": "CCTV1",
@@ -3250,7 +4546,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 4268,
+      "latency_ms": 137,
+      "error": ""
+    },
+    {
+      "channel": "CCTV6",
+      "source": "yonsm iptv",
+      "url": "http://107.150.60.122/live/cctv6hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 128,
       "error": ""
     },
     {
@@ -3262,7 +4570,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 3454,
+      "latency_ms": 127,
       "error": ""
     },
     {
@@ -3274,7 +4582,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1116,
+      "latency_ms": 128,
       "error": ""
     },
     {
@@ -3286,7 +4594,19 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 13915,
+      "latency_ms": 128,
+      "error": ""
+    },
+    {
+      "channel": "CCTV13",
+      "source": "yonsm iptv",
+      "url": "http://107.150.60.122/live/cctv13hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 127,
       "error": ""
     },
     {
@@ -3298,7 +4618,43 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1765,
+      "latency_ms": 128,
+      "error": ""
+    },
+    {
+      "channel": "CCTV15",
+      "source": "yonsm iptv",
+      "url": "http://107.150.60.122/live/cctv15hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 130,
+      "error": ""
+    },
+    {
+      "channel": "CCTV16",
+      "source": "yonsm iptv",
+      "url": "http://107.150.60.122/live/cctv16hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 128,
+      "error": ""
+    },
+    {
+      "channel": "CCTV17",
+      "source": "yonsm iptv",
+      "url": "http://107.150.60.122/live/cctv17hd.m3u8",
+      "alive": true,
+      "playable": false,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 128,
       "error": ""
     },
     {
@@ -3310,7 +4666,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1117,
+      "latency_ms": 137,
       "error": ""
     },
     {
@@ -3322,7 +4678,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 17424,
+      "latency_ms": 130,
       "error": ""
     },
     {
@@ -3334,7 +4690,31 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 11440,
+      "latency_ms": 128,
+      "error": ""
+    },
+    {
+      "channel": "海南卫视",
+      "source": "yonsm iptv",
+      "url": "http://107.150.60.122/live/hainwshd.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "other",
+      "status_code": 200,
+      "content_type": "text/html; charset=utf-8",
+      "latency_ms": 66,
+      "error": ""
+    },
+    {
+      "channel": "卡酷少儿",
+      "source": "yonsm iptv",
+      "url": "http://107.150.60.122/live/kksrhd.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "other",
+      "status_code": 200,
+      "content_type": "text/html; charset=utf-8",
+      "latency_ms": 73,
       "error": ""
     },
     {
@@ -3346,32 +4726,8 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1107,
+      "latency_ms": 144,
       "error": ""
-    },
-    {
-      "channel": "CETV1",
-      "source": "ibert cn",
-      "url": "https://stream1.freetv.fun/f3ae1dadd66863a3d8d2d948a4ab7ee00b38a1bc8bcfac8b6b51cd210d5fcf2e.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 16416,
-      "error": "<urlopen error timed out>"
-    },
-    {
-      "channel": "三沙卫视",
-      "source": "ibert cn",
-      "url": "https://stream1.freetv.fun/bcfab00c817cae7e7a274dd8e9127c5fefebd554ff87673fdb8df8153834ac05.ctv",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 16420,
-      "error": "<urlopen error timed out>"
     },
     {
       "channel": "嘉佳卡通",
@@ -3382,7 +4738,19 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16417,
+      "latency_ms": 16452,
+      "error": "The read operation timed out"
+    },
+    {
+      "channel": "CETV1",
+      "source": "ibert o_s_cn",
+      "url": "http://117.161.133.51:81/gitv_live/G_CETV-1/G_CETV-1.m3u8?p=GITV",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 16418,
       "error": "<urlopen error timed out>"
     },
     {
@@ -3394,8 +4762,20 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16420,
-      "error": "timed out"
+      "latency_ms": 16414,
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "channel": "浙江卫视",
+      "source": "ibert o_s_cn",
+      "url": "https://ali-m-l.cztv.com/channels/lantian/channel10/1080p.m3u8",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/x-mpegurl",
+      "latency_ms": 673,
+      "error": ""
     },
     {
       "channel": "嘉佳卡通",
@@ -3406,8 +4786,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16416,
-      "error": "timed out"
+      "latency_ms": 16417,
+      "error": "<urlopen error timed out>"
     },
     {
       "channel": "炫动卡通",
@@ -3418,19 +4798,31 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16420,
-      "error": "timed out"
+      "latency_ms": 16411,
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "channel": "金鹰卡通",
+      "source": "ibert o_s_cn",
+      "url": "http://223.110.245.145/ott.js.chinamobile.com/PLTV/3/224/3221226303/index.m3u8",
+      "alive": false,
+      "playable": null,
+      "kind": "error",
+      "status_code": null,
+      "content_type": "",
+      "latency_ms": 16411,
+      "error": "<urlopen error timed out>"
     },
     {
       "channel": "安多卫视",
       "source": "ibert o_all",
       "url": "https://stmvideo6.livecastv.com/radioactivasanjuan/radioactivasanjuan/playlist.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 200,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 4203,
+      "latency_ms": 788,
       "error": ""
     },
     {
@@ -3442,8 +4834,20 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 11527,
+      "latency_ms": 11342,
       "error": "HTTP Error 401: Unauthorized"
+    },
+    {
+      "channel": "ViuTV",
+      "source": "hkmotw",
+      "url": "http://php.jdshipin.com/TVOD/iptv.php?id=viutv",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 299,
+      "error": ""
     },
     {
       "channel": "莲花卫视",
@@ -3454,7 +4858,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1603,
+      "latency_ms": 1529,
       "error": ""
     },
     {
@@ -3466,7 +4870,7 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16417,
+      "latency_ms": 49553,
       "error": "<urlopen error timed out>"
     },
     {
@@ -3478,7 +4882,7 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16427,
+      "latency_ms": 49552,
       "error": "<urlopen error timed out>"
     },
     {
@@ -3490,8 +4894,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16417,
-      "error": "timed out"
+      "latency_ms": 16415,
+      "error": "<urlopen error timed out>"
     },
     {
       "channel": "澳视体育",
@@ -3502,7 +4906,7 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16422,
+      "latency_ms": 49553,
       "error": "<urlopen error timed out>"
     },
     {
@@ -3514,7 +4918,7 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 1038,
+      "latency_ms": 987,
       "error": "HTTP Error 403: Forbidden"
     },
     {
@@ -3526,8 +4930,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 1296,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 851,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "东森财经新闻",
@@ -3538,8 +4942,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 537,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 615,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "东森洋片台",
@@ -3550,8 +4954,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16423,
-      "error": "timed out"
+      "latency_ms": 16416,
+      "error": "<urlopen error timed out>"
     },
     {
       "channel": "东森新闻",
@@ -3562,8 +4966,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 536,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 615,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "民视",
@@ -3574,8 +4978,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 554,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 614,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "民视第一台",
@@ -3586,32 +4990,32 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 536,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 614,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "好消息电视台",
       "source": "hkmotw",
       "url": "https://live.streamingfast.net/osmflivech1.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 16421,
-      "error": "<urlopen error timed out>"
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 611,
+      "error": ""
     },
     {
       "channel": "客家电视台",
       "source": "hkmotw",
       "url": "https://h5cul1yar48um3t.wcetv.com/hls/hakkatv.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 16417,
-      "error": "<urlopen error timed out>"
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 251,
+      "error": ""
     },
     {
       "channel": "原住民族电视台",
@@ -3622,8 +5026,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 9006,
-      "error": "timed out"
+      "latency_ms": 525,
+      "error": "HTTP Error 403: Forbidden"
     },
     {
       "channel": "公视三台",
@@ -3634,8 +5038,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16416,
-      "error": "timed out"
+      "latency_ms": 16420,
+      "error": "<urlopen error timed out>"
     },
     {
       "channel": "台视",
@@ -3646,8 +5050,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16415,
-      "error": "timed out"
+      "latency_ms": 16418,
+      "error": "<urlopen error timed out>"
     },
     {
       "channel": "台视新闻",
@@ -3658,7 +5062,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1040,
+      "latency_ms": 357,
       "error": ""
     },
     {
@@ -3670,7 +5074,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 628,
+      "latency_ms": 123,
       "error": ""
     },
     {
@@ -3682,32 +5086,56 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 2860,
-      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'live.tvfix.org'. (_ssl.c:1010)>"
+      "latency_ms": 1526,
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'live.tvfix.org'. (_ssl.c:1018)>"
     },
     {
       "channel": "凤凰卫视中文台",
       "source": "hkmotw",
-      "url": "http://101.35.240.114:88/phenix.php?id=fhzw",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 659,
-      "error": "HTTP Error 404: Not Found"
+      "url": "http://r.jdshipin.com/cCCzW",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 970,
+      "error": ""
     },
     {
       "channel": "凤凰卫视资讯台",
       "source": "hkmotw",
-      "url": "http://101.35.240.114:88/phenix.php?id=fhzx",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 553,
-      "error": "HTTP Error 404: Not Found"
+      "url": "http://r.jdshipin.com/0Rp07",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 262,
+      "error": ""
+    },
+    {
+      "channel": "澳视澳门",
+      "source": "hkmotw",
+      "url": "http://r.jdshipin.com/n2YZI",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 343,
+      "error": ""
+    },
+    {
+      "channel": "翡翠台",
+      "source": "hkmotw",
+      "url": "http://r.jdshipin.com/qrfbg",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 247,
+      "error": ""
     },
     {
       "channel": "翡翠台",
@@ -3718,43 +5146,31 @@
       "kind": "hls",
       "status_code": 200,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 7591,
+      "latency_ms": 224,
       "error": ""
-    },
-    {
-      "channel": "凤凰卫视资讯台",
-      "source": "hkmotw",
-      "url": "http://api.kkitv.itv888.vip:8080/streams/wzt3qbit80m/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 546,
-      "error": "HTTP Error 503: Service Unavailable"
     },
     {
       "channel": "ViuTV",
       "source": "hkmotw",
-      "url": "http://api.kkitv.itv888.vip:8080/streams/i76tznm59xp/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 596,
-      "error": "HTTP Error 503: Service Unavailable"
+      "url": "http://r.jdshipin.com/vSJvl",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 248,
+      "error": ""
     },
     {
-      "channel": "美亚电影台",
+      "channel": "ViuTV",
       "source": "hkmotw",
-      "url": "http://iptv.4666888.xyz/iptv2A.php?id=30",
-      "alive": false,
-      "playable": null,
-      "kind": "other",
+      "url": "http://r.jdshipin.com/TcKr2",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
       "status_code": 200,
-      "content_type": "text/html",
-      "latency_ms": 742,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 246,
       "error": ""
     },
     {
@@ -3766,7 +5182,7 @@
       "kind": "other",
       "status_code": 200,
       "content_type": "",
-      "latency_ms": 1568,
+      "latency_ms": 515,
       "error": ""
     },
     {
@@ -3778,7 +5194,7 @@
       "kind": "other",
       "status_code": 200,
       "content_type": "",
-      "latency_ms": 429,
+      "latency_ms": 503,
       "error": ""
     },
     {
@@ -3790,8 +5206,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 612,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 899,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "凤凰卫视资讯台",
@@ -3802,32 +5218,32 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 603,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 907,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "澳视澳门",
       "source": "hkmotw",
       "url": "http://php.jdshipin.com:8880/TVOD/iptv.php?id=as",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 1056,
-      "error": "HTTP Error 503: Service Unavailable"
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 239,
+      "error": ""
     },
     {
       "channel": "澳视澳门",
       "source": "hkmotw",
       "url": "http://php.jdshipin.com:8880/TVOD/iptv.php?id=asam",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 1148,
-      "error": "HTTP Error 503: Service Unavailable"
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 251,
+      "error": ""
     },
     {
       "channel": "莲花卫视",
@@ -3838,7 +5254,7 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 637,
+      "latency_ms": 849,
       "error": "HTTP Error 403: Forbidden"
     },
     {
@@ -3846,11 +5262,11 @@
       "source": "hkmotw",
       "url": "http://38.64.72.148/hls/modn/list/4013/chunklist1.m3u8",
       "alive": true,
-      "playable": false,
+      "playable": true,
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1462,
+      "latency_ms": 122,
       "error": ""
     },
     {
@@ -3862,8 +5278,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 601,
-      "error": "<urlopen error Tunnel connection failed: 502 Bad Gateway>"
+      "latency_ms": 857,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "华视",
@@ -3874,8 +5290,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 537,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 759,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "东森新闻",
@@ -3886,7 +5302,7 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16420,
+      "latency_ms": 17167,
       "error": "<urlopen error timed out>"
     },
     {
@@ -3898,8 +5314,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 2337,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 646,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "东森洋片台",
@@ -3910,8 +5326,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 8514,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 644,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "美亚电影台",
@@ -3922,20 +5338,20 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 640,
+      "latency_ms": 2333,
       "error": "HTTP Error 403: Forbidden"
     },
     {
       "channel": "民视",
       "source": "hkmotw",
-      "url": "https://smart.pendy.dpdns.org/Smart.php?id=ftvtaiwan_twn",
+      "url": "http://live4play.uk/livehttpplay?channel_id=20097",
       "alive": false,
       "playable": null,
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 501,
-      "error": "<urlopen error Tunnel connection failed: 502 Bad Gateway>"
+      "latency_ms": 640,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "民视第一台",
@@ -3946,8 +5362,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 575,
-      "error": "<urlopen error Tunnel connection failed: 502 Bad Gateway>"
+      "latency_ms": 743,
+      "error": "<urlopen error [Errno -5] No address associated with hostname>"
     },
     {
       "channel": "中天综合台",
@@ -3958,20 +5374,32 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 1881,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 812,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
+    },
+    {
+      "channel": "美亚电影台",
+      "source": "hkmotw",
+      "url": "http://ottproxy2.ist.ooo/livehls/MOB-U1-NO/03.m3u8",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 632,
+      "error": ""
     },
     {
       "channel": "TVBS-Asia",
       "source": "hkmotw",
       "url": "http://61.221.215.25:8800/hls/9/index.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 523,
-      "error": "HTTP Error 503: Service Unavailable"
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 206,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 387,
+      "error": ""
     },
     {
       "channel": "TVBS-Asia",
@@ -3982,32 +5410,56 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 541,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 683,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
+    },
+    {
+      "channel": "凤凰卫视资讯台",
+      "source": "hkmotw",
+      "url": "http://php.jdshipin.com/TVOD/iptv.php?id=fhzx",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 158,
+      "error": ""
+    },
+    {
+      "channel": "翡翠台",
+      "source": "hkmotw",
+      "url": "http://cdn6.163189.xyz/163189/fct4k",
+      "alive": false,
+      "playable": null,
+      "kind": "other",
+      "status_code": 200,
+      "content_type": "text/html",
+      "latency_ms": 110,
+      "error": ""
+    },
+    {
+      "channel": "翡翠台",
+      "source": "hkmotw",
+      "url": "http://php.jdshipin.com:8880/TVOD/iptv.php?id=j1",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 138,
+      "error": ""
     },
     {
       "channel": "ViuTV",
       "source": "hkmotw",
       "url": "http://php.jdshipin.com/TVOD/iptv.php?id=viutv2",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 2109,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "美亚电影台",
-      "source": "hkmotw",
-      "url": "http://php.jdshipin.com:8880/smt.php?id=meiyamovie_twn",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 2281,
-      "error": "HTTP Error 503: Service Unavailable"
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 152,
+      "error": ""
     },
     {
       "channel": "天映频道",
@@ -4018,8 +5470,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 1246,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 16647,
+      "error": "The read operation timed out"
     },
     {
       "channel": "天映频道",
@@ -4030,8 +5482,20 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 2083,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 16690,
+      "error": "The read operation timed out"
+    },
+    {
+      "channel": "翡翠台",
+      "source": "hkmotw",
+      "url": "http://php.jdshipin.com/TVOD/iptv.php?id=huali2",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 156,
+      "error": ""
     },
     {
       "channel": "澳视澳门",
@@ -4042,20 +5506,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 3020,
-      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1010)>"
-    },
-    {
-      "channel": "凤凰卫视中文台",
-      "source": "hkmotw",
-      "url": "http://wouu.net:9977/rtp/239.93.0.162:2192?Cf=cfss.cc",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 589,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 423,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1018)>"
     },
     {
       "channel": "莲花卫视",
@@ -4063,11 +5515,23 @@
       "url": "http://php.jdshipin.com:8880/amlh.php",
       "alive": false,
       "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 1086,
-      "error": "HTTP Error 503: Service Unavailable"
+      "kind": "other",
+      "status_code": 200,
+      "content_type": "application/x-mpegurl",
+      "latency_ms": 106,
+      "error": ""
+    },
+    {
+      "channel": "翡翠台",
+      "source": "hkmotw",
+      "url": "http://php.jdshipin.com:8880/TVOD/iptv.php?id=fct",
+      "alive": true,
+      "playable": true,
+      "kind": "hls",
+      "status_code": 200,
+      "content_type": "application/vnd.apple.mpegurl",
+      "latency_ms": 168,
+      "error": ""
     },
     {
       "channel": "台视新闻",
@@ -4078,8 +5542,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 553,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 910,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "中天综合台",
@@ -4090,8 +5554,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 525,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 908,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "华视",
@@ -4102,8 +5566,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 1593,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 908,
+      "error": "<urlopen error [Errno 111] Connection refused>"
     },
     {
       "channel": "东森新闻",
@@ -4114,8 +5578,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 16418,
-      "error": "<urlopen error timed out>"
+      "latency_ms": 16442,
+      "error": "The read operation timed out"
     },
     {
       "channel": "东森财经新闻",
@@ -4126,8 +5590,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 534,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 597,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "民视",
@@ -4138,7 +5602,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 1088,
+      "latency_ms": 122,
       "error": ""
     },
     {
@@ -4150,8 +5614,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 526,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 936,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "中天综合台",
@@ -4162,32 +5626,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 546,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "翡翠台",
-      "source": "hkmotw",
-      "url": "http://aktv-stream.m16tv.cfd/stream/aktv/null-18/AKTV.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 524,
-      "error": "HTTP Error 503: Service Unavailable"
-    },
-    {
-      "channel": "翡翠台",
-      "source": "hkmotw",
-      "url": "http://aktv-stream.m16tv.cfd/stream/aktv/null/AKTV.m3u8",
-      "alive": false,
-      "playable": null,
-      "kind": "error",
-      "status_code": null,
-      "content_type": "",
-      "latency_ms": 530,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 584,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "ViuTV",
@@ -4198,8 +5638,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 531,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 452,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "ViuTV",
@@ -4210,8 +5650,8 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 537,
-      "error": "HTTP Error 503: Service Unavailable"
+      "latency_ms": 451,
+      "error": "<urlopen error [Errno -2] Name or service not known>"
     },
     {
       "channel": "台视",
@@ -4222,7 +5662,7 @@
       "kind": "hls",
       "status_code": 206,
       "content_type": "application/vnd.apple.mpegurl",
-      "latency_ms": 4079,
+      "latency_ms": 122,
       "error": ""
     },
     {
@@ -4234,15 +5674,15 @@
       "kind": "error",
       "status_code": null,
       "content_type": "",
-      "latency_ms": 855,
+      "latency_ms": 1001,
       "error": "HTTP Error 403: Forbidden"
     }
   ],
   "summary": {
-    "total": 353,
-    "alive": 149,
+    "total": 473,
+    "alive": 285,
     "unknown": 63,
-    "dead": 141,
-    "playable": 47
+    "dead": 125,
+    "playable": 100
   }
 }
