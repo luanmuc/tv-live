@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,11 +43,14 @@ import androidx.tv.material3.ListItemDefaults
 import androidx.tv.material3.LocalContentColor
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.doubao.tv.core.data.entities.channel.ChannelGroupList.Companion.channelList
 import com.doubao.tv.core.data.entities.iptvsource.IptvSource
 import com.doubao.tv.core.data.entities.iptvsource.IptvSourceList
 import com.doubao.tv.core.data.repositories.iptv.IptvRepository
+import com.doubao.tv.core.data.utils.BuiltinSources
 import com.doubao.tv.core.data.utils.Constants
 import com.doubao.tv.ui.material.CircularProgressIndicator
 import com.doubao.tv.ui.material.Drawer
@@ -78,10 +82,16 @@ fun SettingsIptvSourceScreen(
     val iptvSourceList = IptvSourceList(Constants.IPTV_SOURCE_LIST + iptvSourceListProvider())
 
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     val iptvSourceDetails = remember { mutableStateMapOf<Int, IptvSourceDetail>() }
 
     suspend fun refreshAll() {
         if (iptvSourceDetails.values.any { it == IptvSourceDetail.Loading }) return
+
+        // 手动刷新：先在线拉一次最新内置源（忽略 6 小时节流）
+        withContext(Dispatchers.IO) {
+            runCatching { BuiltinSources.updateFromNetwork(context, force = true) }
+        }
 
         iptvSourceDetails.clear()
         iptvSourceList.forEach { source ->

@@ -22,6 +22,10 @@ class MyTVApplication : Application(), ImageLoaderFactory {
         crashHandle()
         AppData.init(applicationContext)
         BuiltinSources.install(this)
+        // 后台拉一次最新内置源；失败静默，继续用 APK 里的离线副本
+        Thread({
+            runCatching { BuiltinSources.updateFromNetwork(this) }
+        }, "builtin-source-update").start()
         UnsafeTrustManager.enableUnsafeTrustManager()
     }
 

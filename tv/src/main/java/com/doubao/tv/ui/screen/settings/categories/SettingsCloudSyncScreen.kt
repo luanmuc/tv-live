@@ -267,7 +267,7 @@ private fun SettingsCloudSyncScreenPreview() {
                 version = "9.9.9",
                 syncFrom = "客厅的电视",
                 syncAt = System.currentTimeMillis(),
-                description = "豆包定制云同步测试",
+                description = "电视台云同步测试",
             ),
         )
     }

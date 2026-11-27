@@ -280,8 +280,18 @@ object Configs {
     /** ==================== 直播源 ==================== */
     /** 当前直播源 */
     var iptvSourceCurrent: IptvSource
-        get() = Globals.json.decodeFromString(SP.getString(KEY.IPTV_SOURCE_CURRENT.name, "")
-            .ifBlank { Globals.json.encodeToString(Constants.IPTV_SOURCE_LIST.first()) })
+        get() {
+            val source = Globals.json.decodeFromString<IptvSource>(
+                SP.getString(KEY.IPTV_SOURCE_CURRENT.name, "")
+                    .ifBlank { Globals.json.encodeToString(Constants.IPTV_SOURCE_LIST.first()) }
+            )
+            // 1.4.3 及以前有独立的「在线·自动更新」源，现已并入内置源
+            return if (source.url.startsWith(Constants.SOURCES_BASE_URL)) {
+                Constants.IPTV_SOURCE_LIST.first()
+            } else {
+                source
+            }
+        }
         set(value) = SP.putString(KEY.IPTV_SOURCE_CURRENT.name, Globals.json.encodeToString(value))
 
     /** 直播源列表 */

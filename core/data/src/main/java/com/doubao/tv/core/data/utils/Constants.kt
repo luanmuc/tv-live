@@ -12,7 +12,7 @@ object Constants {
     /**
      * 应用 标题
      */
-    const val APP_TITLE = "豆包电视台"
+    const val APP_TITLE = "电视台"
 
     /**
      * 应用 代码仓库（本仓库：软件 + 源一起维护）
@@ -27,25 +27,21 @@ object Constants {
     /**
      * 直播源
      *
-     * 前三组是随 APK 内置的源（首次启动由 BuiltinSources 释放到私有目录，离线可用），
-     * 最后一组指向本仓库 dist 目录，用于「不重装也能更新源」。
+     * 内置源由 BuiltinSources 释放到私有目录，离线可用；
+     * 联网时会自动从本仓库 dist 目录拉取最新版本覆盖（失败则继续用旧文件）。
      */
     val IPTV_SOURCE_LIST: IptvSourceList by lazy {
         IptvSourceList(
             listOf(
                 IptvSource(
-                    name = "内置·央视卫视（多线路）",
+                    name = "内置·央视卫视（联网自动更新）",
                     url = java.io.File(Globals.fileDir, "sources/pack-cctv-satellite.m3u").path,
                     isLocal = true,
                 ),
                 IptvSource(
-                    name = "内置·港澳台及国际",
+                    name = "内置·港澳台及国际（联网自动更新）",
                     url = java.io.File(Globals.fileDir, "sources/intl-hkmo-tw.m3u").path,
                     isLocal = true,
-                ),
-                IptvSource(
-                    name = "在线·自动更新（源仓库）",
-                    url = SOURCES_BASE_URL + "pack-cctv-satellite.m3u",
                 ),
             )
         )
