@@ -253,7 +253,7 @@ object Configs {
 
     /** 起始界面 */
     var appStartupScreen: String
-        get() = SP.getString(KEY.APP_STARTUP_SCREEN.name, Screens.Dashboard.name)
+        get() = SP.getString(KEY.APP_STARTUP_SCREEN.name, Screens.Live.name)
         set(value) = SP.putString(KEY.APP_STARTUP_SCREEN.name, value)
 
     /** ==================== 调式 ==================== */

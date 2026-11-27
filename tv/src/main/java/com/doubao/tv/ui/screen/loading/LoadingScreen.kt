@@ -1,5 +1,6 @@
 package com.doubao.tv.ui.screen.loading
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
@@ -20,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,6 +30,7 @@ import androidx.tv.material3.LocalContentColor
 import androidx.tv.material3.LocalTextStyle
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
+import com.doubao.tv.R
 import com.doubao.tv.ui.material.CircularProgressIndicator
 import com.doubao.tv.ui.rememberChildPadding
 import com.doubao.tv.ui.screen.components.AppScreen
@@ -94,21 +98,32 @@ private fun LoadingState(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom,
         ) {
-            Column {
-                CompositionLocalProvider(
-                    LocalTextStyle provides MaterialTheme.typography.titleLarge
-                ) { title() }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                verticalAlignment = Alignment.Bottom,
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.brand_tv),
+                    contentDescription = null,
+                    modifier = Modifier.height(150.dp),
+                )
 
-                val message = messageProvider()
-                if (message != null) {
-                    Text(
-                        text = message,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = LocalContentColor.current.copy(0.8f),
-                        modifier = Modifier.sizeIn(maxWidth = 8.gridColumns()),
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                Column {
+                    CompositionLocalProvider(
+                        LocalTextStyle provides MaterialTheme.typography.titleLarge
+                    ) { title() }
+
+                    val message = messageProvider()
+                    if (message != null) {
+                        Text(
+                            text = message,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = LocalContentColor.current.copy(0.8f),
+                            modifier = Modifier.sizeIn(maxWidth = 8.gridColumns()),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
             }
 

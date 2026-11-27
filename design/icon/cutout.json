@@ -1,0 +1,14 @@
+{
+  "image_format": "png",
+  "image_height": 1536,
+  "image_size": 2705249,
+  "image_url": "https://aka.doubaocdn.com/s/frt2nhQPtn",
+  "image_width": 1536,
+  "request_id": "20261127195248BB0D7CF6655CFBFCB1C7",
+  "success": true,
+  "task_id": "amk-tool-remove-image-background-2251208743682",
+  "task_type": "remove-image-background",
+  "usage": {
+    "normalized_usage": 0.00138
+  }
+}

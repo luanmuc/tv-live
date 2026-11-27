@@ -58,6 +58,7 @@ import com.doubao.tv.ui.material.CircularProgressIndicator
 import com.doubao.tv.ui.rememberChildPadding
 import com.doubao.tv.ui.screen.settings.settingsVM
 import com.doubao.tv.ui.theme.MyTvTheme
+import com.doubao.tv.ui.theme.colors
 import com.doubao.tv.ui.utils.focusOnLaunched
 import com.doubao.tv.ui.utils.handleKeyEvents
 import kotlin.math.roundToInt
@@ -237,15 +238,17 @@ fun AppThemeWrapper(
     content: @Composable () -> Unit,
 ) {
     if (appThemeDef == null) {
+        // 默认不盖死背景：半透明品牌底色叠在 BrandBackground 的光晕与扫描线上
+        val colorScheme = MaterialTheme.colorScheme
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
-                            Color(0xFF141E30),
-                            Color(0xFF243B55),
-                            Color(0xFF141E30)
+                            colorScheme.background.copy(alpha = 0.92f),
+                            MaterialTheme.colors.surfaceContainerLow.copy(alpha = 0.86f),
+                            colorScheme.background.copy(alpha = 0.92f),
                         ),
                     )
                 )

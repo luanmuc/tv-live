@@ -59,7 +59,7 @@ class SettingsViewModel : ViewModel() {
             afterSetWhenCloudSyncAutoPull()
         }
 
-    private var _appStartupScreen by mutableStateOf(Screens.Dashboard.name)
+    private var _appStartupScreen by mutableStateOf(Screens.Live.name)
     var appStartupScreen: String
         get() = _appStartupScreen
         set(value) {

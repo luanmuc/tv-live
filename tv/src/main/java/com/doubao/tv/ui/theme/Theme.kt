@@ -1,13 +1,28 @@
 package com.doubao.tv.ui.theme
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.unit.dp
 import androidx.tv.material3.LocalContentColor
 import androidx.tv.material3.MaterialTheme
+import androidx.tv.material3.Shapes
 import com.doubao.tv.core.designsystem.theme.Colors
 import com.doubao.tv.core.designsystem.theme.LocalColors
 import com.doubao.tv.core.designsystem.theme.darkColors
 import com.doubao.tv.core.designsystem.theme.lightColors
+
+/**
+ * 与「复古奶油小电视」图标同源的圆角体系：
+ * 机身的圆润感映射到卡片、弹窗与焦点态，避免电视端生硬的直角。
+ */
+private val AppShapes = Shapes(
+    extraSmall = RoundedCornerShape(8.dp),
+    small = RoundedCornerShape(12.dp),
+    medium = RoundedCornerShape(18.dp),
+    large = RoundedCornerShape(26.dp),
+    extraLarge = RoundedCornerShape(34.dp),
+)
 
 @Composable
 fun MyTvTheme(
@@ -19,6 +34,7 @@ fun MyTvTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
+        shapes = AppShapes,
         typography = Typography,
     ) {
         CompositionLocalProvider(

@@ -148,13 +148,13 @@ private fun SettingsCategoryItem(
 @Composable
 private fun SettingsCategoryItemThemeBackground() {
     val colors = listOf(
-        Color(0xFFE8FBFC),
-        Color(0xFFB3EAFD),
-        Color(0xFFBED6FF),
-        Color(0xFFD7CFFE),
-        Color(0xFFE8CEF2),
-        Color(0xFFFBCFDB),
-        Color(0xFFFFECC0),
+        Color(0xFF0E4A46),
+        Color(0xFF11605C),
+        Color(0xFF14555B),
+        Color(0xFF7A3527),
+        Color(0xFF8A4229),
+        Color(0xFF6A4F14),
+        Color(0xFF0B2A2B),
     )
 
     val infiniteTransition = rememberInfiniteTransition(label = "")
