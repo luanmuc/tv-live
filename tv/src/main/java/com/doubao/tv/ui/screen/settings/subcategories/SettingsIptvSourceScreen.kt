@@ -52,6 +52,7 @@ import com.doubao.tv.core.data.entities.iptvsource.IptvSourceList
 import com.doubao.tv.core.data.repositories.iptv.IptvRepository
 import com.doubao.tv.core.data.utils.BuiltinSources
 import com.doubao.tv.core.data.utils.Constants
+import com.doubao.tv.core.data.utils.LineHealth
 import com.doubao.tv.ui.material.CircularProgressIndicator
 import com.doubao.tv.ui.material.Drawer
 import com.doubao.tv.ui.material.DrawerPosition
@@ -159,6 +160,25 @@ private fun SettingsIptvSourceContent(
         contentPadding = childPadding.copy(top = 10.dp).paddingValues,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
+        item {
+            val summary = LineHealth.summary()
+            ListItem(
+                headlineContent = { Text("本机线路检测") },
+                supportingContent = {
+                    Text(
+                        if (summary.checked == 0) {
+                            "进入直播播放后会在后台自动检测；已检测 0 条"
+                        } else {
+                            "已检测 ${summary.checked} 条：可用 ${summary.alive}，失效 ${summary.dead}" +
+                                if (summary.checking > 0) "，检测中 ${summary.checking}" else ""
+                        },
+                    )
+                },
+                selected = false,
+                onClick = {},
+            )
+        }
+
         items(iptvSourceList) { iptvSource ->
             IptvSourceItem(
                 iptvSourceProvider = { iptvSource },

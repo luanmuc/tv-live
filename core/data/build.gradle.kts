@@ -12,6 +12,12 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
 
+        buildConfigField(
+            "String",
+            "SOURCES_DOMESTIC_BASE_URL",
+            "\"${project.findProperty("sourcesDomesticBaseUrl") ?: ""}\"",
+        )
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -24,6 +30,10 @@ android {
                 "proguard-rules.pro",
             )
         }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     compileOptions {

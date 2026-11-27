@@ -80,7 +80,8 @@ jobs:
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > keystore.jks
           export KEYSTORE="$PWD/keystore.jks"
-          ./gradlew :tv:assembleOriginalRelease --no-daemon --build-cache --stacktrace
+          ./gradlew :tv:assembleOriginalRelease --no-daemon --build-cache --stacktrace \
+            -PsourcesDomesticBaseUrl="${{ vars.SOURCES_DOMESTIC_BASE_URL }}"
 
       - name: 收集产物
         run: |

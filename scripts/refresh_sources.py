@@ -19,6 +19,8 @@
 from __future__ import annotations
 
 import argparse
+import datetime
+import json
 import pathlib
 import re
 import sys
@@ -26,6 +28,7 @@ import time
 import urllib.error
 import urllib.request
 
+from build_pack import probe_all
 from hkmotw_ids import HKMOTW
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -95,7 +98,45 @@ def dedupe(blocks: list[str]) -> list[str]:
     return out
 
 
-def write(path: pathlib.Path, header: str, blocks: list[str], title: str) -> bool:
+def probe_blocks(blocks: list[str]) -> list[str]:
+    """对国际源逐条探测，存活/延迟优先，死链保留在最后。"""
+    items = [{"url": b.splitlines()[-1]} for b in blocks]
+    items = probe_all(items)
+    rank = {True: 0, None: 1, False: 2}
+    pairs = sorted(
+        zip(blocks, items),
+        key=lambda p: (rank.get(p[1].get("alive"), 2), p[1].get("cost", 99)),
+    )
+    alive = sum(1 for i in items if i.get("alive") is True)
+    print(f"  国际源探测：可用 {alive}/{len(items)}")
+    payload = {
+        "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+        "summary": {
+            "total": len(items),
+            "alive": alive,
+            "unknown": sum(1 for i in items if i.get("alive") is None),
+            "dead": sum(1 for i in items if i.get("alive") is False),
+        },
+        "lines": [
+            {
+                "url": i.get("url", ""),
+                "alive": i.get("alive"),
+                "kind": i.get("kind", ""),
+                "status_code": i.get("status_code"),
+                "latency_ms": round(1000 * float(i.get("cost", 0))),
+            }
+            for i in items
+        ],
+    }
+    (DIST / "intl-line-stats.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return [b for b, _ in pairs]
+
+
+def write(path: pathlib.Path, header: str, blocks: list[str], title: str, probe: bool = False) -> bool:
+    if probe:
+        blocks = probe_blocks(blocks)
     if len(blocks) < MIN_CHANNELS:
         print(f"  [跳过] {title}: 只有 {len(blocks)} 个频道，低于阈值 {MIN_CHANNELS}，保留旧文件")
         return False
@@ -145,7 +186,7 @@ def build_intl() -> bool:
     if failed:
         print(f"  [警告] 缺少 {', '.join(failed)}，本轮不覆盖国际源")
         return False
-    return write(DIST / "intl-hkmo-tw.m3u", header, dedupe(blocks), "港澳台及国际")
+    return write(DIST / "intl-hkmo-tw.m3u", header, dedupe(blocks), "港澳台及国际", probe=True)
 
 
 def copy_to_assets() -> None:

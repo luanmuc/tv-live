@@ -1,5 +1,6 @@
 package com.doubao.tv.core.data.utils
 
+import com.doubao.tv.core.data.BuildConfig
 import com.doubao.tv.core.data.entities.epgsource.EpgSource
 import com.doubao.tv.core.data.entities.epgsource.EpgSourceList
 import com.doubao.tv.core.data.entities.iptvsource.IptvSource
@@ -23,6 +24,18 @@ object Constants {
      * 源仓库在线地址（在线订阅用）
      */
     const val SOURCES_BASE_URL = "https://raw.githubusercontent.com/luanmuc/tv-live/main/sources/dist/"
+
+    /**
+     * 国内对象存储/CDN 地址（可选，必须以 / 结尾）。
+     * 例如阿里云 OSS：https://tv-live-sources.oss-cn-beijing.aliyuncs.com/dist/
+     * 填了就会排在所有 GitHub 镜像之前。
+     */
+    val SOURCES_DOMESTIC_BASE_URL = BuildConfig.SOURCES_DOMESTIC_BASE_URL
+
+    /**
+     * 国内可访问的 GitHub 加速前缀（代理，不是自有源）。
+     */
+    const val SOURCES_PROXY_BASE_URL = "https://gh-proxy.org/" + SOURCES_BASE_URL
 
     /**
      * 直播源

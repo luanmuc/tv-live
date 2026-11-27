@@ -15,6 +15,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -42,6 +43,16 @@ object LineHealth {
 
     private var job: Job? = null
     private var currentKey: String = ""
+    private val channelJobs = Collections.synchronizedSet(mutableSetOf<Job>())
+
+    data class Summary(val checked: Int, val alive: Int, val dead: Int, val checking: Int)
+
+    fun summary(): Summary = Summary(
+        checked = statusMap.size,
+        alive = statusMap.count { it.value },
+        dead = statusMap.count { !it.value },
+        checking = checking.size,
+    )
 
     fun status(url: String): Boolean? = statusMap[key(url)]
 
@@ -88,15 +99,21 @@ object LineHealth {
     fun probeChannel(channel: Channel, playingUrl: String?) {
         val queue = channel.lineList.filter { it.probeable() && key(it.url) != key(playingUrl ?: "") }
         if (queue.isEmpty()) return
-        scope.launch {
+        val probeJob = scope.launch {
             delay(2_000)
             runQueue(queue)
         }
+        channelJobs.add(probeJob)
+        probeJob.invokeOnCompletion { channelJobs.remove(probeJob) }
     }
 
     fun stop() {
         job?.cancel()
         job = null
+        synchronized(channelJobs) {
+            channelJobs.forEach { it.cancel() }
+            channelJobs.clear()
+        }
         currentKey = ""
     }
 

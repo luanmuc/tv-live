@@ -8,7 +8,7 @@
 | 文件 | 改动 | 原因 |
 | --- | --- | --- |
 | `settings.gradle.kts` | `:tbsx5` 改为目录存在才 include | 上游把 `../YYKM/tbsx5` 写死了，单仓独立构建会直接失败 |
-| `core/data/.../utils/Constants.kt` | `IPTV_SOURCE_LIST` 换成两组内置源 + 一组在线源 | 上游默认是「无效占位订阅源」，装完没东西看 |
+| `core/data/.../utils/Constants.kt` | `IPTV_SOURCE_LIST` 换成两组内置源（在线更新并入内置，不再单列远程源） | 上游默认是「无效占位订阅源」，装完没东西看 |
 | 同上 | `EPG_SOURCE_LIST` 改用 GitHub 直链（raw + jsDelivr 备用） | fanmingming 的 .com/.cn 域名已失效，节目单空白 |
 | `tv/.../utils/Configs.kt` | 经典选台界面默认开启；旧 EPG 域名自动迁移 | 左侧列表更好按；老用户 SP 里存的死链要就地修 |
 | 同上 | `APP_TITLE`、`APP_REPO`、`GIT_RELEASE_LATEST_URL` | 品牌与本仓库地址 |
@@ -32,7 +32,9 @@
 5. 首次启动时 `Configs.iptvSourceCurrent` 默认取列表第一项，即「内置·央视卫视（多线路）」。
 
 内置源更新后想让已安装的包也拿到，把 `BuiltinSources.SEEDED_VERSION` +1，下次启动会覆盖；
-不加则老用户继续用旧文件，也可以通过「在线·自动更新」那组拿新源。
+不加则老用户继续用旧文件，联网后由 `BuiltinSources.updateFromNetwork()` 每 6 小时拉取并原子替换。
+
+在线更新顺序：`SOURCES_DOMESTIC_BASE_URL`（构建时 `-PsourcesDomesticBaseUrl` 注入的国内 OSS/CDN）→ gh-proxy.org → gh-proxy.com → jsDelivr → GitHub raw。任何一路失败都会继续尝试下一路，全部失败保留旧文件。
 
 ## 三、自动换线逻辑
 

@@ -19,7 +19,7 @@ object BuiltinSources {
     private const val PREF_NAME = "builtin_sources"
     private const val KEY_VERSION = "seeded_version"
     private const val KEY_LAST_CHECK = "last_update_check"
-    private const val SEEDED_VERSION = 6
+    private const val SEEDED_VERSION = 7
 
     /** 在线检查间隔：6 小时 */
     private const val UPDATE_INTERVAL_MS = 6 * 60 * 60 * 1000L
@@ -31,12 +31,22 @@ object BuiltinSources {
         RemoteFile("intl-hkmo-tw.m3u", 60),
     )
 
-    /** 依次尝试：GitHub 直链 → jsDelivr → gh-proxy，任一可用即可 */
-    private val MIRRORS = listOf(
-        Constants.SOURCES_BASE_URL,
-        "https://cdn.jsdelivr.net/gh/luanmuc/tv-live@main/sources/dist/",
-        "https://gh-proxy.com/" + Constants.SOURCES_BASE_URL,
-    )
+    /**
+     * 依次尝试：
+     * 1. 自建国内 OSS/CDN（配置了才启用）
+     * 2. gh-proxy.org（国内可访问的 GitHub 加速）
+     * 3. gh-proxy.com
+     * 4. jsDelivr
+     * 5. GitHub raw
+     */
+    private val MIRRORS: List<String> = buildList {
+        val domestic = Constants.SOURCES_DOMESTIC_BASE_URL
+        if (domestic.isNotBlank()) add(domestic)
+        add(Constants.SOURCES_PROXY_BASE_URL)
+        add("https://gh-proxy.com/" + Constants.SOURCES_BASE_URL)
+        add("https://cdn.jsdelivr.net/gh/luanmuc/tv-live@main/sources/dist/")
+        add(Constants.SOURCES_BASE_URL)
+    }
 
     fun install(context: Context) {
         val targetDir = File(Globals.fileDir, ASSET_DIR)

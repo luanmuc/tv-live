@@ -18,9 +18,12 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures as futures
+import datetime
+import json
 import pathlib
 import re
 import time
+import urllib.parse
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -36,6 +39,9 @@ MAX_LINES = 12
 HK_MAX_LINES = 6
 PROBE_TIMEOUT = 8
 PROBE_WORKERS = 64
+FETCH_TIMEOUT = 30
+DEEP_PROBE_WORKERS = 32
+SOURCE_STATS: dict[str, dict] = {}
 
 CCTV_ALIAS = {
     "cctv1": "CCTV1", "cctv1综合": "CCTV1", "央视一套": "CCTV1", "cctv1综合频道": "CCTV1", "央视综合": "CCTV1",
@@ -220,29 +226,96 @@ CANDIDATES = [
     ("peterhchina v4", "https://peterhchina.github.io/iptv/IPTV-V4.m3u"),
     ("et6jt3 ipv4", "https://ET6jt3.github.io/iptv/tv/iptv4.m3u"),
     ("yonsm iptv", "https://yonsm.github.io/IPTV/iptv.m3u8"),
+    # 非 GitHub 的国内聚合站 / 自动更新站
+    ("zbds iptv4", "https://live.zbds.top/tv/iptv4.m3u"),
+    ("ibert cn", "https://m3u.ibert.me/cn.m3u"),
+    ("ibert o_s_cn", "https://m3u.ibert.me/o_s_cn.m3u"),
+    ("ibert o_all", "https://m3u.ibert.me/o_all.m3u"),
+    ("ibert fmml_itv", "https://m3u.ibert.me/fmml_itv.m3u"),
 ]
 
 
 def collect() -> list[dict]:
     pool: dict[str, dict] = {}
+    SOURCE_STATS.clear()
     for label, url in CANDIDATES:
+        st = {
+            "label": label,
+            "url": url,
+            "fetched": 0,
+            "matched": 0,
+            "new": 0,
+            "duplicate": 0,
+            "error": "",
+        }
+        SOURCE_STATS[label] = st
         try:
-            items = parse(fetch(url))
+            items = parse(fetch(url, timeout=FETCH_TIMEOUT))
         except Exception as exc:  # noqa: BLE001
+            st["error"] = str(exc)[:300]
             print(f"  [警告] {label} 拉取失败：{exc}")
             continue
+        st["fetched"] = len(items)
         kept = 0
         for it in items:
             std = standard_name(it["raw_name"]) or standard_name(it["tvg_name"])
             if not std or not it["url"] or it["url"].startswith("rtp"):
                 continue
+            st["matched"] += 1
             it["std"] = std
+            it["source"] = label
             if it["url"] in pool:
+                st["duplicate"] += 1
                 continue
             pool[it["url"]] = it
+            st["new"] += 1
             kept += 1
-        print(f"  {label}: {len(items)} 条，命中 {kept} 条")
+        print(
+            f"  {label}: {len(items)} 条，新增 {kept} 条"
+            f"（匹配 {st['matched']}，重复 {st['duplicate']}）"
+        )
     return list(pool.values())
+
+
+def finalize_source_stats(items: list[dict]) -> None:
+    """按源统计贡献、存活率和重复率，写入 sources/dist/source-stats.json。"""
+    DIST.mkdir(parents=True, exist_ok=True)
+    for label, st in SOURCE_STATS.items():
+        src = [i for i in items if i.get("source") == label]
+        alive = [i for i in src if i.get("alive") is True]
+        st["probed"] = len(src)
+        st["alive"] = len(alive)
+        st["unknown"] = sum(1 for i in src if i.get("alive") is None)
+        st["dead"] = sum(1 for i in src if i.get("alive") is False)
+        st["alive_rate"] = round(len(alive) / len(src), 4) if src else 0.0
+        st["duplicate_rate"] = (
+            round(st["duplicate"] / st["matched"], 4) if st["matched"] else 0.0
+        )
+        st["avg_latency_ms"] = (
+            round(1000 * sum(float(i.get("cost", 0)) for i in alive) / len(alive))
+            if alive else None
+        )
+        coverage = min(1.0, len(alive) / 40)
+        # 样本太少的源不能因为“1/1 全活”排到前面
+        confidence = min(1.0, len(src) / 20)
+        score = (
+            55 * st["alive_rate"] * confidence
+            + 30 * coverage
+            + 15 * (1 - st["duplicate_rate"])
+            if not st["error"] else 0.0
+        )
+        st["score"] = round(score, 1)
+        st["status"] = "ok" if st["new"] and not st["error"] else "fail"
+
+    payload = {
+        "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+        "sources": sorted(SOURCE_STATS.values(), key=lambda x: -x["score"]),
+    }
+    out = DIST / "source-stats.json"
+    out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"  源评分 -> {out.relative_to(ROOT)}")
+    for st in payload["sources"][:5]:
+        print(f"    {st['score']:5.1f}  {st['label']}  可用 {st['alive']}/{st['probed']}")
 
 
 def is_ipv6_url(url: str) -> bool:
@@ -251,20 +324,147 @@ def is_ipv6_url(url: str) -> bool:
 
 
 def probe(item: dict) -> dict:
+    """单条线路探测：HLS 看清单特征，直连 TS 看 Content-Type / 首字节 0x47。"""
     start = time.time()
     if is_ipv6_url(item["url"]):
         item["alive"] = None  # 本机无 IPv6，保留给有 IPv6 的电视盒子
+        item["kind"] = "ipv6"
         item["cost"] = 50
         return item
-    try:
-        req = urllib.request.Request(item["url"], headers={"User-Agent": UA, "Range": "bytes=0-2048"})
-        with urllib.request.urlopen(req, timeout=PROBE_TIMEOUT) as resp:
-            body = resp.read(2048)
-            item["alive"] = resp.status in (200, 206) and (b"#EXTM3U" in body or b"#EXT-X-" in body)
-    except Exception:  # noqa: BLE001
-        item["alive"] = False
+
+    item["alive"] = False
+    item["kind"] = "error"
+    item["status_code"] = None
+    item["content_type"] = ""
+    item["error"] = ""
+    for attempt in range(2):
+        try:
+            req = urllib.request.Request(
+                item["url"],
+                headers={"User-Agent": UA, "Range": "bytes=0-2048"},
+            )
+            with urllib.request.urlopen(req, timeout=PROBE_TIMEOUT) as resp:
+                status = resp.status
+                ctype = (resp.headers.get("Content-Type") or "").lower()
+                body = resp.read(2048)
+                is_hls = b"#EXTM3U" in body or b"#EXT-X-" in body
+                is_ts = (
+                    "video/mp2t" in ctype
+                    or "video/mp4" in ctype
+                    or (body[:1] == b"\x47")
+                )
+                item["status_code"] = status
+                item["content_type"] = ctype[:80]
+                item["kind"] = "hls" if is_hls else ("ts" if is_ts else "other")
+                item["alive"] = status in (200, 206) and (is_hls or is_ts)
+                item["error"] = ""
+                break
+        except Exception as exc:  # noqa: BLE001
+            item["error"] = str(exc)[:200]
+            if attempt == 0:
+                time.sleep(0.4)
+                continue
+            item["alive"] = False
+            item["kind"] = "error"
     item["cost"] = time.time() - start
     return item
+
+
+def _read_url(url: str, timeout: int = 6, limit: int = 512 * 1024) -> tuple[int, str, bytes]:
+    req = urllib.request.Request(
+        url,
+        headers={"User-Agent": UA, "Range": f"bytes=0-{limit - 1}"},
+    )
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        ctype = (resp.headers.get("Content-Type") or "").lower()
+        return resp.status, ctype, resp.read(limit)
+
+
+def _first_media_url(text: str, base: str) -> str | None:
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        return urllib.parse.urljoin(base, line)
+    return None
+
+
+def deep_probe(item: dict) -> dict:
+    """对已判活的 HLS 线路再拉一次清单和首个分片，确认不是空壳。"""
+    item["playable"] = None
+    if item.get("alive") is not True:
+        return item
+    if item.get("kind") != "hls":
+        item["playable"] = True  # 直连 TS 已由首字节/Content-Type 证明
+        return item
+
+    try:
+        status, _, body = _read_url(item["url"], timeout=6, limit=256 * 1024)
+        text = body.decode("utf-8", errors="replace")
+        if status not in (200, 206):
+            item["playable"] = False
+            return item
+
+        media = _first_media_url(text, item["url"])
+        if not media:
+            item["playable"] = False
+            return item
+
+        # 主清单再下钻一层到媒体清单
+        if "#EXT-X-STREAM-INF" in text or media.split("?")[0].endswith(".m3u8"):
+            status2, _, body2 = _read_url(media, timeout=6, limit=256 * 1024)
+            if status2 in (200, 206):
+                media2 = _first_media_url(body2.decode("utf-8", errors="replace"), media)
+                if media2:
+                    media = media2
+
+        status3, ctype3, seg = _read_url(media, timeout=6, limit=4096)
+        item["media_url"] = media
+        item["playable"] = status3 in (200, 206) and (
+            bool(seg) or "video/" in ctype3 or "application/octet-stream" in ctype3
+        )
+    except Exception:  # noqa: BLE001
+        item["playable"] = False
+    return item
+
+
+def deep_probe_all(items: list[dict]) -> list[dict]:
+    with futures.ThreadPoolExecutor(max_workers=DEEP_PROBE_WORKERS) as pool:
+        return list(pool.map(deep_probe, items))
+
+
+def write_line_stats(items: list[dict], extra: list[dict] | None = None) -> None:
+    DIST.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for it in (items + (extra or [])):
+        rows.append(
+            {
+                "channel": it.get("std") or it.get("name", ""),
+                "source": it.get("source", "hkmotw"),
+                "url": it.get("url", ""),
+                "alive": it.get("alive"),
+                "playable": it.get("playable"),
+                "kind": it.get("kind", ""),
+                "status_code": it.get("status_code"),
+                "content_type": it.get("content_type", ""),
+                "latency_ms": round(1000 * float(it.get("cost", 0))),
+                "error": it.get("error", ""),
+            }
+        )
+    payload = {
+        "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+        "lines": rows,
+        "summary": {
+            "total": len(rows),
+            "alive": sum(1 for r in rows if r["alive"] is True),
+            "unknown": sum(1 for r in rows if r["alive"] is None),
+            "dead": sum(1 for r in rows if r["alive"] is False),
+            "playable": sum(1 for r in rows if r["playable"] is True),
+        },
+    }
+    out = DIST / "line-stats.json"
+    out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"  线路明细 -> {out.relative_to(ROOT)}  {payload['summary']}")
 
 
 def probe_all(items: list[dict]) -> list[dict]:
@@ -277,26 +477,40 @@ def host_of(url: str) -> str:
 
 
 def pick_lines(cands: list[dict], limit: int) -> list[dict]:
-    """存活优先、耗时排序，同一 host 最多 2 条，尽量用不同的源。"""
+    """只保留可用线路；完全没活线的频道才留少量死链兜底。
+
+    同一 host 最多 2 条，尽量用不同源；活线之后最多再带 2 条未知/死链，
+    避免一份 12 条里 10 条都是死链。
+    """
     rank = {True: 0, None: 1, False: 2}
     ordered = sorted(cands, key=lambda x: (rank.get(x.get("alive"), 2), x.get("cost", 99)))
+    alive = [it for it in ordered if it.get("alive") is True]
+    unknown = [it for it in ordered if it.get("alive") is None]
+    dead = [it for it in ordered if it.get("alive") is False]
+
     picked: list[dict] = []
     host_count: dict[str, int] = {}
-    for it in ordered:
+
+    def add(it: dict) -> bool:
         h = host_of(it["url"])
         if host_count.get(h, 0) >= 2:
-            continue
+            return False
         picked.append(it)
         host_count[h] = host_count.get(h, 0) + 1
+        return True
+
+    for it in alive:
+        add(it)
         if len(picked) >= limit:
             return picked
-    # host 限制导致没凑够时，放宽补齐
-    if len(picked) < limit:
-        for it in ordered:
-            if it not in picked:
-                picked.append(it)
-                if len(picked) >= limit:
-                    break
+
+    # 有活线：最多再带 2 条兜底；一条活线都没有：最多带 4 条备用
+    fallback = 2 if picked else min(4, limit)
+    for it in unknown + dead:
+        if len(picked) >= limit or fallback <= 0:
+            break
+        if add(it):
+            fallback -= 1
     return picked
 
 
@@ -355,7 +569,7 @@ def collect_hkmotw() -> list[dict]:
         if key in seen:
             return
         seen.add(key)
-        items.append({"name": name, "url": url, "logo": logo})
+        items.append({"name": name, "url": url, "logo": logo, "source": "hkmotw"})
 
     for code in ("hk", "mo", "tw"):
         try:
@@ -413,7 +627,7 @@ def hkmotw_blocks(items: list[dict]) -> list[str]:
         cands = by_name.get(name)
         if not cands:
             continue
-        picked = pick_lines(cands, HK_MAX_LINES)
+        picked = deep_probe_all(pick_lines(cands, HK_MAX_LINES))
         logo = next((c.get("logo") for c in picked if c.get("logo")), "")
         for it in picked:
             blocks.append(
@@ -461,9 +675,18 @@ def build(items: list[dict]) -> None:
     for it in items:
         by_channel.setdefault(it["std"], []).append(it)
 
-    blocks = []
+    selected: dict[str, list[dict]] = {}
     for std in sorted(by_channel, key=channel_sort_key):
-        lines = pick_lines(by_channel[std], MAX_LINES)
+        selected[std] = pick_lines(by_channel[std], MAX_LINES)
+
+    picked = [it for lines in selected.values() for it in lines]
+    print(f"  深检入选线路 {len(picked)} 条…")
+    deep_probe_all(picked)
+    playable = sum(1 for it in picked if it.get("playable") is True)
+    print(f"  分片可拉取 {playable}/{len(picked)} 条")
+
+    blocks = []
+    for std, lines in selected.items():
         group = "央视" if std.startswith(("CCTV", "CETV")) else "卫视"
         for it in lines:
             logo = it["logo"] or f"{FM_RAW}/tv/{std.upper()}.png"
@@ -483,6 +706,9 @@ def build(items: list[dict]) -> None:
     out.write_text("\n".join([header] + blocks) + "\n", encoding="utf-8")
     print(f"  pack-cctv-satellite.m3u: {len(by_channel)} 个频道 + 港澳台 {len(hk_blocks)} 条 / 共 {len(blocks)} 条线路")
 
+    final_urls = {b.splitlines()[-1] for b in blocks}
+    final_lines = [it for it in (items + hk_items) if it.get("url") in final_urls]
+    write_line_stats(final_lines)
     ASSETS.mkdir(parents=True, exist_ok=True)
     (ASSETS / out.name).write_bytes(out.read_bytes())
 
@@ -564,8 +790,9 @@ def main() -> int:
     else:
         print(f"探测 {len(items)} 条（{PROBE_WORKERS} 并发，超时 {PROBE_TIMEOUT}s）…")
         items = probe_all(items)
-        print(f"  存活 {sum(1 for i in items if i['alive'])} 条")
+        print(f"  存活 {sum(1 for i in items if i['alive'] is True)} 条")
 
+    finalize_source_stats(items)
     build(items)
     return 0
 

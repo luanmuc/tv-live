@@ -1,3 +1,27 @@
+# 1.4.6
+
+## 源采集
+
+- 入口从 14 个扩到 19 个，新增 live.zbds.top、m3u.ibert.me（cn/o_s_cn/o_all/fmml_itv）等非 GitHub 国内自动更新站
+- 只保留探测可用的线路：有活线的频道最多再带 2 条兜底，整台无活线才留 4 条死链；总线路 726 → 337，死链占比明显下降
+- 线路探测识别直连 TS（Content-Type / 0x47 首字节），不再把 TS 流误判为死
+- 入选线路再做一次 HLS 清单 + 首个分片深检，输出 `line-stats.json`
+- 新增源级评分 `source-stats.json`：贡献、重复率、存活率、平均延迟、综合分
+
+## 在线更新
+
+- 更新顺序改为：可配置的国内 OSS/CDN → gh-proxy.org → gh-proxy.com → jsDelivr → GitHub raw
+- `tv-live` 构建支持 `-PsourcesDomesticBaseUrl=...` 注入国内源地址；每日任务支持 OSS/COS 自动上传（配置 Secrets 后生效）
+
+## 应用
+
+- 设置 → 直播源 顶部显示本机线路检测统计（已检测/可用/失效/检测中）
+- 内置源 `SEEDED_VERSION` 6 → 7，升级后自动释放新包
+
+## 工程
+
+- 版本 1.4.6（versionCode 11）
+
 # 1.4.5
 
 ## 播放
