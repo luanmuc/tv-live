@@ -372,7 +372,20 @@ def collect() -> list[dict]:
     pool: dict[str, dict] = {}
     SOURCE_STATS.clear()
     candidates = list(CANDIDATES) + discovered_candidates()
-    for label, url in candidates:
+
+    # 50+ 个入口串行拉取会被慢站拖到几十分钟；并发抓取，但仍按入口顺序合并，
+    # 这样重复线路的归属和 source-stats 统计保持稳定。
+    def fetch_one(pair: tuple[str, str]) -> tuple[str, str, str | None, str]:
+        label, url = pair
+        try:
+            return label, url, fetch(url, timeout=FETCH_TIMEOUT), ""
+        except Exception as exc:  # noqa: BLE001
+            return label, url, None, str(exc)[:300]
+
+    with futures.ThreadPoolExecutor(max_workers=8) as pool_exec:
+        fetched = list(pool_exec.map(fetch_one, candidates))
+
+    for label, url, text, error in fetched:
         st = {
             "label": label,
             "url": url,
@@ -383,11 +396,15 @@ def collect() -> list[dict]:
             "error": "",
         }
         SOURCE_STATS[label] = st
+        if text is None:
+            st["error"] = error
+            print(f"  [警告] {label} 拉取失败：{error}")
+            continue
         try:
-            items = parse(fetch(url, timeout=FETCH_TIMEOUT))
+            items = parse(text)
         except Exception as exc:  # noqa: BLE001
             st["error"] = str(exc)[:300]
-            print(f"  [警告] {label} 拉取失败：{exc}")
+            print(f"  [警告] {label} 解析失败：{exc}")
             continue
         st["fetched"] = len(items)
         kept = 0

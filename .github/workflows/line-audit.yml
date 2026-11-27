@@ -2,12 +2,16 @@ name: line-audit
 
 on:
   schedule:
-    # 每 6 小时巡检一次，避开 03:00 的全量采集
-    - cron: "30 */6 * * *"
+    # 每天 04:30（北京时间）巡检一次，避开 03:00 的全量采集
+    - cron: "30 20 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: source-writes
+  cancel-in-progress: false
 
 jobs:
   audit:
@@ -31,5 +35,6 @@ jobs:
             echo "巡检结果无变化"
           else
             git commit -m "chore(sources): 线路巡检 [skip ci]"
+            git pull --rebase origin main
             git push
           fi
