@@ -15,7 +15,7 @@ object BuiltinSources {
     private const val ASSET_DIR = "sources"
     private const val PREF_NAME = "builtin_sources"
     private const val KEY_VERSION = "seeded_version"
-    private const val SEEDED_VERSION = 2
+    private const val SEEDED_VERSION = 3
 
     fun install(context: Context) {
         val targetDir = File(Globals.fileDir, ASSET_DIR)

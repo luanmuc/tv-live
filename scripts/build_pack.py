@@ -27,7 +27,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DIST = ROOT / "sources" / "dist"
 ASSETS = ROOT / "core" / "data" / "src" / "main" / "assets" / "sources"
 
-FM = "https://raw.githubusercontent.com/fanmingming/live/main/tv/m3u/"
+FM_RAW = "https://raw.githubusercontent.com/fanmingming/live/main"
+FM = FM_RAW + "/tv/m3u/"
 IPTV_ORG = "https://iptv-org.github.io/iptv/countries/"
 
 UA = "okhttp/4.12.0"
@@ -209,13 +210,13 @@ def build(items: list[dict]) -> None:
         )[:MAX_LINES]
         group = "央视" if std.startswith(("CCTV", "CETV")) else "卫视"
         for it in lines:
-            logo = it["logo"] or f"https://live.fanmingming.cn/tv/{std.upper()}.png"
+            logo = it["logo"] or f"{FM_RAW}/tv/{std.upper()}.png"
             blocks.append(
                 f'#EXTINF:-1 tvg-id="{std}" tvg-name="{std}" tvg-logo="{logo}" '
                 f'group-title="{group}",{std}\n{it["url"]}'
             )
 
-    header = '#EXTM3U x-tvg-url="https://live.fanmingming.cn/e.xml"'
+    header = f'#EXTM3U x-tvg-url="{FM_RAW}/e.xml"'
     DIST.mkdir(parents=True, exist_ok=True)
     out = DIST / "pack-cctv-satellite.m3u"
     out.write_text("\n".join([header] + blocks) + "\n", encoding="utf-8")

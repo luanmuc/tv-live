@@ -42,21 +42,26 @@ jobs:
       - name: 内置源健康检查
         run: python3 scripts/refresh_sources.py --check
 
-      - name: 构建 APK
+      # 只出正式版：签名密钥缺失直接失败，不再回退 debug 包
+      - name: 校验签名密钥
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::缺少 KEYSTORE_BASE64，无法构建正式版"
+            exit 1
+          fi
+
+      - name: 构建正式版 APK
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          if [ -n "$KEYSTORE_BASE64" ]; then
-            echo "$KEYSTORE_BASE64" | base64 -d > keystore.jks
-            export KEYSTORE="$PWD/keystore.jks"
-            ./gradlew :tv:assembleOriginalRelease --no-daemon --stacktrace
-          else
-            echo "未配置签名密钥，构建 debug 包"
-            ./gradlew :tv:assembleOriginalDebug --no-daemon --stacktrace
-          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > keystore.jks
+          export KEYSTORE="$PWD/keystore.jks"
+          ./gradlew :tv:assembleOriginalRelease --no-daemon --stacktrace
 
       - name: 收集产物
         run: |
@@ -66,17 +71,16 @@ jobs:
           cp -v "$APK" "out/doubao-tv-${VERSION}.apk"
           ls -lh out
 
-      # Actions 产物有 500MB 配额，改为发到 Release（不占配额，且有固定直链）
-      - name: 发布到 latest Release
+      # push 到 main 只验证构建，不发布；发版走 tag
+      - name: 上传构建产物（仅 Actions 页面留档）
         if: startsWith(github.ref, 'refs/heads/main')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release view latest >/dev/null 2>&1 || \
-            gh release create latest --title "最新构建" --notes "每次 push 到 main 自动更新（非正式版）" --prerelease --latest=false
-          gh release upload latest out/*.apk --clobber
+        uses: actions/upload-artifact@v4
+        with:
+          name: doubao-tv-release
+          path: out/*.apk
+          retention-days: 7
 
-      - name: 发布到版本 Release（打 tag 时）
+      - name: 发布正式版（打 tag 时）
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:

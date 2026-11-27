@@ -59,22 +59,18 @@ object Constants {
     /**
      * 节目单来源
      *
-     * 内置源 m3u 头部的 x-tvg-url 会自动带上对应节目单；
-     * 这里保留两个手动兜底，按频道名（tvg-name）匹配。
+     * fanmingming 的 live.fanmingming.com / .cn 已不可用（502/超时），
+     * 改走 GitHub 直链，jsDelivr 作为备用，均按频道名（tvg-name）匹配。
      */
     val EPG_SOURCE_LIST = EpgSourceList(
         listOf(
             EpgSource(
                 name = "国内节目单 fanmingming",
-                url = "https://live.fanmingming.com/e.xml",
+                url = "https://raw.githubusercontent.com/fanmingming/live/main/e.xml",
             ),
             EpgSource(
-                name = "国内节目单 fanmingming（备用域名）",
-                url = "https://live.fanmingming.cn/e.xml",
-            ),
-            EpgSource(
-                name = "国际节目单 iptv-org",
-                url = "https://iptv-org.github.io/epg/guides/cn.xml",
+                name = "国内节目单 fanmingming（jsDelivr）",
+                url = "https://cdn.jsdelivr.net/gh/fanmingming/live@main/e.xml",
             ),
         )
     )
@@ -94,7 +90,7 @@ object Constants {
      * {name|uppercase} 转成大写
      *
      */
-    const val CHANNEL_LOGO_PROVIDER = "https://live.fanmingming.com/tv/{name|uppercase}.png"
+    const val CHANNEL_LOGO_PROVIDER = "https://raw.githubusercontent.com/fanmingming/live/main/tv/{name|uppercase}.png"
 
     /**
      * 下载直链前缀（留空表示直连 GitHub）

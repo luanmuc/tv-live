@@ -393,15 +393,30 @@ object Configs {
 
     /** 当前节目单来源 */
     var epgSourceCurrent: EpgSource
-        get() = Globals.json.decodeFromString(SP.getString(KEY.EPG_SOURCE_CURRENT.name, "")
-            .ifBlank { Globals.json.encodeToString(Constants.EPG_SOURCE_LIST.first()) })
+        get() {
+            val stored = Globals.json.decodeFromString<EpgSource>(
+                SP.getString(KEY.EPG_SOURCE_CURRENT.name, "")
+                    .ifBlank { Globals.json.encodeToString(Constants.EPG_SOURCE_LIST.first()) }
+            )
+            // 老版本存的 live.fanmingming.com/.cn 已失效，自动切到新默认源
+            return if (stored.url.isDeadFanmingmingHost()) Constants.EPG_SOURCE_LIST.first()
+            else stored
+        }
         set(value) = SP.putString(KEY.EPG_SOURCE_CURRENT.name, Globals.json.encodeToString(value))
 
     /** 节目单来源列表 */
     var epgSourceList: EpgSourceList
-        get() = Globals.json.decodeFromString(
-            SP.getString(KEY.EPG_SOURCE_LIST.name, Globals.json.encodeToString(EpgSourceList()))
-        )
+        get() {
+            val stored = Globals.json.decodeFromString<EpgSourceList>(
+                SP.getString(KEY.EPG_SOURCE_LIST.name, Globals.json.encodeToString(EpgSourceList()))
+            )
+            return EpgSourceList(
+                stored.map { source ->
+                    if (source.url.isDeadFanmingmingHost()) source.copy(url = source.url.fixDeadHost())
+                    else source
+                }
+            )
+        }
         set(value) = SP.putString(KEY.EPG_SOURCE_LIST.name, Globals.json.encodeToString(value))
 
     /** 节目单刷新时间阈值（小时） */
@@ -450,7 +465,7 @@ object Configs {
 
     /** 使用经典选台界面 */
     var uiUseClassicPanelScreen: Boolean
-        get() = SP.getBoolean(KEY.UI_USE_CLASSIC_PANEL_SCREEN.name, false)
+        get() = SP.getBoolean(KEY.UI_USE_CLASSIC_PANEL_SCREEN.name, true)
         set(value) = SP.putBoolean(KEY.UI_USE_CLASSIC_PANEL_SCREEN.name, value)
 
     /** 界面密度缩放比例 */
@@ -913,3 +928,12 @@ object Configs {
         )
     }
 }
+/** fanmingming 旧域名已失效，统一映射到 GitHub 直链 */
+private const val FANMINGMING_RAW = "https://raw.githubusercontent.com/fanmingming/live/main"
+
+private fun String.isDeadFanmingmingHost(): Boolean =
+    contains("live.fanmingming.com") || contains("live.fanmingming.cn")
+
+private fun String.fixDeadHost(): String =
+    replace("https://live.fanmingming.com", FANMINGMING_RAW)
+        .replace("https://live.fanmingming.cn", FANMINGMING_RAW)

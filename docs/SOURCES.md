@@ -9,7 +9,8 @@
 | --- | --- | --- |
 | `settings.gradle.kts` | `:tbsx5` 改为目录存在才 include | 上游把 `../YYKM/tbsx5` 写死了，单仓独立构建会直接失败 |
 | `core/data/.../utils/Constants.kt` | `IPTV_SOURCE_LIST` 换成两组内置源 + 一组在线源 | 上游默认是「无效占位订阅源」，装完没东西看 |
-| 同上 | `EPG_SOURCE_LIST` 加备用域名和 iptv-org 节目单 | 主域名偶发不稳定 |
+| 同上 | `EPG_SOURCE_LIST` 改用 GitHub 直链（raw + jsDelivr 备用） | fanmingming 的 .com/.cn 域名已失效，节目单空白 |
+| `tv/.../utils/Configs.kt` | 经典选台界面默认开启；旧 EPG 域名自动迁移 | 左侧列表更好按；老用户 SP 里存的死链要就地修 |
 | 同上 | `APP_TITLE`、`APP_REPO`、`GIT_RELEASE_LATEST_URL` | 品牌与本仓库地址 |
 | 同上 | 移除 `GROUP_TELEGRAM` | 去掉外部联系方式 |
 | `core/data/.../utils/BuiltinSources.kt` | 新增 | 首次启动把 assets 里的 m3u 释放到 `filesDir/sources/` |

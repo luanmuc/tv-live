@@ -30,7 +30,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DIST = ROOT / "sources" / "dist"
 ASSETS = ROOT / "core" / "data" / "src" / "main" / "assets" / "sources"
 
-FANMINGMING = "https://raw.githubusercontent.com/fanmingming/live/main/tv/m3u/"
+FANMINGMING_RAW = "https://raw.githubusercontent.com/fanmingming/live/main"
+FANMINGMING = FANMINGMING_RAW + "/tv/m3u/"
 IPTV_ORG = "https://iptv-org.github.io/iptv/countries/"
 IPTV_ORG_EPG = "https://iptv-org.github.io/epg/guides/cn.xml"
 
@@ -104,11 +105,17 @@ def write(path: pathlib.Path, header: str, blocks: list[str], title: str) -> boo
     return True
 
 
+def fix_dead_hosts(text: str) -> str:
+    """把已失效的 live.fanmingming.com/.cn 换成 GitHub 直链。"""
+    return text.replace("https://live.fanmingming.com", FANMINGMING_RAW) \
+               .replace("https://live.fanmingming.cn", FANMINGMING_RAW)
+
+
 def build_fanmingming(source_file: str, out_name: str, title: str) -> bool:
     header, blocks = parse_playlist(fetch(FANMINGMING + source_file))
-    # 源站 .com / .cn 混用，统一收敛到 .cn
-    header = header.replace("live.fanmingming.com", "live.fanmingming.cn")
-    blocks = [b.replace("live.fanmingming.com", "live.fanmingming.cn") for b in blocks]
+    # 源站 .com / .cn 均已失效，统一改 GitHub 直链
+    header = fix_dead_hosts(header)
+    blocks = [fix_dead_hosts(b) for b in blocks]
     return write(DIST / out_name, header, dedupe(blocks), title)
 
 

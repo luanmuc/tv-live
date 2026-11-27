@@ -1,3 +1,22 @@
+# 1.1
+
+## 应用
+
+- 选台界面默认使用「经典三段式」：左栏分组+频道、右侧节目单
+- 只发正式版：CI 固定构建 release 并签名，不再产出／发布 debug 包
+- 移除 Sentry 依赖（DSN 一直为空，纯占体积且带 16KB 不友好的 native 库）
+
+## 节目单
+
+- 修复节目单空白：fanmingming 的 `live.fanmingming.com` / `.cn` 已失效，
+  改走 `raw.githubusercontent.com/fanmingming/live/main/e.xml`，jsDelivr 作备用
+- 同步修复内置源内的台标地址与 m3u 头 `x-tvg-url`
+
+## 工程
+
+- 版本 1.1（versionCode 2）
+- 内置源种子版本 3，覆盖旧文件
+
 # 1.0
 
 首个自建版本，基于 MIT 协议的上游工程重构。
