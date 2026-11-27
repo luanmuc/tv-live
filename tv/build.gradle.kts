@@ -20,8 +20,8 @@ android {
         applicationId = "com.doubao.tv"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 4
-        versionName = "1.3"
+        versionCode = 5
+        versionName = "1.4"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -126,9 +126,6 @@ dependencies {
         implementation(libs.androidx.media3.ui)
     }
 
-    implementation("com.github.CarGuo.GSYVideoPlayer:gsyvideoplayer-java:v10.0.0")
-    implementation("com.github.CarGuo.GSYVideoPlayer:gsyvideoplayer-ex_so:v10.0.0")
-
     // 二维码
     implementation(libs.qrose)
 
@@ -144,6 +141,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
     implementation(project(":allinone"))
+    implementation(project(":ijkplayer-java"))
     // implementation(project(":tbsx5"))
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))

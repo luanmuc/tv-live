@@ -1,3 +1,11 @@
+# 1.4
+
+## 工程
+
+- 移除未使用的 GSYVideoPlayer 依赖（dex 里 0 个类），ijk 播放内核改用仓库自带的 `:ijkplayer-java` 模块
+- 移除只为 GSY 服务的 jitpack 仓库
+- 版本 1.4（versionCode 5）
+
 # 1.3
 
 ## 直播源

@@ -3,7 +3,7 @@
 电视端直播应用 + 内置直播源，单仓库维护。
 
 - 应用名：豆包定制
-- 版本：1.3
+- 版本：1.4
 - 包名：`com.doubao.tv`
 - 内置源：央视/卫视/港澳台多线路包（83 频道 / 297 线路）+ 港澳台及国际（189 频道）
 - 源随 APK 打包，首次启动释放到应用私有目录，装完即可离线使用
@@ -45,7 +45,7 @@ tv-live/
 ```bash
 # 云端：push 到 main 自动构建，产物更新到 latest Release
 # 正式版：打 tag 触发
-git tag v1.3 && git push origin v1.3
+git tag v1.4 && git push origin v1.4
 
 # 本地（JDK 17 + Android SDK 36）
 ./gradlew :tv:assembleOriginalDebug
