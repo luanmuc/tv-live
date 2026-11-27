@@ -64,6 +64,36 @@ CCTV_ALIAS = {
     "cctv17": "CCTV17", "cctv17农业农村": "CCTV17", "央视农业农村": "CCTV17",
 }
 
+CCTV_DISPLAY = {
+    "CCTV1": "CCTV-1 综合",
+    "CCTV2": "CCTV-2 财经",
+    "CCTV3": "CCTV-3 综艺",
+    "CCTV4": "CCTV-4 中文国际",
+    "CCTV5": "CCTV-5 体育",
+    "CCTV5+": "CCTV-5+ 体育赛事",
+    "CCTV6": "CCTV-6 电影",
+    "CCTV7": "CCTV-7 国防军事",
+    "CCTV8": "CCTV-8 电视剧",
+    "CCTV9": "CCTV-9 纪录",
+    "CCTV10": "CCTV-10 科教",
+    "CCTV11": "CCTV-11 戏曲",
+    "CCTV12": "CCTV-12 社会与法",
+    "CCTV13": "CCTV-13 新闻",
+    "CCTV14": "CCTV-14 少儿",
+    "CCTV15": "CCTV-15 音乐",
+    "CCTV16": "CCTV-16 奥林匹克",
+    "CCTV17": "CCTV-17 农业农村",
+    "CETV1": "CETV-1 中国教育一台",
+    "CETV2": "CETV-2 中国教育二台",
+    "CETV4": "CETV-4 中国教育四台",
+}
+
+
+def display_name(std: str) -> str:
+    """tvg-name/tvg-id 保持标准名给 EPG，逗号后的显示名用中文全称。"""
+    return CCTV_DISPLAY.get(std, std)
+
+
 SATELLITE = {
     "湖南卫视": ["湖南卫视", "hunan tv", "hunan satellite"],
     "浙江卫视": ["浙江卫视", "zhejiang tv", "zhejiang satellite"],
@@ -110,6 +140,18 @@ SATELLITE = {
 from hkmotw_ids import HKMOTW, HKMOTW_GROUP, HKMOTW_ORDER, HKMOTW_BACKUP
 
 
+KIDS = {
+    "金鹰卡通": ["金鹰卡通", "金鹰卡通卫视"],
+    "卡酷少儿": ["卡酷少儿", "卡酷卡通", "卡酷"],
+    "优漫卡通": ["优漫卡通", "优漫"],
+    "嘉佳卡通": ["嘉佳卡通", "嘉佳"],
+    "哈哈炫动": ["哈哈炫动", "哈哈少儿"],
+    "炫动卡通": ["炫动卡通", "炫动"],
+    "动漫秀场": ["动漫秀场"],
+}
+KIDS_ORDER = ["CCTV14", "金鹰卡通", "卡酷少儿", "优漫卡通", "嘉佳卡通", "哈哈炫动", "炫动卡通", "动漫秀场"]
+KIDS_CHANNELS = set(KIDS_ORDER)
+
 # 卫视显示顺序：先一线卫视，再按大区，最后教育台
 SATELLITE_ORDER = [
     "湖南卫视", "浙江卫视", "江苏卫视", "东方卫视", "北京卫视", "深圳卫视", "广东卫视",
@@ -132,11 +174,13 @@ def channel_sort_key(std: str) -> tuple:
     if std.startswith("CETV"):
         m = re.match(r"^CETV(\d+)$", std)
         return (1, int(m.group(1)) if m else 99, 0, std)
+    if std in KIDS_ORDER:
+        return (2, KIDS_ORDER.index(std), 0, std)
     if std in SATELLITE_ORDER:
-        return (2, SATELLITE_ORDER.index(std), 0, std)
+        return (3, SATELLITE_ORDER.index(std), 0, std)
     if std in HKMOTW_ORDER:
-        return (3, HKMOTW_ORDER.index(std), 0, std)
-    return (4, 0, 0, std)
+        return (4, HKMOTW_ORDER.index(std), 0, std)
+    return (5, 0, 0, std)
 
 
 def standard_name(raw: str) -> str | None:
@@ -155,6 +199,10 @@ def standard_name(raw: str) -> str | None:
 
     low = name.lower()
     for std, aliases in SATELLITE.items():
+        for alias in aliases:
+            if alias in low:
+                return std
+    for std, aliases in KIDS.items():
         for alias in aliases:
             if alias in low:
                 return std
@@ -687,12 +735,17 @@ def build(items: list[dict]) -> None:
 
     blocks = []
     for std, lines in selected.items():
-        group = "央视" if std.startswith(("CCTV", "CETV")) else "卫视"
+        if std in KIDS_CHANNELS:
+            group = "少儿频道"
+        elif std.startswith(("CCTV", "CETV")):
+            group = "央视"
+        else:
+            group = "卫视"
         for it in lines:
             logo = it["logo"] or f"{FM_RAW}/tv/{std.upper()}.png"
             blocks.append(
                 f'#EXTINF:-1 tvg-id="{std}" tvg-name="{std}" tvg-logo="{logo}" '
-                f'group-title="{group}",{std}\n{it["url"]}'
+                f'group-title="{group}",{display_name(std)}\n{it["url"]}'
             )
 
     header = f'#EXTM3U x-tvg-url="{FM_RAW}/e.xml"'
