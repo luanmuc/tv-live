@@ -18,7 +18,7 @@
 | `tv/.../MainContentState.kt` | 新增 `handlePlayerError()` / `resetAutoSwitchLine()` | 播放失败自动换线 |
 | `tv/.../MainContent.kt` | `LaunchedEffect` 监听播放错误触发换线 | 同上 |
 | `AboutScreen.kt` | 删除赞赏、交流群入口 | 只用应用自身信息 |
-| 全仓库 | 包名 `com.doubao.tv`、应用名「豆包定制」 | 品牌统一 |
+| 全仓库 | 包名 `com.doubao.tv`、应用名「豆包电视台」 | 品牌统一 |
 
 ## 二、源是怎么生效的
 

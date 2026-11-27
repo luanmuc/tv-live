@@ -12,7 +12,7 @@ object Constants {
     /**
      * 应用 标题
      */
-    const val APP_TITLE = "豆包定制"
+    const val APP_TITLE = "豆包电视台"
 
     /**
      * 应用 代码仓库（本仓库：软件 + 源一起维护）

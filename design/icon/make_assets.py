@@ -80,7 +80,7 @@ def make_banner(w=640, h=360):
     tv = fit(CUT, int(h * 0.88))
     drop_shadow(bg, tv, (int(w*0.015), (h - tv.size[1]) // 2), blur=18, alpha=110, offset=(0, 6))
     d = ImageDraw.Draw(bg)
-    title = "豆包定制 TV"
+    title = "豆包电视台"
     sub = "央视 · 卫视 · 港澳台"
     k = h / 360.0
     f1 = ImageFont.truetype(FONT_B, max(10, int(46 * k)), index=2)  # SC
@@ -91,7 +91,7 @@ def make_banner(w=640, h=360):
     d.text((tx, ty), title, font=f1, fill=(255, 250, 240, 255))
     d.text((tx + int(2*k), ty + (bbox[3]-bbox[1]) + int(22*k)), sub, font=f2, fill=(255, 248, 235, 225))
     # 底部小胶囊
-    pil = "直播 · 83 频道"
+    pil = "直播 · 85 频道"
     f3 = ImageFont.truetype(FONT_R, max(8, int(17 * k)), index=2)
     bw = d.textbbox((0,0), pil, font=f3)
     pad = max(4, int(14 * k))

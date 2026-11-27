@@ -32,29 +32,30 @@ FM = FM_RAW + "/tv/m3u/"
 IPTV_ORG = "https://iptv-org.github.io/iptv/countries/"
 
 UA = "okhttp/4.12.0"
-MAX_LINES = 6
+MAX_LINES = 12
+HK_MAX_LINES = 6
 PROBE_TIMEOUT = 8
-PROBE_WORKERS = 32
+PROBE_WORKERS = 64
 
 CCTV_ALIAS = {
-    "cctv1": "CCTV1", "cctv1综合": "CCTV1", "央视一套": "CCTV1", "cctv1综合频道": "CCTV1",
-    "cctv2": "CCTV2", "央视二套": "CCTV2", "cctv2财经": "CCTV2",
-    "cctv3": "CCTV3", "央视三套": "CCTV3", "cctv3综艺": "CCTV3",
-    "cctv4": "CCTV4", "央视四套": "CCTV4", "cctv4中文国际": "CCTV4",
-    "cctv5": "CCTV5", "央视五套": "CCTV5", "cctv5体育": "CCTV5",
+    "cctv1": "CCTV1", "cctv1综合": "CCTV1", "央视一套": "CCTV1", "cctv1综合频道": "CCTV1", "央视综合": "CCTV1",
+    "cctv2": "CCTV2", "央视二套": "CCTV2", "cctv2财经": "CCTV2", "央视财经": "CCTV2",
+    "cctv3": "CCTV3", "央视三套": "CCTV3", "cctv3综艺": "CCTV3", "央视综艺": "CCTV3",
+    "cctv4": "CCTV4", "央视四套": "CCTV4", "cctv4中文国际": "CCTV4", "央视中文国际": "CCTV4",
+    "cctv5": "CCTV5", "央视五套": "CCTV5", "cctv5体育": "CCTV5", "央视体育": "CCTV5",
     "cctv5+": "CCTV5+", "cctv5plus": "CCTV5+", "cctv5+体育赛事": "CCTV5+",
-    "cctv6": "CCTV6", "央视六套": "CCTV6", "cctv6电影": "CCTV6",
-    "cctv7": "CCTV7", "cctv7国防军事": "CCTV7",
-    "cctv8": "CCTV8", "cctv8电视剧": "CCTV8",
-    "cctv9": "CCTV9", "cctv9纪录": "CCTV9",
-    "cctv10": "CCTV10", "cctv10科教": "CCTV10",
-    "cctv11": "CCTV11", "cctv11戏曲": "CCTV11",
-    "cctv12": "CCTV12", "cctv12社会与法": "CCTV12",
-    "cctv13": "CCTV13", "cctv13新闻": "CCTV13",
-    "cctv14": "CCTV14", "cctv14少儿": "CCTV14",
-    "cctv15": "CCTV15", "cctv15音乐": "CCTV15",
-    "cctv16": "CCTV16", "cctv16奥林匹克": "CCTV16",
-    "cctv17": "CCTV17", "cctv17农业农村": "CCTV17",
+    "cctv6": "CCTV6", "央视六套": "CCTV6", "cctv6电影": "CCTV6", "央视电影": "CCTV6",
+    "cctv7": "CCTV7", "cctv7国防军事": "CCTV7", "央视国防军事": "CCTV7",
+    "cctv8": "CCTV8", "cctv8电视剧": "CCTV8", "央视电视剧": "CCTV8",
+    "cctv9": "CCTV9", "cctv9纪录": "CCTV9", "央视纪录": "CCTV9",
+    "cctv10": "CCTV10", "cctv10科教": "CCTV10", "央视科教": "CCTV10",
+    "cctv11": "CCTV11", "cctv11戏曲": "CCTV11", "央视戏曲": "CCTV11",
+    "cctv12": "CCTV12", "cctv12社会与法": "CCTV12", "央视社会与法": "CCTV12",
+    "cctv13": "CCTV13", "cctv13新闻": "CCTV13", "央视新闻": "CCTV13",
+    "cctv14": "CCTV14", "cctv14少儿": "CCTV14", "央视少儿": "CCTV14",
+    "cctv15": "CCTV15", "cctv15音乐": "CCTV15", "央视音乐": "CCTV15",
+    "cctv16": "CCTV16", "cctv16奥林匹克": "CCTV16", "央视奥林匹克": "CCTV16",
+    "cctv17": "CCTV17", "cctv17农业农村": "CCTV17", "央视农业农村": "CCTV17",
 }
 
 SATELLITE = {
@@ -135,8 +136,10 @@ def channel_sort_key(std: str) -> tuple:
 def standard_name(raw: str) -> str | None:
     """把别名收敛成标准频道名；认不出来返回 None。"""
     name = re.sub(r"[\(（\[【].*?[\)）\]】]", "", raw).strip()
-    key = re.sub(r"[\s\-_·]+", "", name).lower()
-    key = key.replace("高清", "").replace("超清", "").replace("标清", "")
+    key = re.sub(r"[\s\-_·「」]+", "", name).lower()
+    for junk in ("高清", "超清", "标清", "蓝光", "4k", "8k", "uhd", "fhd", "hd"):
+        key = key.replace(junk, "")
+    key = re.sub(r"(移动|电信|联通|专享)$", "", key)
 
     m = re.match(r"^cctv(\d{1,2})(\+)?$", key)
     if m:
@@ -158,6 +161,20 @@ def fetch(url: str, timeout: int = 60) -> str:
         return resp.read().decode("utf-8", errors="replace")
 
 
+def clean_url(raw: str) -> str:
+    """去掉上游清单里的注释尾巴（|Header=、$标记、『线路』、空格等）。"""
+    u = raw.strip()
+    for sep in ("|", "$", "『", " ", "\t"):
+        u = u.split(sep, 1)[0]
+    return u.strip()
+
+
+def valid_url(u: str) -> bool:
+    if not u.startswith(("http://", "https://")):
+        return False
+    return all(ord(c) < 128 for c in u) and " " not in u
+
+
 def parse(text: str) -> list[dict]:
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
     if not lines or not lines[0].startswith("#EXTM3U"):
@@ -176,17 +193,33 @@ def parse(text: str) -> list[dict]:
         elif line.startswith("#"):
             continue
         elif cur is not None:
-            cur["url"] = line
-            items.append(cur)
+            u = clean_url(line)
+            if valid_url(u):
+                cur["url"] = u
+                items.append(cur)
             cur = None
     return items
 
+
+SX_RAW = "https://raw.githubusercontent.com/suxuang/myIPTV/main/"
+VB_RAW = "https://raw.githubusercontent.com/vbskycn/iptv/master/tv/"
+YG_RAW = "https://raw.githubusercontent.com/YanG-1989/m3u/main/"
 
 CANDIDATES = [
     ("fanmingming index", FM + "index.m3u"),
     ("fanmingming itv", FM + "itv.m3u"),
     ("fanmingming ipv6", FM + "ipv6.m3u"),
     ("iptv-org cn", IPTV_ORG + "cn.m3u"),
+    ("iptv-org zho", "https://iptv-org.github.io/iptv/languages/zho.m3u"),
+    ("suxiang ipv4", SX_RAW + "ipv4.m3u"),
+    ("suxiang ipv6", SX_RAW + "ipv6.m3u"),
+    ("vbskycn ipv4", VB_RAW + "iptv4.m3u"),
+    ("yang gather", YG_RAW + "Gather.m3u"),
+    ("guovin result", "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.m3u"),
+    ("wwb521 live", "https://raw.githubusercontent.com/wwb521/live/main/tv.m3u"),
+    ("peterhchina v4", "https://peterhchina.github.io/iptv/IPTV-V4.m3u"),
+    ("et6jt3 ipv4", "https://ET6jt3.github.io/iptv/tv/iptv4.m3u"),
+    ("yonsm iptv", "https://yonsm.github.io/IPTV/iptv.m3u8"),
 ]
 
 
@@ -212,8 +245,17 @@ def collect() -> list[dict]:
     return list(pool.values())
 
 
+def is_ipv6_url(url: str) -> bool:
+    host = url.split("//", 1)[-1].split("/", 1)[0]
+    return "[" in host or host.count(":") >= 2
+
+
 def probe(item: dict) -> dict:
     start = time.time()
+    if is_ipv6_url(item["url"]):
+        item["alive"] = None  # 本机无 IPv6，保留给有 IPv6 的电视盒子
+        item["cost"] = 50
+        return item
     try:
         req = urllib.request.Request(item["url"], headers={"User-Agent": UA, "Range": "bytes=0-2048"})
         with urllib.request.urlopen(req, timeout=PROBE_TIMEOUT) as resp:
@@ -230,9 +272,91 @@ def probe_all(items: list[dict]) -> list[dict]:
         return list(pool.map(probe, items))
 
 
+def host_of(url: str) -> str:
+    return url.split("//", 1)[-1].split("/", 1)[0]
+
+
+def pick_lines(cands: list[dict], limit: int) -> list[dict]:
+    """存活优先、耗时排序，同一 host 最多 2 条，尽量用不同的源。"""
+    rank = {True: 0, None: 1, False: 2}
+    ordered = sorted(cands, key=lambda x: (rank.get(x.get("alive"), 2), x.get("cost", 99)))
+    picked: list[dict] = []
+    host_count: dict[str, int] = {}
+    for it in ordered:
+        h = host_of(it["url"])
+        if host_count.get(h, 0) >= 2:
+            continue
+        picked.append(it)
+        host_count[h] = host_count.get(h, 0) + 1
+        if len(picked) >= limit:
+            return picked
+    # host 限制导致没凑够时，放宽补齐
+    if len(picked) < limit:
+        for it in ordered:
+            if it not in picked:
+                picked.append(it)
+                if len(picked) >= limit:
+                    break
+    return picked
+
+
+HK_KEYWORDS = {
+    "翡翠台": ["翡翠"],
+    "凤凰卫视中文台": ["凤凰中文", "凤凰卫视中文"],
+    "凤凰卫视资讯台": ["凤凰资讯", "凤凰卫视资讯"],
+    "ViuTV": ["viutv"],
+    "天映频道": ["天映"],
+    "美亚电影台": ["美亚电影", "美亚"],
+    "澳视澳门": ["澳视澳门", "澳门卫视"],
+    "澳视资讯": ["澳视资讯"],
+    "澳视体育": ["澳视体育"],
+    "澳视娱乐": ["澳视娱乐"],
+    "莲花卫视": ["莲花"],
+    "台视": ["台视"],
+    "台视新闻": ["台视新闻"],
+    "华视": ["华视"],
+    "中天综合台": ["中天综合", "中天"],
+    "民视": ["民视"],
+    "民视第一台": ["民视第一"],
+    "东森新闻": ["东森新闻"],
+    "东森财经新闻": ["东森财经"],
+    "东森洋片台": ["东森洋片"],
+    "TVBS-Asia": ["tvbs"],
+    "公视三台": ["公视三"],
+    "客家电视台": ["客家"],
+    "原住民族电视台": ["原住民"],
+    "大爱一台": ["大爱一"],
+    "大爱二台": ["大爱二"],
+    "好消息电视台": ["好消息"],
+}
+_HK_MATCH = sorted(
+    ((kw, std) for std, kws in HK_KEYWORDS.items() for kw in kws),
+    key=lambda x: -len(x[0]),
+)
+
+
+def match_hkmotw(raw: str) -> str | None:
+    n = re.sub(r"[\s\-_·「」（）()]+", "", raw).lower()
+    for kw, std in _HK_MATCH:
+        if kw in n:
+            return std
+    return None
+
+
 def collect_hkmotw() -> list[dict]:
-    """从 iptv-org 的 hk/mo/tw 里取指定频道，换成中文名。"""
+    """港澳台候选：iptv-org 的 hk/mo/tw + 公开中文列表按台名匹配 + 静态备用。"""
     items: list[dict] = []
+    seen: set[tuple[str, str]] = set()
+
+    def add(name: str, url: str, logo: str = "") -> None:
+        if not url or url.startswith("rtp"):
+            return
+        key = (name, url)
+        if key in seen:
+            return
+        seen.add(key)
+        items.append({"name": name, "url": url, "logo": logo})
+
     for code in ("hk", "mo", "tw"):
         try:
             raw = fetch(IPTV_ORG + f"{code}.m3u")
@@ -245,30 +369,56 @@ def collect_hkmotw() -> list[dict]:
                 continue
             if "[Geo-blocked]" in it["raw_name"] or it["group"].lower() == "shop":
                 continue
-            items.append({
-                "name": cn,
-                "url": it["url"],
-                "logo": it["logo"],
-                "backup": HKMOTW_BACKUP.get(cn, []),
-            })
-    print(f"  港澳台命中 {len(items)} 条")
+            add(cn, it["url"], it["logo"])
+
+    extra = [
+        ("suxiang ipv4", SX_RAW + "ipv4.m3u"),
+        ("suxiang ipv6", SX_RAW + "ipv6.m3u"),
+        ("vbskycn ipv4", VB_RAW + "iptv4.m3u"),
+        ("yang gather", YG_RAW + "Gather.m3u"),
+    ]
+    for label, url in extra:
+        try:
+            text = fetch(url)
+        except Exception as exc:  # noqa: BLE001
+            print(f"  [警告] 港澳台补充源 {label} 拉取失败：{exc}")
+            continue
+        hit = 0
+        for it in parse(text):
+            if "[Geo-blocked]" in it["raw_name"] or it["group"].lower() == "shop":
+                continue
+            cn = match_hkmotw(it["raw_name"]) or match_hkmotw(it.get("tvg_name", ""))
+            if not cn:
+                continue
+            add(cn, it["url"], it["logo"])
+            hit += 1
+        print(f"  {label}: 港澳台 +{hit}")
+
+    for name, urls in HKMOTW_BACKUP.items():
+        for u in urls:
+            add(name, u)
+
+    print(f"  港澳台候选 {len(items)} 条（{len({i['name'] for i in items})} 个台）")
     return items
 
 
 def hkmotw_blocks(items: list[dict]) -> list[str]:
-    """按固定顺序输出港澳台，每个台主线路 + 备用线路（最多 3 条）。"""
-    by_name = {it["name"]: it for it in items}
+    """按固定顺序输出港澳台，每台最多 HK_MAX_LINES 条，存活优先。"""
+    by_name: dict[str, list[dict]] = {}
+    for it in items:
+        by_name.setdefault(it["name"], []).append(it)
+
     blocks = []
     for name in HKMOTW_ORDER:
-        it = by_name.get(name)
-        if not it:
+        cands = by_name.get(name)
+        if not cands:
             continue
-        urls = [it["url"]] + [u for u in it.get("backup", []) if u != it["url"]]
-        urls = list(dict.fromkeys(urls))[:3]
-        for url in urls:
+        picked = pick_lines(cands, HK_MAX_LINES)
+        logo = next((c.get("logo") for c in picked if c.get("logo")), "")
+        for it in picked:
             blocks.append(
-                f'#EXTINF:-1 tvg-id="{name}" tvg-name="{name}" tvg-logo="{it["logo"]}" '
-                f'group-title="{HKMOTW_GROUP}",{name}\n{url}'
+                f'#EXTINF:-1 tvg-id="{name}" tvg-name="{name}" tvg-logo="{logo}" '
+                f'group-title="{HKMOTW_GROUP}",{name}\n{it["url"]}'
             )
     return blocks
 
@@ -313,10 +463,7 @@ def build(items: list[dict]) -> None:
 
     blocks = []
     for std in sorted(by_channel, key=channel_sort_key):
-        lines = sorted(
-            by_channel[std],
-            key=lambda x: (not x.get("alive", False), x.get("cost", 99)),
-        )[:MAX_LINES]
+        lines = pick_lines(by_channel[std], MAX_LINES)
         group = "央视" if std.startswith(("CCTV", "CETV")) else "卫视"
         for it in lines:
             logo = it["logo"] or f"{FM_RAW}/tv/{std.upper()}.png"
@@ -329,7 +476,8 @@ def build(items: list[dict]) -> None:
     DIST.mkdir(parents=True, exist_ok=True)
     out = DIST / "pack-cctv-satellite.m3u"
     existing = {b.splitlines()[-1] for b in blocks}
-    hk_blocks = [b for b in hkmotw_blocks(collect_hkmotw()) if b.splitlines()[-1] not in existing]
+    hk_items = probe_all(collect_hkmotw())
+    hk_blocks = [b for b in hkmotw_blocks(hk_items) if b.splitlines()[-1] not in existing]
     hk_blocks = fill_missing_hkmotw(hk_blocks, out)
     blocks.extend(hk_blocks)
     out.write_text("\n".join([header] + blocks) + "\n", encoding="utf-8")
@@ -362,7 +510,7 @@ def merge_hkmotw_only() -> int:
     old_hk = [b for b in blocks if f'group-title="{HKMOTW_GROUP}"' in b]
     blocks = [b for b in blocks if f'group-title="{HKMOTW_GROUP}"' not in b]
     existing = {b.splitlines()[-1] for b in blocks}
-    fresh = hkmotw_blocks(collect_hkmotw())
+    fresh = hkmotw_blocks(probe_all(collect_hkmotw()))
     fresh = fill_missing_hkmotw(fresh, out)
     hk_blocks = [b for b in fresh if b.splitlines()[-1] not in existing]
     blocks = sort_blocks(blocks + hk_blocks)

@@ -4,7 +4,7 @@
 
 ```
 sources/dist/                       # 源快照，进 git
-├── pack-cctv-satellite.m3u         # 央视 + 卫视 + 港澳台多线路包（83 频道 / 297 线路）
+├── pack-cctv-satellite.m3u         # 央视 + 卫视 + 港澳台多线路包（85 频道 / 726 线路）
 └── intl-hkmo-tw.m3u                # 港澳台及国际（189 个，已去重）
 
 core/data/src/main/assets/sources/  # 打包进 APK 的副本（脚本自动同步，勿手改）
@@ -14,7 +14,7 @@ core/data/src/main/assets/sources/  # 打包进 APK 的副本（脚本自动同�
 
 | 文件 | 生成方式 | 说明 |
 | --- | --- | --- |
-| `pack-cctv-satellite.m3u` | `scripts/build_pack.py` | 合并 fanmingming index/itv/ipv6 + iptv-org cn，按频道名归一后每频道保留最多 6 条线路，实测可播的排前面 |
+| `pack-cctv-satellite.m3u` | `scripts/build_pack.py` | 合并 fanmingming / iptv-org / suxiang / vbskycn / Guovin / peterhchina / ET6jt3 / yonsm / wwb521 等 13 路清单，按频道名归一后每频道最多 12 条线路（同 host 最多 2 条） |
 | `intl-hkmo-tw.m3u` | `scripts/refresh_sources.py` | iptv-org `countries/{cn,hk,mo,tw}.m3u` 合并去重 |
 
 ## 命名与字段约定
