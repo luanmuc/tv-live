@@ -24,7 +24,7 @@ jobs:
           python-version: "3.11"
 
       - name: 巡检最终线路
-        run: python3 scripts/crawl_check.py
+        run: timeout 900 python3 scripts/crawl_check.py
 
       - name: 提交巡检结果
         run: |
