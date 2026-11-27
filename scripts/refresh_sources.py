@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""同步内置直播源。
+
+数据来源：
+  - 央视/卫视（IPv4）: fanmingming/live  tv/m3u/index.m3u
+  - 央视/卫视（IPv6）: fanmingming/live  tv/m3u/ipv6.m3u
+  - 港澳台及国际   : iptv-org/iptv  countries/{cn,hk,mo,tw}.m3u
+
+产物：
+  sources/dist/*.m3u                     （进 git，供在线订阅 / 直接下载）
+  core/data/src/main/assets/sources/*.m3u（打包进 APK，随 App 内置）
+
+用法：
+  python3 scripts/refresh_sources.py          # 抓取并写入（失败会保留旧文件）
+  python3 scripts/refresh_sources.py --check  # 只校验现有产物是否健康
+"""
+
+from __future__ import annotations
+
+import argparse
+import pathlib
+import re
+import sys
+import time
+import urllib.error
+import urllib.request
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+DIST = ROOT / "sources" / "dist"
+ASSETS = ROOT / "core" / "data" / "src" / "main" / "assets" / "sources"
+
+FANMINGMING = "https://raw.githubusercontent.com/fanmingming/live/main/tv/m3u/"
+IPTV_ORG = "https://iptv-org.github.io/iptv/countries/"
+IPTV_ORG_EPG = "https://iptv-org.github.io/epg/guides/cn.xml"
+
+UA = "Mozilla/5.0 (compatible; tv-live-source-bot/1.0)"
+MIN_CHANNELS = 50
+RETRY = 3
+
+
+def fetch(url: str) -> str:
+    last: Exception | None = None
+    for attempt in range(1, RETRY + 1):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                return resp.read().decode("utf-8", errors="replace")
+        except Exception as exc:  # noqa: BLE001
+            last = exc
+            if attempt < RETRY:
+                time.sleep(attempt * 3)
+    raise RuntimeError(f"拉取失败 {url}: {last}")
+
+
+def parse_playlist(text: str) -> tuple[str, list[str]]:
+    """把 m3u 拆成 (头部 #EXTM3U 行, [单条频道块])。"""
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    if not lines or not lines[0].startswith("#EXTM3U"):
+        raise ValueError("不是合法的 m3u（缺少 #EXTM3U）")
+
+    header, blocks, current = lines[0], [], []
+    for line in lines[1:]:
+        if line.startswith("#EXTINF"):
+            if current:
+                blocks.append(current)
+            current = [line]
+        elif line.startswith("#"):
+            if current:
+                current.append(line)
+        else:  # 流地址
+            if current:
+                current.append(line)
+                blocks.append(current)
+                current = []
+    if current and len(current) > 1:
+        blocks.append(current)
+
+    blocks = [b for b in blocks if b[-1] and not b[-1].startswith("#")]
+    return header, ["\n".join(b) for b in blocks]
+
+
+def dedupe(blocks: list[str]) -> list[str]:
+    seen, out = set(), []
+    for block in blocks:
+        url = block.splitlines()[-1]
+        key = re.sub(r"^https?://", "", url)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(block)
+    return out
+
+
+def write(path: pathlib.Path, header: str, blocks: list[str], title: str) -> bool:
+    if len(blocks) < MIN_CHANNELS:
+        print(f"  [跳过] {title}: 只有 {len(blocks)} 个频道，低于阈值 {MIN_CHANNELS}，保留旧文件")
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text("\n".join([header] + blocks) + "\n", encoding="utf-8")
+    tmp.replace(path)
+    print(f"  {title:24s} -> {path.relative_to(ROOT)}  {len(blocks)} 个频道")
+    return True
+
+
+def build_fanmingming(source_file: str, out_name: str, title: str) -> bool:
+    header, blocks = parse_playlist(fetch(FANMINGMING + source_file))
+    # 源站 .com / .cn 混用，统一收敛到 .cn
+    header = header.replace("live.fanmingming.com", "live.fanmingming.cn")
+    blocks = [b.replace("live.fanmingming.com", "live.fanmingming.cn") for b in blocks]
+    return write(DIST / out_name, header, dedupe(blocks), title)
+
+
+def build_intl() -> bool:
+    header = f'#EXTM3U x-tvg-url="{IPTV_ORG_EPG}"'
+    blocks: list[str] = []
+    failed: list[str] = []
+    for code in ("cn", "hk", "mo", "tw"):
+        try:
+            _, part = parse_playlist(fetch(IPTV_ORG + f"{code}.m3u"))
+        except Exception as exc:  # noqa: BLE001
+            print(f"  [警告] iptv-org {code} 拉取失败：{exc}")
+            failed.append(code)
+            continue
+        print(f"  iptv-org {code}: {len(part)} 个频道")
+        blocks.extend(part)
+
+    if failed:
+        print(f"  [警告] 缺少 {', '.join(failed)}，本轮不覆盖国际源")
+        return False
+    return write(DIST / "intl-hkmo-tw.m3u", header, dedupe(blocks), "港澳台及国际")
+
+
+def copy_to_assets() -> None:
+    ASSETS.mkdir(parents=True, exist_ok=True)
+    for src in DIST.glob("*.m3u"):
+        (ASSETS / src.name).write_bytes(src.read_bytes())
+
+
+def check() -> int:
+    failed = 0
+    files = sorted(DIST.glob("*.m3u"))
+    if not files:
+        print("sources/dist 下没有 m3u", file=sys.stderr)
+        return 1
+    for f in files:
+        try:
+            _, blocks = parse_playlist(f.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001
+            print(f"[FAIL] {f.name}: {exc}")
+            failed += 1
+            continue
+        ok = len(blocks) >= MIN_CHANNELS
+        print(f"[{'OK' if ok else 'FAIL'}] {f.name}: {len(blocks)} 个频道")
+        failed += 0 if ok else 1
+    return 1 if failed else 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true", help="只校验现有产物")
+    args = parser.parse_args()
+
+    if args.check:
+        return check()
+
+    print("同步直播源…")
+    # 央视/卫视源由 scripts/build_pack.py 负责（多线路合并 + 探测）
+    results = [build_intl()]
+    copy_to_assets()
+
+    if not all(results):
+        print("部分源未更新（已保留旧文件），请检查网络或上游。")
+        return 1
+    print("完成，已同步到 assets。")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
