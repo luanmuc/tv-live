@@ -19,11 +19,17 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: 发现新源
+        run: python3 scripts/crawl_sources.py
+
       - name: 同步国际源
         run: python3 scripts/refresh_sources.py
 
       - name: 合并央视卫视多线路源
         run: python3 scripts/build_pack.py
+
+      - name: 线路巡检
+        run: python3 scripts/crawl_check.py
 
       - name: 健康检查
         run: python3 scripts/refresh_sources.py --check
@@ -47,7 +53,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add sources/dist core/data/src/main/assets/sources
+          git add sources/discovered.json sources/dist core/data/src/main/assets/sources
           if git diff --cached --quiet; then
             echo "源无变化"
           else

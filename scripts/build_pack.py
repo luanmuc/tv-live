@@ -322,10 +322,57 @@ CANDIDATES = [
 ]
 
 
+def _crawl_key(url: str) -> str:
+    """把 ibert 的 /txt/foo.txt 归一成 /foo.m3u，避免同一份源抓两遍。"""
+    parts = urllib.parse.urlsplit(url)
+    path = re.sub(r"/txt/([^/]+)\.txt$", r"/\1.m3u", parts.path)
+    return urllib.parse.urlunsplit((parts.scheme, parts.netloc, path, "", ""))
+
+
+def discovered_candidates(limit: int = 24) -> list[tuple[str, str]]:
+    """读取 crawl_sources.py 发现的地址，作为固定入口之外的动态候选。"""
+    path = ROOT / "sources" / "discovered.json"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+    fixed = {_crawl_key(u) for _, u in CANDIDATES}
+    grouped: dict[str, list[str]] = {}
+    seen: set[str] = set()
+    for item in payload.get("sources", []):
+        url = item.get("url", "")
+        if not url:
+            continue
+        key = _crawl_key(url)
+        if key in fixed or key in seen:
+            continue
+        seen.add(key)
+        host = urllib.parse.urlparse(url).hostname or "unknown"
+        if host in {"gh-proxy.com", "gh.aptv.app", "add.aptv.app"}:
+            continue
+        grouped.setdefault(host, []).append(url)
+
+    # 同一个站最多取 6 个，按域名轮转，避免 24 个名额全被 ibert 占掉
+    out: list[tuple[str, str]] = []
+    hosts = list(grouped)
+    idx = 0
+    while len(out) < limit and any(grouped[h] for h in hosts):
+        host = hosts[idx % len(hosts)]
+        if grouped[host] and sum(1 for _, u in out if urllib.parse.urlparse(u).hostname == host) < 6:
+            url = grouped[host].pop(0)
+            out.append((f"crawl {host}#{len(out) + 1}", url))
+        idx += 1
+        if idx > 10000:
+            break
+    return out
+
+
 def collect() -> list[dict]:
     pool: dict[str, dict] = {}
     SOURCE_STATS.clear()
-    for label, url in CANDIDATES:
+    candidates = list(CANDIDATES) + discovered_candidates()
+    for label, url in candidates:
         st = {
             "label": label,
             "url": url,

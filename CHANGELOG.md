@@ -1,3 +1,22 @@
+# 1.4.9
+
+## 两个爬虫
+
+- `scripts/crawl_sources.py` 源发现爬虫：从 ibert、zbds、APTV、hacks.tools 等种子页/sitemap 找 m3u、m3u8、txt，校验真实播放列表后写入 `sources/discovered.json`，按域名均衡，避免单一站点占满名额
+- `scripts/crawl_check.py` 线路巡检爬虫：对最终源包逐条测 HTTP/TS/HLS，HLS 再做清单与首分片深检，输出 `sources/dist/line-audit.json`
+- 每日采集接入「发现新源 → 合并 → 线路巡检」；另加每 6 小时独立的 `line-audit` 工作流
+
+## 源包
+
+- 固定入口 29 个，另有动态发现源参与合并
+- 候选线路 2098 条，探测存活 630 条
+- 最终 92 个频道 / 735 条线路；735 条中 600 条可用、33 条未知、102 条失效，310 条 HLS 分片深检可拉
+
+## 工程
+
+- 内置源 `SEEDED_VERSION` 9 → 10
+- 版本 1.4.9（versionCode 14）
+
 # 1.4.8
 
 ## 采集范围

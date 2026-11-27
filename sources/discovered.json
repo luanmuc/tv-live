@@ -1,0 +1,138 @@
+{
+  "generated_at": "2026-11-27T16:12:47+00:00",
+  "seed_pages": [
+    "https://m3u.ibert.me/",
+    "https://live.zbds.top/",
+    "https://profile.aptv.app/",
+    "https://iptv.hacks.tools/domestic/IPv4%20%E7%9B%B4%E6%92%AD%E6%BA%90/all/txt",
+    "https://iptv.hacks.tools/domestic/IPv4%20%E7%9B%B4%E6%92%AD%E6%BA%90/category/%E5%8D%AB%E8%A7%86%E9%A2%91%E9%81%93/txt"
+  ],
+  "errors": [],
+  "sources": [
+    {
+      "url": "https://m3u.ibert.me/txt/o_s_cn.txt",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://gh-proxy.com/raw.githubusercontent.com/vbskycn/iptv/refs/heads/master/tv/iptv6.m3u",
+      "from": "https://live.zbds.top/",
+      "first_seen": "2026-11-27T16:12:47+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://live.zbds.top/tv/iptv6.txt",
+      "from": "https://live.zbds.top/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mzky/checklist/refs/heads/master/itvlist.m3u",
+      "from": "https://profile.aptv.app/",
+      "first_seen": "2026-11-27T16:12:47+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://live.hacks.tools/tv/iptv4.txt",
+      "from": "https://iptv.hacks.tools/domestic/IPv4%20%E7%9B%B4%E6%92%AD%E6%BA%90/all/txt",
+      "first_seen": "2026-11-27T16:12:47+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://m3u.ibert.me/txt/o_s_cn_cgtn.txt",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://gh-proxy.com/raw.githubusercontent.com/vbskycn/iptv/refs/heads/master/tv/iptv4.txt",
+      "from": "https://live.zbds.top/",
+      "first_seen": "2026-11-27T16:12:47+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://live.zbds.top/tv/iptv6.m3u",
+      "from": "https://live.zbds.top/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Kimentanm/aptv/master/m3u/iptv.m3u",
+      "from": "https://profile.aptv.app/",
+      "first_seen": "2026-11-27T16:12:47+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://m3u.ibert.me/o_s_cn_cctv.m3u",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://gh-proxy.com/raw.githubusercontent.com/vbskycn/iptv/refs/heads/master/tv/iptv4.m3u",
+      "from": "https://live.zbds.top/",
+      "first_seen": "2026-11-27T16:12:47+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://live.zbds.top/tv/iptv4.txt",
+      "from": "https://live.zbds.top/",
+      "first_seen": "2026-11-27T16:12:47+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://m3u.ibert.me/txt/fmml_itv.txt",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://gh-proxy.com/raw.githubusercontent.com/vbskycn/iptv/refs/heads/master/tv/iptv6.txt",
+      "from": "https://live.zbds.top/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://m3u.ibert.me/fmml_ipv6.m3u",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://m3u.ibert.me/txt/o_s_cn_112114.txt",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://m3u.ibert.me/txt/fmml_ipv6.txt",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://m3u.ibert.me/txt/fmml_index.txt",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://m3u.ibert.me/q_bj_iptv_unicom.m3u",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    },
+    {
+      "url": "https://m3u.ibert.me/y_g.m3u",
+      "from": "https://m3u.ibert.me/",
+      "first_seen": "2026-11-27T16:02:53+00:00",
+      "last_ok": "2026-11-27T16:12:47+00:00"
+    }
+  ],
+  "summary": {
+    "seed_pages": 5,
+    "discovered": 111,
+    "accepted": 20
+  }
+}

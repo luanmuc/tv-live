@@ -4,7 +4,7 @@
 
 ```
 sources/dist/                       # 源快照，进 git
-├── pack-cctv-satellite.m3u         # 央视 + 卫视 + 港澳台多线路包（92 频道 / 475 线路）
+├── pack-cctv-satellite.m3u         # 央视 + 卫视 + 港澳台多线路包（92 频道 / 735 线路）
 ├── intl-hkmo-tw.m3u                # 港澳台及国际（189 个，已去重）
 ├── source-stats.json               # 每个上游的贡献/存活率/重复率/评分
 ├── line-stats.json                 # 央视/卫视/港澳台每条线路的存活、类型、延迟、分片
