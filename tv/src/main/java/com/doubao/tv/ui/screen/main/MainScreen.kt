@@ -1,5 +1,6 @@
 package com.doubao.tv.ui.screen.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,7 +24,6 @@ import com.doubao.tv.core.data.entities.channel.ChannelList
 import com.doubao.tv.core.data.entities.epg.EpgList
 import com.doubao.tv.BuildConfig
 import com.doubao.tv.ui.material.Snackbar
-import com.doubao.tv.ui.rememberDoubleBackPressedExitState
 import com.doubao.tv.ui.screen.Screens
 import com.doubao.tv.ui.screen.about.AboutScreen
 import com.doubao.tv.ui.screen.agreement.AgreementScreen
@@ -138,6 +138,19 @@ fun MainScreen(
         navController.navigateSingleTop(Screens.Loading())
     }
 
+    /**
+     * 直播页返回：优先回到进入直播前的页面；如果是“启动直接进直播”，
+     * 栈里只有 Loading，就回主页 Dashboard，而不是直接退出应用。
+     */
+    fun backFromLive() {
+        val previous = navController.previousBackStackEntry?.destination?.route
+        if (previous == null || previous == Screens.Loading.name || previous == Screens.Agreement.name) {
+            navController.navigateSingleTop(Screens.Dashboard())
+        } else {
+            navController.navigateUp()
+        }
+    }
+
     BrandBackground(modifier = modifier) {
         NavHost(
             modifier = Modifier.fillMaxSize(),
@@ -193,7 +206,7 @@ fun MainScreen(
                 }
 
                 composable(Screens.Live()) {
-                    val doubleBackPressedExitState = rememberDoubleBackPressedExitState()
+                    BackHandler { backFromLive() }
 
                     key(settingsViewModel.videoPlayerCore) {
                         com.doubao.tv.ui.screensold.main.components.MainContent(
@@ -211,18 +224,7 @@ fun MainScreen(
                             toDashboardScreen  ={
                                 navController.navigateSingleTop(Screens.Dashboard())
                             },
-                            onBackPressed = {
-                                if (settingsViewModel.appStartupScreen == Screens.Live.name) {
-                                    onBackPressed()
-                                } else {
-                                    if (doubleBackPressedExitState.allowExit) {
-                                        navController.navigateUp()
-                                    } else {
-                                        doubleBackPressedExitState.backPress()
-                                        Snackbar.show("再按一次退出直播")
-                                    }
-                                }
-                            },
+                            onBackPressed = { backFromLive() },
                         )
                     }
                 }
