@@ -19,7 +19,7 @@ object BuiltinSources {
     private const val PREF_NAME = "builtin_sources"
     private const val KEY_VERSION = "seeded_version"
     private const val KEY_LAST_CHECK = "last_update_check"
-    private const val SEEDED_VERSION = 8
+    private const val SEEDED_VERSION = 9
 
     /** 在线检查间隔：6 小时 */
     private const val UPDATE_INTERVAL_MS = 6 * 60 * 60 * 1000L

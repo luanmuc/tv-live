@@ -210,7 +210,9 @@ def standard_name(raw: str) -> str | None:
 
 
 def fetch(url: str, timeout: int = 60) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    # 中文分类路径必须先 percent-encode，urllib 不接受裸 UTF-8 URL。
+    safe = ":/?&=#%+;,@!$'()*[]~"
+    req = urllib.request.Request(urllib.parse.quote(url, safe=safe), headers={"User-Agent": UA})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return resp.read().decode("utf-8", errors="replace")
 
@@ -229,10 +231,35 @@ def valid_url(u: str) -> bool:
     return all(ord(c) < 128 for c in u) and " " not in u
 
 
+def parse_txt(text: str) -> list[dict]:
+    """解析「频道名,播放地址」的 TXT 源（部分国内聚合站用这种格式）。"""
+    items = []
+    for line in text.splitlines():
+        line = line.strip().lstrip("\ufeff")
+        if not line or line.startswith("#") or "," not in line:
+            continue
+        name, url = line.rsplit(",", 1)
+        name = re.sub(r"^\d+[.、\s]*", "", name.strip())
+        url = clean_url(url)
+        if not name or not valid_url(url):
+            continue
+        items.append({
+            "raw_name": name,
+            "tvg_id": "",
+            "tvg_name": name,
+            "logo": "",
+            "group": "",
+            "url": url,
+        })
+    return items
+
+
 def parse(text: str) -> list[dict]:
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
-    if not lines or not lines[0].startswith("#EXTM3U"):
+    if not lines:
         return []
+    if not lines[0].startswith("#EXTM3U"):
+        return parse_txt(text)
     items, cur = [], None
     for line in lines[1:]:
         if line.startswith("#EXTINF"):
@@ -280,6 +307,18 @@ CANDIDATES = [
     ("ibert o_s_cn", "https://m3u.ibert.me/o_s_cn.m3u"),
     ("ibert o_all", "https://m3u.ibert.me/o_all.m3u"),
     ("ibert fmml_itv", "https://m3u.ibert.me/fmml_itv.m3u"),
+    # hacks.tools / live.hacks.tools：非 GitHub、每 6 小时更新的国内分类源
+    ("hacks cctv", "https://live.hacks.tools/tv/ipv4/categories/央视频道.txt"),
+    ("hacks satellite", "https://live.hacks.tools/tv/ipv4/categories/卫视频道.txt"),
+    ("hacks local", "https://live.hacks.tools/tv/ipv4/categories/地方频道.txt"),
+    ("hacks sports", "https://live.hacks.tools/tv/ipv4/categories/体育频道.txt"),
+    ("hacks movie", "https://live.hacks.tools/tv/ipv4/categories/电影频道.txt"),
+    ("hacks documentary", "https://live.hacks.tools/tv/ipv4/categories/纪录频道.txt"),
+    ("hacks music", "https://live.hacks.tools/tv/ipv4/categories/音乐频道.txt"),
+    ("hacks opera", "https://live.hacks.tools/tv/ipv4/categories/戏曲频道.txt"),
+    ("hacks game", "https://live.hacks.tools/tv/ipv4/categories/游戏频道.txt"),
+    # 裤佬：非 GitHub 的每日直播源（TXT/M3U 混合内容）
+    ("kulao live", "https://iptv.445569.xyz/live.m3u"),
 ]
 
 
