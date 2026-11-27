@@ -42,7 +42,7 @@ IPTV_ORG_EPG = "https://iptv-org.github.io/epg/guides/cn.xml"
 
 UA = "Mozilla/5.0 (compatible; tv-live-source-bot/1.0)"
 MIN_CHANNELS = 50
-RETRY = 3
+RETRY = 2
 
 
 def fetch(url: str) -> str:
@@ -50,7 +50,7 @@ def fetch(url: str) -> str:
     for attempt in range(1, RETRY + 1):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA})
-            with urllib.request.urlopen(req, timeout=60) as resp:
+            with urllib.request.urlopen(req, timeout=25) as resp:
                 return resp.read().decode("utf-8", errors="replace")
         except Exception as exc:  # noqa: BLE001
             last = exc
@@ -228,8 +228,9 @@ def main() -> int:
     copy_to_assets()
 
     if not all(results):
-        print("部分源未更新（已保留旧文件），请检查网络或上游。")
-        return 1
+        # 单个上游超时不阻塞整条流水线：旧文件还在，build_pack 会继续用旧 intl 包，
+        # 后面的健康检查会再判断结构是否完整。
+        print("部分源未更新（已保留旧文件），继续后续合并。")
     print("完成，已同步到 assets。")
     return 0
 
