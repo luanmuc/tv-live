@@ -28,6 +28,7 @@ import com.doubao.tv.core.data.entities.epg.EpgProgrammeReserve
 import com.doubao.tv.core.data.entities.epg.EpgProgrammeReserveList
 import com.doubao.tv.core.data.utils.ChannelUtil
 import com.doubao.tv.core.data.utils.Constants
+import com.doubao.tv.core.data.utils.LineHealth
 import com.doubao.tv.core.data.utils.Loggable
 import com.doubao.tv.core.util.utils.urlHost
 import com.doubao.tv.ui.material.Snackbar
@@ -144,7 +145,11 @@ class MainContentState(
             channelGroupList.channelFirstOrNull() ?: Channel.EMPTY
         })
 
+        // 播放期间在后台逐条检测本源所有线路，不打断当前播放
+        LineHealth.start(channelGroupList.channelList, _currentChannel, currentChannelLine.url)
+
         videoPlayerState.onReady {
+            LineHealth.mark(currentChannelLine.url, true)
             settingsViewModel.iptvChannelLinePlayableUrlList += currentChannelLine.url
             settingsViewModel.iptvChannelLinePlayableHostList += currentChannelLine.url.urlHost()
         }
@@ -152,6 +157,7 @@ class MainContentState(
         videoPlayerState.onError {
             if (_currentPlaybackEpgProgramme != null) return@onError
 
+            LineHealth.mark(currentChannelLine.url, false)
             settingsViewModel.iptvChannelLinePlayableUrlList -= currentChannelLine.url
             settingsViewModel.iptvChannelLinePlayableHostList -= currentChannelLine.url.urlHost()
 
@@ -290,6 +296,9 @@ class MainContentState(
 
         _currentPlaybackEpgProgramme = playbackEpgProgramme
 
+        // 换台后优先补测该频道的线路（延迟几秒，避开起播）
+        LineHealth.probeChannel(_currentChannel, currentChannelLine.url)
+
         var url = currentChannelLine.playableUrl
         if (_currentPlaybackEpgProgramme != null) {
             val timeFormat = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
@@ -341,11 +350,24 @@ class MainContentState(
         _lastAutoSwitchLineAt = now
         _autoSwitchLineCount += 1
 
-        val nextIdx = (_currentChannelLineIdx + 1) % size
+        val nextIdx = nextAliveLineIndex()
         log.d("播放失败，自动换线到 ${_currentChannel.name} 第 ${nextIdx + 1}/$size 条")
         Snackbar.show("线路不可用，自动切换到线路 ${nextIdx + 1}/$size")
 
         changeCurrentChannel(_currentChannel, nextIdx, _currentPlaybackEpgProgramme)
+    }
+
+    /** 优先跳到后台检测为可用的下一条线路 */
+    private fun nextAliveLineIndex(): Int {
+        val size = _currentChannel.lineList.size
+        val order = (1 until size).map { (_currentChannelLineIdx + it) % size }
+        return order.firstOrNull { idx ->
+            LineHealth.status(_currentChannel.lineList[idx].url) == true
+        } ?: order.first()
+    }
+
+    fun onChannelGroupListChanged(channels: ChannelGroupList) {
+        LineHealth.start(channels.channelList, _currentChannel, currentChannelLine.url)
     }
 
     fun changeCurrentChannelToPrev() {

@@ -25,6 +25,7 @@ import kotlinx.coroutines.withContext
 import com.doubao.tv.core.data.entities.channel.ChannelLine
 import com.doubao.tv.core.data.network.request
 import com.doubao.tv.core.data.utils.ChannelUtil
+import com.doubao.tv.core.data.utils.LineHealth
 import com.doubao.tv.core.util.utils.isIPv6
 import com.doubao.tv.ui.material.Tag
 import com.doubao.tv.ui.material.TagDefaults
@@ -68,6 +69,20 @@ fun ChannelLineItem(
                     Tag(if (line.url.isIPv6()) "IPv6" else "IPv4")
 
                     if (ChannelUtil.urlSupportPlayback(line.url)) Tag("回放")
+
+                    when (LineHealth.status(line.url)) {
+                        true -> Tag(
+                            "可用",
+                            colors = TagDefaults.colors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        )
+
+                        false -> Tag(
+                            "失效",
+                            colors = TagDefaults.colors(containerColor = MaterialTheme.colorScheme.error),
+                        )
+
+                        null -> if (LineHealth.isChecking(line.url)) Tag("检测中")
+                    }
 
                     if (lineDelay > 0L) {
                         if (lineDelay < 500) {

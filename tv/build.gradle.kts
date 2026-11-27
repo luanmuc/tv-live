@@ -20,8 +20,8 @@ android {
         applicationId = "com.doubao.tv"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 9
-        versionName = "1.4.4"
+        versionCode = 10
+        versionName = "1.4.5"
         vectorDrawables {
             useSupportLibrary = true
         }

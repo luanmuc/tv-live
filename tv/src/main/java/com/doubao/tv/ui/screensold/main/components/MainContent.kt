@@ -2,6 +2,7 @@ package com.doubao.tv.ui.screensold.main.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import com.doubao.tv.core.data.entities.epg.EpgList.Companion.recentProgramme
 import com.doubao.tv.core.data.entities.epg.EpgProgrammeReserveList
 import com.doubao.tv.core.data.repositories.epg.EpgRepository
 import com.doubao.tv.core.data.repositories.iptv.IptvRepository
+import com.doubao.tv.core.data.utils.LineHealth
 import com.doubao.tv.ui.material.PopupContent
 import com.doubao.tv.ui.material.Snackbar
 import com.doubao.tv.ui.material.Visibility
@@ -70,6 +72,14 @@ fun MainContent(
         channelGroupListProvider = filteredChannelGroupListProvider,
         favoriteChannelListProvider = favoriteChannelListProvider,
     )
+
+    // 换源后重启后台检测；离开直播页时停止，避免后台空跑流量
+    LaunchedEffect(settingsViewModel.iptvSourceCurrent.url) {
+        mainContentState.onChannelGroupListChanged(filteredChannelGroupListProvider())
+    }
+    DisposableEffect(Unit) {
+        onDispose { LineHealth.stop() }
+    }
 
     // 播放失败自动换线：同频道依次试下一条线路，全部失败则停在错误提示
     LaunchedEffect(videoPlayerState.error) {
