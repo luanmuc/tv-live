@@ -96,6 +96,11 @@ jobs:
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > keystore.jks
           export KEYSTORE="$PWD/keystore.jks"
+          python3 scripts/sign_sources.py \
+            --keystore "$KEYSTORE" \
+            --store-password "$KEYSTORE_PASSWORD" \
+            --key-alias "$KEY_ALIAS" \
+            --key-password "$KEY_PASSWORD"
           ./gradlew :tv:assembleOriginalRelease --no-daemon --build-cache --stacktrace \
             -PsourcesDomesticBaseUrl="${{ vars.SOURCES_DOMESTIC_BASE_URL }}"
 

@@ -1,11 +1,17 @@
 package com.doubao.tv.core.data.utils
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 import java.security.MessageDigest
+import java.security.PublicKey
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
 import java.util.Locale
 
 /**
@@ -14,6 +20,9 @@ import java.util.Locale
  * APK 里带着 assets/sources 下的 m3u，首次启动复制到应用私有目录，装完就能离线看。
  * 之后每 6 小时（或手动点「刷新全部」）会从仓库拉一次最新源覆盖本地文件：
  * 校验通过才替换，网络失败/文件异常就继续用旧文件，不影响离线可用。
+ *
+ * 在线更新必须同时拿到 `source-manifest.json` 和 `source-manifest.sig`，
+ * 用 APK 自身的签名证书验签，再逐个文件校验 SHA-256；镜像被替换或返回半截文件都会被拒绝。
  */
 object BuiltinSources {
     private const val TAG = "BuiltinSources"
@@ -21,6 +30,8 @@ object BuiltinSources {
     private const val PREF_NAME = "builtin_sources"
     private const val KEY_ASSET_HASH = "asset_hash"
     private const val KEY_LAST_CHECK = "last_update_check"
+    private const val MANIFEST_NAME = "source-manifest.json"
+    private const val SIGNATURE_NAME = "source-manifest.sig"
 
     /** 在线检查间隔：6 小时 */
     private const val UPDATE_INTERVAL_MS = 6 * 60 * 60 * 1000L
@@ -55,7 +66,7 @@ object BuiltinSources {
 
         val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val assetNames = context.assets.list(ASSET_DIR)
-            ?.filter { it.endsWith(".m3u", ignoreCase = true) || it == "line-stats.json" }
+            ?.filter { isSeedFile(it) }
             ?.sorted()
             ?: return
         if (assetNames.isEmpty()) return
@@ -80,6 +91,12 @@ object BuiltinSources {
             pref.edit().putString(KEY_ASSET_HASH, bundledHash).apply()
         }
     }
+
+    private fun isSeedFile(name: String): Boolean =
+        name.endsWith(".m3u", ignoreCase = true) ||
+            name == "line-stats.json" ||
+            name == MANIFEST_NAME ||
+            name == SIGNATURE_NAME
 
     private fun hashAssets(context: Context, names: List<String>): String? = runCatching {
         val digest = MessageDigest.getInstance("SHA-256")
@@ -116,55 +133,91 @@ object BuiltinSources {
         val dir = File(Globals.fileDir, ASSET_DIR)
         if (!dir.exists()) dir.mkdirs()
 
+        val publicKey = signingPublicKey(context)
+        if (publicKey == null) {
+            Log.w(TAG, "无法读取 APK 签名证书，拒绝在线更新")
+            return false
+        }
+
         var changed = false
-        var attempted = false
-        REMOTE_FILES.forEach { file ->
-            attempted = true
-            if (downloadOne(dir, file)) changed = true
+        for (mirror in MIRRORS) {
+            val manifestBytes = fetchBytes(mirror + MANIFEST_NAME, 512 * 1024) ?: continue
+            val signature = fetchBytes(mirror + SIGNATURE_NAME, 64 * 1024)
+                ?.toString(Charsets.UTF_8)
+                ?: continue
+            if (!SourceManifestVerifier.verifySignature(manifestBytes, signature, publicKey)) {
+                Log.w(TAG, "源清单验签失败：$mirror")
+                continue
+            }
+            val manifest = SourceManifestVerifier.parse(manifestBytes) ?: continue
+
+            var mirrorChanged = false
+            REMOTE_FILES.forEach { file ->
+                val target = File(dir, file.name)
+                if (target.exists() && SourceManifestVerifier.matches(manifest, file.name, target.readBytes())) {
+                    return@forEach
+                }
+
+                val bytes = fetchBytes(mirror + file.name, 4 * 1024 * 1024) ?: return@forEach
+                if (!SourceManifestVerifier.matches(manifest, file.name, bytes)) {
+                    Log.w(TAG, "文件哈希不匹配：$mirror${file.name}")
+                    return@forEach
+                }
+                val text = bytes.toString(Charsets.UTF_8)
+                if (!looksValid(text, file.minBlocks)) {
+                    Log.w(TAG, "跳过无效源：$mirror${file.name}")
+                    return@forEach
+                }
+
+                val tmp = File(dir, "${file.name}.tmp")
+                tmp.writeBytes(bytes)
+                if (!tmp.renameTo(target)) {
+                    target.delete()
+                    if (!tmp.renameTo(target)) {
+                        tmp.delete()
+                        return@forEach
+                    }
+                }
+                mirrorChanged = true
+                Log.i(TAG, "已更新 ${file.name}（${bytes.size / 1024}KB，来源 $mirror）")
+            }
+            if (mirrorChanged) changed = true
+            if (changed) break
         }
 
         // 所有镜像都没有拿到可用文件时不能写 lastCheck，否则一次网络抖动会锁死 6 小时。
         if (changed) {
             pref.edit().putLong(KEY_LAST_CHECK, now).apply()
             Log.i(TAG, "内置直播源已在线更新")
-        } else if (!attempted) {
-            pref.edit().putLong(KEY_LAST_CHECK, now).apply()
         } else {
             Log.w(TAG, "本轮在线更新没有可用源，保留 6 小时重试窗口")
         }
         return changed
     }
 
-    private fun downloadOne(dir: File, file: RemoteFile): Boolean {
-        for (mirror in MIRRORS) {
-            val url = mirror + file.name
-            try {
-                val text = fetch(url) ?: continue
-                if (!looksValid(text, file.minBlocks)) {
-                    Log.w(TAG, "跳过无效源：$url")
-                    continue
-                }
-
-                val target = File(dir, file.name)
-                val tmp = File(dir, "${file.name}.tmp")
-                tmp.writeText(text)
-                if (!tmp.renameTo(target)) {
-                    target.delete()
-                    if (!tmp.renameTo(target)) {
-                        tmp.delete()
-                        continue
-                    }
-                }
-                Log.i(TAG, "已更新 ${file.name}（${text.length / 1024}KB，来源 $mirror）")
-                return true
-            } catch (ex: Exception) {
-                Log.w(TAG, "更新失败 $url: ${ex.message}")
-            }
+    private fun signingPublicKey(context: Context): PublicKey? = runCatching {
+        val packageManager = context.packageManager
+        val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            packageManager.getPackageInfo(
+                context.packageName,
+                PackageManager.GET_SIGNING_CERTIFICATES,
+            ).signingInfo?.apkContentsSigners
+        } else {
+            @Suppress("DEPRECATION")
+            packageManager.getPackageInfo(
+                context.packageName,
+                PackageManager.GET_SIGNATURES,
+            ).signatures
         }
-        return false
-    }
+        val bytes = signatures?.firstOrNull()?.toByteArray() ?: return null
+        val certificate = CertificateFactory.getInstance("X.509")
+            .generateCertificate(bytes.inputStream()) as X509Certificate
+        certificate.publicKey
+    }.onFailure {
+        Log.w(TAG, "读取 APK 签名证书失败：${it.message}")
+    }.getOrNull()
 
-    private fun fetch(url: String): String? {
+    private fun fetchBytes(url: String, maxBytes: Int): ByteArray? {
         val conn = (URL(url).openConnection() as HttpURLConnection).apply {
             connectTimeout = 8_000
             readTimeout = 20_000
@@ -175,9 +228,18 @@ object BuiltinSources {
         }
         try {
             if (conn.responseCode != HttpURLConnection.HTTP_OK) return null
-            val body = conn.inputStream.bufferedReader().use { it.readText() }
-            if (body.length > 4 * 1024 * 1024) return null
-            return body
+            if (conn.contentLengthLong > maxBytes) return null
+            val output = ByteArrayOutputStream()
+            conn.inputStream.use { input ->
+                val buffer = ByteArray(8 * 1024)
+                while (true) {
+                    val read = input.read(buffer)
+                    if (read <= 0) break
+                    output.write(buffer, 0, read)
+                    if (output.size() > maxBytes) return null
+                }
+            }
+            return output.toByteArray()
         } finally {
             conn.disconnect()
         }

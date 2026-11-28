@@ -38,6 +38,25 @@ jobs:
       - name: 健康检查
         run: python3 scripts/refresh_sources.py --check
 
+      - name: 签名源清单
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::缺少 KEYSTORE_BASE64，无法签名源清单"
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > keystore.jks
+          python3 scripts/sign_sources.py \
+            --keystore "$PWD/keystore.jks" \
+            --store-password "$KEYSTORE_PASSWORD" \
+            --key-alias "$KEY_ALIAS" \
+            --key-password "$KEY_PASSWORD"
+          rm -f keystore.jks
+
       - name: 同步到国内对象存储（可选）
         if: ${{ vars.SOURCES_DOMESTIC_BASE_URL != '' }}
         env:
