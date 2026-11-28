@@ -7,6 +7,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +37,9 @@ class VideoPlayerState(
 
     /** 错误 */
     var error by mutableStateOf<String?>(null)
+
+    /** 每次错误递增，保证连续两条线路报同一个错也能触发换线 */
+    var errorVersion by mutableIntStateOf(0)
 
     /** 正在缓冲 */
     var isBuffering by mutableStateOf(false)
@@ -132,7 +136,7 @@ class VideoPlayerState(
         instance.onError { ex ->
             error = ex?.let { "${it.errorCodeName}(${it.errorCode})" }
                 ?.apply { onErrorListeners.forEach { it.invoke() } }
-
+            if (ex != null) errorVersion++
         }
         instance.onReady {
             onReadyListeners.forEach { it.invoke() }

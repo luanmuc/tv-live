@@ -82,10 +82,8 @@ fun MainContent(
     }
 
     // 播放失败自动换线：同频道依次试下一条线路，全部失败则停在错误提示
-    LaunchedEffect(videoPlayerState.error) {
-        if (videoPlayerState.error == null) {
-            mainContentState.resetAutoSwitchLine()
-        } else {
+    LaunchedEffect(videoPlayerState.errorVersion, videoPlayerState.error) {
+        if (videoPlayerState.error != null) {
             mainContentState.handlePlayerError()
         }
     }

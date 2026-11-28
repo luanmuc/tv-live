@@ -152,6 +152,7 @@ class MainContentState(
             LineHealth.mark(currentChannelLine.url, true)
             settingsViewModel.iptvChannelLinePlayableUrlList += currentChannelLine.url
             settingsViewModel.iptvChannelLinePlayableHostList += currentChannelLine.url.urlHost()
+            resetAutoSwitchLine()
         }
 
         videoPlayerState.onError {
@@ -160,10 +161,6 @@ class MainContentState(
             LineHealth.mark(currentChannelLine.url, false)
             settingsViewModel.iptvChannelLinePlayableUrlList -= currentChannelLine.url
             settingsViewModel.iptvChannelLinePlayableHostList -= currentChannelLine.url.urlHost()
-
-            if (_currentChannelLineIdx < _currentChannel.lineList.size - 1) {
-                changeCurrentChannel(_currentChannel, _currentChannelLineIdx + 1)
-            }
         }
 
         videoPlayerState.onInterrupt {
@@ -335,6 +332,9 @@ class MainContentState(
      * 交给用户手动换源或换台，避免无限重试把设备拖死。
      */
     fun handlePlayerError() {
+        // 回看/EPG 播放失败不自动换直播线路，避免把回看地址切到直播源。
+        if (_currentPlaybackEpgProgramme != null) return
+
         val size = _currentChannel.lineList.size
         if (size <= 1) return
 
