@@ -155,7 +155,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 2026-11-28 | 批次 3（设置层） | 新增 `AppSettings`（66 字段不可变快照）与 `SettingsRepository`；`SettingsViewModel` 删除 66 份 `mutableStateOf` 与 `refresh()` 逐字段复制，构造注入仓库；新增 `AppContainer`；Compose 直接观察仓库 `current`；仓库只在字段变化时写 `Configs`；移除 `SettingsViewModel.instance` / `MainViewModel.instance` | `:tv:compileOriginalReleaseKotlin` 通过；run 46096707088 与 run 46097780346 均成功，最终 APK 版本/签名校验通过 | `Configs` 仍是 SharedPreferences 兼容层；其余直接写 `Configs` 的调用点待迁移 |
 | 2026-11-28 | 批次 4（第一刀） | 新增 `PlaybackCoordinator` 纯策略类：回看不换线、单线不换、1 秒冷却、最多 `线路数-1` 次、优先活线；`MainContentState` 删除 `_autoSwitchLineCount` / `_lastAutoSwitchLineAt` 与 `nextAliveLineIndex`，统一调用协调器 | 7 项单测通过；`:tv:compileOriginalReleaseKotlin` 通过；云端 run 46101103087 成功，APK 版本/签名校验通过 | `:feature:live`、类型安全导航、统一返回、旧 `screensold` 退场未做 |
 | 2026-11-28 | 批次 4（导航） | 外层 `MainScreen` 从 `Screens` 字符串路由迁移到 `@Serializable Destination`（Agreement/Loading/Dashboard/Live/…/Settings）；`navigateSingleTop` 增加目的地重载；启动页保存值通过 `Destination.fromStoredName` 校验并回退 Loading；直播返回判断改用目的地 route | `:tv:compileOriginalReleaseKotlin` 通过；云端 run 46103508372 成功，APK 版本/签名校验通过 | 设置页内部仍是字符串子路由；统一 `BackDispatcher` 未抽 |
-| 2026-11-28 | 批次 4（设置路由） | 新增 `SettingsDestination`，13 个分类 + 16 个子分类全部改为独立 `@Serializable` 目的地；`SettingsScreen` 改用 `composable<T>`，旧 `"APP"` / `"IPTV_SOURCE"` 等 route 名通过 `@SerialName` 保留；`navigateSingleTop` 增加设置目的地重载 | `:tv:compileOriginalReleaseKotlin` 通过 | 统一 `BackDispatcher` 仍未抽 |
+| 2026-11-28 | 批次 4（设置路由） | 新增 `SettingsDestination`，13 个分类 + 16 个子分类全部改为独立 `@Serializable` 目的地；`SettingsScreen` 改用 `composable<T>`，旧 `"APP"` / `"IPTV_SOURCE"` 等 route 名通过 `@SerialName` 保留；`navigateSingleTop` 增加设置目的地重载 | `:tv:compileOriginalReleaseKotlin` 通过；云端 run 46105482942 成功，APK 版本/签名校验通过 | 统一 `BackDispatcher` 仍未抽 |
 
 ## 4. 构建验证记录
 
@@ -166,6 +166,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 2026-11-28 | `16eae07` | [run 46097780346](https://github.com/luanmuc/tv-live/actions/runs/46097780346) | `doubao-tv-1.4.10.apk`，32.56MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证设置层 + 单例移除后的最终代码；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/feEgQh7VcC` |
 | 2026-11-28 | `8ef5b15` | [run 46101103087](https://github.com/luanmuc/tv-live/actions/runs/46101103087) | `doubao-tv-1.4.10.apk`，32.56MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证 `PlaybackCoordinator`；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/qerCdbPZmk` |
 | 2026-11-28 | `6937c8f` | [run 46103508372](https://github.com/luanmuc/tv-live/actions/runs/46103508372) | `doubao-tv-1.4.10.apk`，32.59MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证类型安全导航；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/kQPNBRYCQb` |
+| 2026-11-28 | `3a772a8` | [run 46105482942](https://github.com/luanmuc/tv-live/actions/runs/46105482942) | `doubao-tv-1.4.10.apk`，32.7MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证设置页类型安全路由；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/O6B0juG3sN` |
 
 ## 5. 风险与回滚
 
