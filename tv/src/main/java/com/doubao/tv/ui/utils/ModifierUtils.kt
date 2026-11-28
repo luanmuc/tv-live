@@ -30,6 +30,7 @@ import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.doubao.tv.ui.screen.Destination
+import com.doubao.tv.ui.screen.settings.SettingsDestination
 import com.doubao.tv.ui.theme.LAYOUT_GRID_SPACING
 import com.doubao.tv.ui.theme.LAYOUT_GRID_WIDTH
 import kotlin.math.absoluteValue
@@ -309,6 +310,13 @@ fun NavHostController.navigateSingleTop(route: String) {
 }
 
 fun NavHostController.navigateSingleTop(destination: Destination) {
+    navigate(destination) {
+        popUpTo(destination) { inclusive = true }
+        launchSingleTop = true
+    }
+}
+
+fun NavHostController.navigateSingleTop(destination: SettingsDestination) {
     navigate(destination) {
         popUpTo(destination) { inclusive = true }
         launchSingleTop = true

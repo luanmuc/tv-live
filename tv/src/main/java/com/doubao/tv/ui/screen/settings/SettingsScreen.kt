@@ -80,141 +80,141 @@ fun SettingsScreen(
     AppScreen(modifier = modifier, onBackPressed = onBackPressed) {
         NavHost(
             navController = navController,
-            startDestination = startDestinationProvider() ?: "categories",
+            startDestination = SettingsDestination.fromStoredName(startDestinationProvider()),
             builder = {
-                composable(route = "categories") {
+                composable<SettingsDestination.Categories> {
                     SettingsCategoriesScreen(
-                        toSettingsCategoryScreen = { navController.navigateSingleTop(it.name) },
+                        toSettingsCategoryScreen = { navController.navigateSingleTop(SettingsDestination.fromCategory(it)) },
                         onBackPressed = onBackPressed,
                     )
                 }
 
-                composable(SettingsCategories.APP.name) {
+                composable<SettingsDestination.App> {
                     SettingsAppScreen(
                         onReload = onReload,
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.IPTV.name) {
+                composable<SettingsDestination.Iptv> {
                     SettingsIptvScreen(
                         channelGroupListProvider = channelGroupListProvider,
-                        toIptvSourceScreen = { navController.navigateSingleTop(SettingsSubCategories.IPTV_SOURCE.name) },
+                        toIptvSourceScreen = { navController.navigateSingleTop(SettingsDestination.IptvSource) },
                         toIptvSourceCacheTimeScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.IPTV_SOURCE_CACHE_TIME.name)
+                            navController.navigateSingleTop(SettingsDestination.IptvSourceCacheTime)
                         },
                         toChannelGroupVisibilityScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.CHANNEL_GROUP_VISIBILITY.name)
+                            navController.navigateSingleTop(SettingsDestination.ChannelGroupVisibility)
                         },
                         toIptvHybridModeScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.IPTV_HYBRID_MODE.name)
+                            navController.navigateSingleTop(SettingsDestination.IptvHybridMode)
                         },
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.EPG.name) {
+                composable<SettingsDestination.Epg> {
                     SettingsEpgScreen(
-                        toEpgSourceScreen = { navController.navigateSingleTop(SettingsSubCategories.EPG_SOURCE.name) },
+                        toEpgSourceScreen = { navController.navigateSingleTop(SettingsDestination.EpgSource) },
                         toEpgRefreshTimeThresholdScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.EPG_REFRESH_TIME_THRESHOLD.name)
+                            navController.navigateSingleTop(SettingsDestination.EpgRefreshTimeThreshold)
                         },
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.UI.name) {
+                composable<SettingsDestination.Ui> {
                     SettingsUiScreen(
                         toUiTimeShowModeScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.UI_TIME_SHOW_MODE.name)
+                            navController.navigateSingleTop(SettingsDestination.UiTimeShowMode)
                         },
                         toUiScreenAutoCloseDelayScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.UI_SCREEN_AUTO_CLOSE_DELAY.name)
+                            navController.navigateSingleTop(SettingsDestination.UiScreenAutoCloseDelay)
                         },
                         toUiDensityScaleRatioScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.UI_DENSITY_SCALE_RATIO.name)
+                            navController.navigateSingleTop(SettingsDestination.UiDensityScaleRatio)
                         },
                         toUiFontScaleRatioScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.UI_FONT_SCALE_RATIO.name)
+                            navController.navigateSingleTop(SettingsDestination.UiFontScaleRatio)
                         },
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.CONTROL.name) {
+                composable<SettingsDestination.Control> {
                     SettingsControlScreen(
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.VIDEO_PLAYER.name) {
+                composable<SettingsDestination.VideoPlayer> {
                     SettingsVideoPlayerScreen(
                         toVideoPlayerCoreScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.VIDEO_PLAYER_CORE.name)
+                            navController.navigateSingleTop(SettingsDestination.VideoPlayerCore)
                         },
                         toVideoPlayerRenderModeScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.VIDEO_PLAYER_RENDER_MODE.name)
+                            navController.navigateSingleTop(SettingsDestination.VideoPlayerRenderMode)
                         },
                         toVideoPlayerDisplayModeScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.VIDEO_PLAYER_DISPLAY_MODE.name)
+                            navController.navigateSingleTop(SettingsDestination.VideoPlayerDisplayMode)
                         },
                         toVideoPlayerLoadTimeoutScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.VIDEO_PLAYER_LOAD_TIMEOUT.name)
+                            navController.navigateSingleTop(SettingsDestination.VideoPlayerLoadTimeout)
                         },
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.UPDATE.name) {
+                composable<SettingsDestination.Update> {
                     SettingsUpdateScreen(
                         toUpdateChannelScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.UPDATE_CHANNEL.name)
+                            navController.navigateSingleTop(SettingsDestination.UpdateChannel)
                         },
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.NETWORK.name) {
+                composable<SettingsDestination.Network> {
                     SettingsNetworkScreen(
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.THEME.name) {
+                composable<SettingsDestination.Theme> {
                     SettingsThemeScreen(
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.CLOUD_SYNC.name) {
+                composable<SettingsDestination.CloudSync> {
                     SettingsCloudSyncScreen(
                         toCloudSyncProviderScreen = {
-                            navController.navigateSingleTop(SettingsSubCategories.CLOUD_SYNC_PROVIDER.name)
+                            navController.navigateSingleTop(SettingsDestination.CloudSyncProvider)
                         },
                         onReload = onReload,
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.DEBUG.name) {
+                composable<SettingsDestination.Debug> {
                     SettingsDebugScreen(
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.LOG.name) {
+                composable<SettingsDestination.Log> {
                     SettingsLogScreen(
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsCategories.PERMISSIONS.name) {
+                composable<SettingsDestination.Permissions> {
                     SettingsPermissionsScreen(
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(SettingsSubCategories.IPTV_SOURCE.name) {
+                composable<SettingsDestination.IptvSource> {
                     SettingsIptvSourceScreen(
                         currentIptvSourceProvider = { settingsViewModel.iptvSourceCurrent },
                         iptvSourceListProvider = { settingsViewModel.iptvSourceList },
@@ -240,7 +240,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.IPTV_SOURCE_CACHE_TIME.name) {
+                composable<SettingsDestination.IptvSourceCacheTime> {
                     SettingsIptvSourceCacheTimeScreen(
                         cacheTimeProvider = { settingsViewModel.iptvSourceCacheTime },
                         onCacheTimeChanged = {
@@ -251,7 +251,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.CHANNEL_GROUP_VISIBILITY.name) {
+                composable<SettingsDestination.ChannelGroupVisibility> {
                     var hasChanged by remember { mutableStateOf(false) }
                     SettingsChannelGroupVisibilityScreen(
                         channelGroupListProvider = channelGroupListProvider,
@@ -267,7 +267,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.IPTV_HYBRID_MODE.name) {
+                composable<SettingsDestination.IptvHybridMode> {
                     SettingsIptvHybridModeScreen(
                         hybridModeProvider = { settingsViewModel.iptvHybridMode },
                         onHybridModeChanged = {
@@ -278,7 +278,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.EPG_SOURCE.name) {
+                composable<SettingsDestination.EpgSource> {
                     SettingsEpgSourceScreen(
                         currentEpgSourceProvider = { settingsViewModel.epgSourceCurrent },
                         epgSourceListProvider = { settingsViewModel.epgSourceList },
@@ -300,7 +300,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.EPG_REFRESH_TIME_THRESHOLD.name) {
+                composable<SettingsDestination.EpgRefreshTimeThreshold> {
                     SettingsEpgRefreshTimeThresholdScreen(
                         timeThresholdProvider = { settingsViewModel.epgRefreshTimeThreshold },
                         onTimeThresholdChanged = { settingsViewModel.epgRefreshTimeThreshold = it },
@@ -308,7 +308,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.UI_TIME_SHOW_MODE.name) {
+                composable<SettingsDestination.UiTimeShowMode> {
                     SettingsUiTimeShowModeScreen(
                         timeShowModeProvider = { settingsViewModel.uiTimeShowMode },
                         onTimeShowModeChanged = {
@@ -319,7 +319,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.UI_SCREEN_AUTO_CLOSE_DELAY.name) {
+                composable<SettingsDestination.UiScreenAutoCloseDelay> {
                     SettingsUiScreenAutoCloseScreen(
                         delayProvider = { settingsViewModel.uiScreenAutoCloseDelay },
                         onDelayChanged = {
@@ -330,7 +330,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.UI_DENSITY_SCALE_RATIO.name) {
+                composable<SettingsDestination.UiDensityScaleRatio> {
                     SettingsUiDensityScaleRatioScreen(
                         scaleRatioProvider = { settingsViewModel.uiDensityScaleRatio },
                         onScaleRatioChanged = { settingsViewModel.uiDensityScaleRatio = it },
@@ -338,7 +338,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.UI_FONT_SCALE_RATIO.name) {
+                composable<SettingsDestination.UiFontScaleRatio> {
                     SettingsUiFontScaleRatioScreen(
                         scaleRatioProvider = { settingsViewModel.uiFontScaleRatio },
                         onScaleRatioChanged = { settingsViewModel.uiFontScaleRatio = it },
@@ -346,7 +346,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.VIDEO_PLAYER_CORE.name) {
+                composable<SettingsDestination.VideoPlayerCore> {
                     SettingsVideoPlayerCoreScreen(
                         coreProvider = { settingsViewModel.videoPlayerCore },
                         onCoreChanged = {
@@ -357,7 +357,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.VIDEO_PLAYER_RENDER_MODE.name) {
+                composable<SettingsDestination.VideoPlayerRenderMode> {
                     SettingsVideoPlayerRenderModeScreen(
                         renderModeProvider = { settingsViewModel.videoPlayerRenderMode },
                         onRenderModeChanged = {
@@ -368,7 +368,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.VIDEO_PLAYER_DISPLAY_MODE.name) {
+                composable<SettingsDestination.VideoPlayerDisplayMode> {
                     SettingsVideoPlayerDisplayModeScreen(
                         displayModeProvider = { settingsViewModel.videoPlayerDisplayMode },
                         onDisplayModeChanged = {
@@ -379,7 +379,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.VIDEO_PLAYER_LOAD_TIMEOUT.name) {
+                composable<SettingsDestination.VideoPlayerLoadTimeout> {
                     SettingsVideoPlayerLoadTimeoutScreen(
                         timeoutProvider = { settingsViewModel.videoPlayerLoadTimeout },
                         onTimeoutChanged = {
@@ -390,7 +390,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.UPDATE_CHANNEL.name) {
+                composable<SettingsDestination.UpdateChannel> {
                     SettingsUpdateChannelScreen(
                         updateChannelProvider = { settingsViewModel.updateChannel },
                         onUpdateChannelChanged = {
@@ -402,7 +402,7 @@ fun SettingsScreen(
                     )
                 }
 
-                composable(SettingsSubCategories.CLOUD_SYNC_PROVIDER.name) {
+                composable<SettingsDestination.CloudSyncProvider> {
                     SettingsCloudSyncProviderScreen(
                         providerProvider = { settingsViewModel.cloudSyncProvider },
                         onProviderChanged = {
