@@ -30,6 +30,7 @@ import com.doubao.tv.core.data.utils.ChannelUtil
 import com.doubao.tv.core.data.utils.Constants
 import com.doubao.tv.core.data.utils.LineHealth
 import com.doubao.tv.core.data.utils.Loggable
+import com.doubao.tv.core.data.utils.PlaybackCoordinator
 import com.doubao.tv.core.util.utils.urlHost
 import com.doubao.tv.ui.material.Snackbar
 import com.doubao.tv.ui.screen.settings.SettingsViewModel
@@ -59,9 +60,7 @@ class MainContentState(
 
     val currentChannelLine get() = _currentChannel.lineList[_currentChannelLineIdx]
 
-    /** 本次播放已自动换线次数，切换频道或播放成功后清零 */
-    private var _autoSwitchLineCount by mutableIntStateOf(0)
-    private var _lastAutoSwitchLineAt by mutableStateOf(0L)
+    private val playbackCoordinator = PlaybackCoordinator()
 
     private var _currentPlaybackEpgProgramme by mutableStateOf<EpgProgramme?>(null)
     val currentPlaybackEpgProgramme get() = _currentPlaybackEpgProgramme
@@ -277,7 +276,7 @@ class MainContentState(
     ) {
         settingsViewModel.iptvChannelLastPlay = channel
 
-        if (channel != _currentChannel) _autoSwitchLineCount = 0
+        if (channel != _currentChannel) playbackCoordinator.reset()
 
         if (channel == _currentChannel && lineIdx == _currentChannelLineIdx && playbackEpgProgramme == _currentPlaybackEpgProgramme) return
 
@@ -322,7 +321,7 @@ class MainContentState(
 
     /** 播放成功，允许下次重新自动换线 */
     fun resetAutoSwitchLine() {
-        _autoSwitchLineCount = 0
+        playbackCoordinator.reset()
     }
 
     /**
@@ -332,38 +331,25 @@ class MainContentState(
      * 交给用户手动换源或换台，避免无限重试把设备拖死。
      */
     fun handlePlayerError() {
-        // 回看/EPG 播放失败不自动换直播线路，避免把回看地址切到直播源。
-        if (_currentPlaybackEpgProgramme != null) return
+        val decision = playbackCoordinator.onError(
+            lineCount = _currentChannel.lineList.size,
+            currentLineIdx = _currentChannelLineIdx,
+            isCatchup = _currentPlaybackEpgProgramme != null,
+            isLineAlive = { idx -> LineHealth.status(_currentChannel.lineList[idx].url) == true },
+        )
 
-        val size = _currentChannel.lineList.size
-        if (size <= 1) return
+        when (decision) {
+            PlaybackCoordinator.Decision.Ignored -> return
+            PlaybackCoordinator.Decision.Exhausted -> {
+                log.d("线路全部不可用：${_currentChannel.name}")
+            }
 
-        val now = System.currentTimeMillis()
-        if (now - _lastAutoSwitchLineAt < 1000) return
-
-        if (_autoSwitchLineCount >= size - 1) {
-            log.d("线路全部不可用：${_currentChannel.name}")
-            _autoSwitchLineCount = 0
-            return
+            is PlaybackCoordinator.Decision.Switch -> {
+                log.d("播放失败，自动换线到 ${_currentChannel.name} 第 ${decision.lineIndex + 1}/${decision.total} 条")
+                Snackbar.show("线路不可用，自动切换到线路 ${decision.lineIndex + 1}/${decision.total}")
+                changeCurrentChannel(_currentChannel, decision.lineIndex, _currentPlaybackEpgProgramme)
+            }
         }
-
-        _lastAutoSwitchLineAt = now
-        _autoSwitchLineCount += 1
-
-        val nextIdx = nextAliveLineIndex()
-        log.d("播放失败，自动换线到 ${_currentChannel.name} 第 ${nextIdx + 1}/$size 条")
-        Snackbar.show("线路不可用，自动切换到线路 ${nextIdx + 1}/$size")
-
-        changeCurrentChannel(_currentChannel, nextIdx, _currentPlaybackEpgProgramme)
-    }
-
-    /** 优先跳到后台检测为可用的下一条线路 */
-    private fun nextAliveLineIndex(): Int {
-        val size = _currentChannel.lineList.size
-        val order = (1 until size).map { (_currentChannelLineIdx + it) % size }
-        return order.firstOrNull { idx ->
-            LineHealth.status(_currentChannel.lineList[idx].url) == true
-        } ?: order.first()
     }
 
     fun onChannelGroupListChanged(@Suppress("UNUSED_PARAMETER") channels: ChannelGroupList) {
