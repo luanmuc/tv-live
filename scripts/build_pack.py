@@ -948,6 +948,7 @@ def build(items: list[dict]) -> None:
     write_line_stats(final_lines)
     ASSETS.mkdir(parents=True, exist_ok=True)
     (ASSETS / out.name).write_bytes(out.read_bytes())
+    (ASSETS / "line-stats.json").write_bytes((DIST / "line-stats.json").read_bytes())
 
 
 def merge_hkmotw_only() -> int:

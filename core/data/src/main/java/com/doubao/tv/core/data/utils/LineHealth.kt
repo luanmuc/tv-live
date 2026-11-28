@@ -1,5 +1,6 @@
 package com.doubao.tv.core.data.utils
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateMapOf
 import com.doubao.tv.core.data.entities.channel.Channel
@@ -13,6 +14,8 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Collections
@@ -46,6 +49,32 @@ object LineHealth {
     private val channelJobs = Collections.synchronizedSet(mutableSetOf<Job>())
 
     data class Summary(val checked: Int, val alive: Int, val dead: Int, val checking: Int)
+
+    /**
+     * 用 APK 内置的 line-stats.json 先填充一轮健康状态，UI 首次进入就能显示已知结果；
+     * checkedAt 置为旧时间，播放时仍会按 30 分钟规则重新实测。
+     */
+    fun init(context: Context) {
+        val file = File(Globals.fileDir, "sources/line-stats.json")
+        if (!file.exists()) return
+        runCatching {
+            val lines = JSONObject(file.readText()).optJSONArray("lines") ?: return@runCatching
+            var seeded = 0
+            for (i in 0 until lines.length()) {
+                val row = lines.optJSONObject(i) ?: continue
+                val url = row.optString("url")
+                if (url.isBlank() || row.isNull("alive")) continue
+                val k = key(url)
+                if (k.isEmpty()) continue
+                statusMap[k] = row.optBoolean("alive")
+                checkedAt[k] = 1L
+                seeded++
+            }
+            if (seeded > 0) Log.i(TAG, "载入内置线路健康快照 $seeded 条")
+        }.onFailure {
+            Log.w(TAG, "载入线路健康快照失败：${it.message}")
+        }
+    }
 
     fun summary(): Summary = Summary(
         checked = statusMap.size,

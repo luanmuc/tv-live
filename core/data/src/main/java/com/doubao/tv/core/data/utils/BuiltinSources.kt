@@ -55,7 +55,7 @@ object BuiltinSources {
 
         val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val assetNames = context.assets.list(ASSET_DIR)
-            ?.filter { it.endsWith(".m3u", ignoreCase = true) }
+            ?.filter { it.endsWith(".m3u", ignoreCase = true) || it == "line-stats.json" }
             ?.sorted()
             ?: return
         if (assetNames.isEmpty()) return

@@ -12,6 +12,7 @@ import coil.util.DebugLogger
 import com.doubao.tv.core.data.AppData
 import com.doubao.tv.core.data.utils.BuiltinSources
 import com.doubao.tv.core.data.utils.Globals
+import com.doubao.tv.core.data.utils.LineHealth
 import kotlin.system.exitProcess
 
 class MyTVApplication : Application(), ImageLoaderFactory {
@@ -22,6 +23,7 @@ class MyTVApplication : Application(), ImageLoaderFactory {
         crashHandle()
         AppData.init(applicationContext)
         BuiltinSources.install(this)
+        LineHealth.init(this)
         // 后台拉一次最新内置源；失败静默，继续用 APK 里的离线副本
         Thread({
             runCatching { BuiltinSources.updateFromNetwork(this) }
