@@ -145,8 +145,8 @@ class MainContentState(
             channelGroupList.channelFirstOrNull() ?: Channel.EMPTY
         })
 
-        // 播放期间在后台逐条检测本源所有线路，不打断当前播放
-        LineHealth.start(channelGroupList.channelList, _currentChannel, currentChannelLine.url)
+        // 播放期间只预探测当前频道 + 收藏频道，避免启动就扫描整包 764 条线路。
+        LineHealth.start(probeChannels(), _currentChannel, currentChannelLine.url)
 
         videoPlayerState.onReady {
             LineHealth.mark(currentChannelLine.url, true)
@@ -366,9 +366,13 @@ class MainContentState(
         } ?: order.first()
     }
 
-    fun onChannelGroupListChanged(channels: ChannelGroupList) {
-        LineHealth.start(channels.channelList, _currentChannel, currentChannelLine.url)
+    fun onChannelGroupListChanged(@Suppress("UNUSED_PARAMETER") channels: ChannelGroupList) {
+        LineHealth.start(probeChannels(), _currentChannel, currentChannelLine.url)
     }
+
+    private fun probeChannels(): List<Channel> =
+        (listOf(_currentChannel) + favoriteChannelListProvider())
+            .distinctBy { "${it.epgName}|${it.name}" }
 
     fun changeCurrentChannelToPrev() {
         changeCurrentChannel(getPrevChannel())

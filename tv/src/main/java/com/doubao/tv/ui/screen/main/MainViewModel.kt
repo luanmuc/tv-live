@@ -7,8 +7,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -48,7 +51,12 @@ class MainViewModel : ViewModel() {
 
     private var _lastJob: Job? = null
 
-    var needRefresh: () -> Unit = {}
+    private val _refreshRequests = MutableSharedFlow<Unit>(replay = 1, extraBufferCapacity = 1)
+    val refreshRequests: SharedFlow<Unit> = _refreshRequests.asSharedFlow()
+
+    private fun requestRefresh() {
+        _refreshRequests.tryEmit(Unit)
+    }
 
     init {
         viewModelScope.launch {
@@ -78,7 +86,7 @@ class MainViewModel : ViewModel() {
 
             if (syncData != CloudSyncData.EMPTY) {
                 syncData.apply()
-                needRefresh()
+                requestRefresh()
             }
         }
     }
@@ -295,7 +303,7 @@ class MainViewModel : ViewModel() {
 
                 channelFavorite.copy(channel = newChannel ?: channelFavorite.channel)
             })
-        needRefresh()
+        requestRefresh()
     }
 
     companion object {

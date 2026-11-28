@@ -3,6 +3,7 @@ package com.doubao.tv.ui.screen.main
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -14,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import com.doubao.tv.core.data.entities.channel.Channel
 import com.doubao.tv.core.data.entities.channel.ChannelFavorite
@@ -55,7 +57,9 @@ fun MainScreen(
     val coroutineScope = rememberCoroutineScope()
     val uiState by mainViewModel.uiState.collectAsState()
 
-    mainViewModel.needRefresh = { settingsViewModel.refresh() }
+    LaunchedEffect(mainViewModel, settingsViewModel) {
+        mainViewModel.refreshRequests.collect { settingsViewModel.refresh() }
+    }
 
     val channelGroupListProvider = {
         (uiState as? MainUiState.Ready)?.channelGroupList ?: ChannelGroupList()
