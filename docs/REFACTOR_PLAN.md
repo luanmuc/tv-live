@@ -1,7 +1,7 @@
 # 电视台 / tv-live 架构评审与重构执行清单
 
 > 基线：`main` / `7c41fde`（1.4.10）  
-> 批次 1～7 已同步到 `main`；批次 8 为 1.4.13 播放加速版本。
+> 批次 1～8 已同步到 `main`；批次 8 为 1.4.13 播放加速版本。
 > 目的：把已经确认的问题固定下来，按批次执行、逐项勾选，避免后续只做“看得见的功能”而漏掉结构性债。  
 > 原则：不推倒重写；先封风险，再做可测试性，最后迁移 UI。每个批次都必须能单独编译、可回滚。
 
@@ -200,6 +200,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 | 2026-11-28 | 批次 4（直播 UI 模块化） | 新增 `:core:settings`（设置快照/仓库/VM/Configs/主题与显示模式枚举）与 `:core:ui`（material/theme/tooling/AppScreen/路由/Destination/ModifierUtils/共享频道条目）；`:feature:live` 迁入全部 `screensold` 61 文件与直播频道信息组件，包名改为 `com.doubao.tv.feature.live.ui`；app 依赖 core:ui/core:settings，旧 `screensold` 删除 | `:tv:compileOriginalReleaseKotlin` 通过；`:core:data`/`:core:util`/`:feature:live` 单测全部通过；本地 `:tv:assembleOriginalRelease` 通过（R8/资源压缩/打包） | 包名保留 `PlaybackCoordinator` 的 `feature.live.playback`；`Configs` 仍为 SharedPreferences 兼容层 |
 | 2026-11-28 | 批次 5 | `LineHealth` Flow 化、`core:data` 去 Compose；删除云同步包/页面/字段/枚举；删除调试页/覆盖层/字段；删除推送页与 HTTP 服务；源添加改本机弹窗；收藏写入收口到 `SettingsRepository` | `:tv:compileOriginalReleaseKotlin` 通过；`:core:data`/`:core:util`/`:feature:live` 单测通过 | 本地 `assembleOriginalRelease` 因缺 `keystore.jks` 未完成打包，改走云端签名构建 |
+| 2026-11-28 | 批次 8 / v1.4.13 | 线路探测记录首字节延迟、按延迟选最快活线；播放中连续缓冲 4 秒自动换线（每轮 2 次）；Media3 10～30 秒缓冲 + 跨协议重定向；IJK packet buffering + 12MB；设置页显示平均延迟 | `PlaybackCoordinatorTest` 11 项、`:core:data`/`:core:util`/`:feature:live`/`:tv` 单测通过；`:tv:lintOriginalRelease` 0 error/26 warning；云端 run 46130714142 成功；APK 1.4.13 / versionCode 18，Release v1.4.13 已发布 | CDN `https://aka.doubaocdn.com/s/QmTrNmCVBc`；加速为客户端选线/缓冲优化，不改变源站带宽 |
 | 2026-11-28 | 批次 7 / v1.4.12 | `sources_pipeline` 拆包、频道别名统一、`Configs` 读取迁移、新增/已有源自签名 TLS 开关、`contentVersion` 跳过重复下载、`:tv` 导航测试 + lint、版本 1.4.12 | unittest 8 项、`:tv:testOriginalReleaseUnitTest`、`:tv:lintOriginalRelease`（0 error/26 warning）通过；云端 run 46127411932 成功；APK 1.4.12 / versionCode 17，签名 SHA-256 `65:E9:...:10:CB`；Release v1.4.12 已发布 | v1.4.11 为中间包，最终以 v1.4.12 交付；CDN `https://aka.doubaocdn.com/s/UAc5Fq8CJf` |
 | 2026-11-28 | 批次 6 | 源清单按 APK 签名证书签名；App 先验签再逐文件校验 SHA-256；新增 `sign_sources.py`；build/refresh 两条 workflow 均接入；SEC-07 随云同步字段删除关闭 | `SourceManifestTest` 3 项通过；`:core:data`/`:core:util`/`:feature:live` 单测通过；`:tv:compileOriginalReleaseKotlin` 通过；云端 run 46121470785 成功；APK 内清单 `Verified OK` | 源清单签名使用现有 APK keystore，不新增密钥；APK 版本仍为 1.4.10 |
 
