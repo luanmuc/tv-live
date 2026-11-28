@@ -111,6 +111,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 批次 1 留下的明确尾巴：
 
+- [ ] Token 轮换/一次性配对码；当前 Token 会出现在 URL query，可能进浏览器历史或代理日志。
 - [ ] 自签名 HTTPS 源的单 host 例外（当前统一走系统信任，个别源会失败）。
 - [ ] 远端源包的签名/哈希校验（当前只做协议白名单和最小行数）。
 - [ ] SharedPreferences 密钥加密与备份策略（SEC-07）。
