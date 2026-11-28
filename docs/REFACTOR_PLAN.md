@@ -78,7 +78,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | SRC-04 | `line-audit` 不回灌；03:00 与 04:30 重复巡检 | 产物只提交；两个 workflow 都跑 `crawl_check` | 巡检结果进入下一次选线；去掉重复任务或改成周度深检 | DONE（已回灌 route_score；每日重复巡检移除，独立任务改周度） |
 | SRC-05 | 输出丢失 `http-user-agent` / `#KODIPROP` 等元数据 | `build_pack.parse` 只保留 name/logo/group/url；输出不写 KODIPROP | 能透明保留的元数据必须保留；不能支持的源要显式丢弃并记录原因 | DONE（已保留 EXTINF 的 UA、#EXTVLCOPT、#KODIPROP、#EXTGRP；待全量输出验证） |
 | SRC-06 | `SEEDED_VERSION` 手工；更新失败也写 lastCheck | 旧版 `SEEDED_VERSION = 10`，1.4.9→1.4.10 源包 735→764 但版本未变；失败后 6 小时才重试；现已改哈希 | 用 assets 内容哈希判定是否重新释放；失败短退避，成功才记录 lastCheck | DOING（已改为 assets SHA-256 哈希释放；全部失败不写 lastCheck；仍未做内容清单/单文件版本） |
-| SRC-07 | 远端包无签名/哈希；镜像可篡改 | `BuiltinSources.looksValid` 只校验开头和行数 | 包级签名或哈希校验；拒绝异常协议；镜像失败不影响旧包 | TODO |
+| SRC-07 | 远端包无签名/哈希；镜像可篡改 | `BuiltinSources.looksValid` 只校验开头和行数 | 包级签名或哈希校验；拒绝异常协议；镜像失败不影响旧包 | DONE（批次 6：`source-manifest` 按 APK 证书验签，逐文件 SHA-256；失败保留旧包） |
 | SRC-08 | 频道名/别名逻辑在 Python 与 Kotlin 各一份 | `build_pack.standard_name`、`hkmotw_ids`；`ChannelAlias`、`ChannelUtil` | 一份共享频道目录（JSON/YAML）生成两端资源；单一 ID/别名/排序来源 | TODO |
 
 ### P2 工程化与其它
@@ -110,9 +110,8 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 批次 1 留下的明确尾巴：
 
-- [ ] Token 轮换/一次性配对码；当前 Token 会出现在 URL query，可能进浏览器历史或代理日志。
 - [ ] 自签名 HTTPS 源的单 host 例外（当前统一走系统信任，个别源会失败）。
-- [ ] 远端源包的签名/哈希校验（当前只做协议白名单和最小行数）。
+- [x] 远端源包的签名/哈希校验（批次 6：APK 证书签名清单 + 逐文件 SHA-256）。
 - [x] SharedPreferences 密钥加密与备份策略（SEC-07）：云同步删除后已无 token/password 字段；`allowBackup=false`。
 
 ### 批次 2：源流水线可测试化与质量闭环
@@ -130,7 +129,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 - [x] 去掉 `SettingsViewModel` 侧的 66 份 `mutableStateOf` 字段，读写统一走仓库。
 - [x] `AppContainer` 提供 `SettingsRepository`，`SettingsViewModel` 构造注入。
 - [x] 移除 `MainViewModel.instance` / `SettingsViewModel.instance`，`settingsVM` / `mainVM` 直接走 `viewModel()`。
-- [ ] `Configs` 仍是 66 字段的 SharedPreferences 兼容层；迁移其余直接读写 `Configs` 的调用点（云同步、HTTP、更新等）。
+- [ ] `Configs` 仍是 51 字段的 SharedPreferences 兼容层；迁移其余直接读取 `Configs` 的调用点（更新、播放器、UI 默认值等）。
 - [x] 单例 OkHttpClient、统一超时（ETag/缓存未做）。
 - [x] 当前频道/收藏懒探测 + 内置 `line-stats.json` 初始快照。
 - [x] 移除组合期 `needRefresh` 赋值，改事件流。
@@ -155,7 +154,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 - [x] 删除推送页、Dashboard 推送入口、HTTP 服务/前台 Service、Manifest 注册与 Activity 启停。
 - [x] IPTV/EPG“添加其他源”改为本机 `AddSourceDialog`，不再依赖手机网页推送。
 - [x] `MainViewModel.refreshChannelFavoriteList` 改走 `SettingsRepository.update`。
-- [ ] `Configs` 其余直接读取点仍未迁移；SEC-06/07 已在批次 6 补齐。
+- [ ] `Configs` 其余直接读取点仍未迁移。
 
 ### 批次 6：源包完整性与签名绑定
 
