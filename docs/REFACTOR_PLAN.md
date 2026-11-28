@@ -1,7 +1,7 @@
 # 电视台 / tv-live 架构评审与重构执行清单
 
 > 基线：`main` / `7c41fde`（1.4.10）  
-> 本地已提交：`63afcee`（批次 1）、`ba9ac63`（批次 2）、`446fe8e`（文档）；尚未 push。  
+> 已推送 `main`；批次 1/2/3 的本地提交已同步到远端。  
 > 目的：把已经确认的问题固定下来，按批次执行、逐项勾选，避免后续只做“看得见的功能”而漏掉结构性债。  
 > 原则：不推倒重写；先封风险，再做可测试性，最后迁移 UI。每个批次都必须能单独编译、可回滚。
 
@@ -149,7 +149,13 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 2026-11-28 | 批次 2 | 选线扩池后按 playable 定稿；国际源按频道去死链；line-audit 分数回灌；assets 内容哈希释放 + 失败不写 lastCheck；保留 UA/KODIPROP；OkHttp 单例；README/workflow/mobile 收口；Python unittest + CI | `python3 -m unittest discover -s scripts` 4 项通过；`:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | 未跑全量采集；SRC-01/07/08、SEC-07 加密仍未做 |
 | 2026-11-28 | 批次 3（部分） | MainViewModel 的 `needRefresh` 组合期赋值改为 SharedFlow 事件；LineHealth 从全包扫描改为当前频道 + 收藏频道懒探测；打包 `line-stats.json` 并加载初始健康快照；播放错误换线收敛到 `handlePlayerError` 单入口；版本号收敛到 `version.properties` | `:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | SettingsRepository/AppContainer 仍未做；APP-06 未抽独立 coordinator |
 
-## 4. 风险与回滚
+## 4. 构建验证记录
+
+| 日期 | 提交 | 工作流 | 产物 | 说明 |
+| --- | --- | --- | --- | --- |
+| 2026-11-28 | `0e0f36f` | [run 46094249583](https://github.com/luanmuc/tv-live/actions/runs/46094249583) | `doubao-tv-1.4.10-refactor.apk`，32.5MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 `65:E9:...:10:CB` | 手动 `workflow_dispatch`，仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/I60hPHryAs` |
+
+## 5. 风险与回滚
 
 - 批次 1 会关闭 Release 的远程配置入口；这是有意的安全取舍。若仍需局域网配置，后续以“开发者模式 + 一次性配对码/Token”恢复，不用无鉴权服务。
 - 恢复 TLS 校验后，个别自签名 HTTPS 源可能失败；应通过单源显式例外解决，不得恢复全局 TrustAll。
