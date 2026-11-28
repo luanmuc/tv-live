@@ -185,6 +185,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 2026-11-28 | `3a772a8` | [run 46105482942](https://github.com/luanmuc/tv-live/actions/runs/46105482942) | `doubao-tv-1.4.10.apk`，32.7MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证设置页类型安全路由；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/O6B0juG3sN` |
 | 2026-11-28 | `222693e` | [run 46109037161](https://github.com/luanmuc/tv-live/actions/runs/46109037161) | `doubao-tv-1.4.10.apk`，32.7MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证 BackDispatcher + `:feature:live`；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/p0ypptplOZ` |
 | 2026-11-28 | `374198d` | [run 46113751487](https://github.com/luanmuc/tv-live/actions/runs/46113751487) | `doubao-tv-1.4.10.apk`，32.7MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证直播 UI 全量迁入 `:feature:live` + `core:ui`/`core:settings` 拆分；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/8AfUYH1FjS` |
+| 2026-11-28 | `52c849b` | [run 46118668075](https://github.com/luanmuc/tv-live/actions/runs/46118668075) | `doubao-tv-1.4.10.apk`，32.5MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证云同步/调试退场 + `LineHealth` Flow 化 + HTTP 服务删除；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/KVXf4tpGDr` |
 
 ## 5. 风险与回滚
 
