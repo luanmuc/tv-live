@@ -51,6 +51,9 @@ class VideoPlayerState(
     /** 正在播放 */
     var isPlaying by mutableStateOf(false)
 
+    /** 本次 prepare 后是否已经真正出过画面；用来区分起播缓冲和播放中卡顿 */
+    var hasPlayedOnce by mutableStateOf(false)
+
     /** 总时长 */
     var duration by mutableLongStateOf(0L)
 
@@ -71,6 +74,8 @@ class VideoPlayerState(
 
     fun prepare(line: ChannelLine) {
         error = null
+        isBuffering = false
+        hasPlayedOnce = false
         metadata = VideoPlayer.Metadata()
         instance.prepare(line)
     }
@@ -153,7 +158,10 @@ class VideoPlayerState(
             onIsBufferingListeners.forEach { cb -> cb(isBuffering) }
         }
         instance.onPrepared { }
-        instance.onIsPlayingChanged { isPlaying = it }
+        instance.onIsPlayingChanged {
+            isPlaying = it
+            if (it) hasPlayedOnce = true
+        }
         instance.onDurationChanged { duration = it }
         instance.onCurrentPositionChanged { currentPosition = it }
         instance.onMetadata { metadata = it }

@@ -170,7 +170,11 @@ private fun SettingsIptvSourceContent(
         item {
             val statuses by LineHealth.statusMap.collectAsState()
             val checkingKeys by LineHealth.checking.collectAsState()
+            val latencyMap by LineHealth.latencyMap.collectAsState()
             val summary = remember(statuses, checkingKeys) { LineHealth.summary() }
+            val averageLatency = remember(latencyMap) {
+                latencyMap.values.filter { it > 0 }.average().takeIf { !it.isNaN() }?.toInt()
+            }
             ListItem(
                 headlineContent = { Text("本机线路检测") },
                 supportingContent = {
@@ -179,6 +183,7 @@ private fun SettingsIptvSourceContent(
                             "进入直播播放后会在后台自动检测；已检测 0 条"
                         } else {
                             "已检测 ${summary.checked} 条：可用 ${summary.alive}，失效 ${summary.dead}" +
+                                (averageLatency?.let { "，平均延迟 ${it}ms" } ?: "") +
                                 if (summary.checking > 0) "，检测中 ${summary.checking}" else ""
                         },
                     )

@@ -338,6 +338,7 @@ class MainContentState(
             currentLineIdx = _currentChannelLineIdx,
             isCatchup = _currentPlaybackEpgProgramme != null,
             isLineAlive = { idx -> LineHealth.status(_currentChannel.lineList[idx].url) == true },
+            lineScore = { idx -> LineHealth.latency(_currentChannel.lineList[idx].url) ?: Long.MAX_VALUE },
         )
 
         when (decision) {
@@ -350,6 +351,40 @@ class MainContentState(
                 log.d("播放失败，自动换线到 ${_currentChannel.name} 第 ${decision.lineIndex + 1}/${decision.total} 条")
                 Snackbar.show("线路不可用，自动切换到线路 ${decision.lineIndex + 1}/${decision.total}")
                 changeCurrentChannel(_currentChannel, decision.lineIndex, _currentPlaybackEpgProgramme)
+            }
+        }
+    }
+
+    /**
+     * 播放中连续缓冲时换到当前频道下一条更快的线路。
+     *
+     * 与错误换线分开计数：错误可以把整组线路轮一遍，卡顿每轮最多换 2 次，
+     * 避免源站整体抖动时来回跳。
+     */
+    fun handlePlayerStall(): Boolean {
+        if (_currentPlaybackEpgProgramme != null) return false
+
+        val decision = playbackCoordinator.onStall(
+            lineCount = _currentChannel.lineList.size,
+            currentLineIdx = _currentChannelLineIdx,
+            isCatchup = false,
+            isLineAlive = { idx -> LineHealth.status(_currentChannel.lineList[idx].url) == true },
+            lineScore = { idx -> LineHealth.latency(_currentChannel.lineList[idx].url) ?: Long.MAX_VALUE },
+        )
+
+        return when (decision) {
+            PlaybackCoordinator.Decision.Ignored -> true
+            PlaybackCoordinator.Decision.Exhausted -> {
+                log.d("线路持续卡顿，暂停自动换线：${_currentChannel.name}")
+                Snackbar.show("线路持续卡顿，已暂停自动换线")
+                false
+            }
+
+            is PlaybackCoordinator.Decision.Switch -> {
+                log.d("播放卡顿，自动换线到 ${_currentChannel.name} 第 ${decision.lineIndex + 1}/${decision.total} 条")
+                Snackbar.show("线路卡顿，自动切换到线路 ${decision.lineIndex + 1}/${decision.total}")
+                changeCurrentChannel(_currentChannel, decision.lineIndex, _currentPlaybackEpgProgramme)
+                true
             }
         }
     }

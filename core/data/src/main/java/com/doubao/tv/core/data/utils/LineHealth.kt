@@ -45,6 +45,10 @@ object LineHealth {
     private val _statusMap = MutableStateFlow<Map<String, Boolean>>(emptyMap())
     val statusMap: StateFlow<Map<String, Boolean>> = _statusMap.asStateFlow()
 
+    /** 探测到的首字节延迟（毫秒），换线时优先选延迟低的线路。 */
+    private val _latencyMap = MutableStateFlow<Map<String, Long>>(emptyMap())
+    val latencyMap: StateFlow<Map<String, Long>> = _latencyMap.asStateFlow()
+
     private val _checking = MutableStateFlow<Set<String>>(emptySet())
     val checking: StateFlow<Set<String>> = _checking.asStateFlow()
 
@@ -75,6 +79,9 @@ object LineHealth {
                 val k = key(url)
                 if (k.isEmpty()) continue
                 seededMap[k] = row.optBoolean("alive")
+                if (row.optBoolean("alive") && row.has("latency_ms")) {
+                    _latencyMap.update { it + (k to row.optLong("latency_ms")) }
+                }
                 checkedAt[k] = 1L
                 seeded++
             }
@@ -98,6 +105,8 @@ object LineHealth {
     }
 
     fun status(url: String): Boolean? = _statusMap.value[key(url)]
+
+    fun latency(url: String): Long? = _latencyMap.value[key(url)]
 
     fun isChecking(url: String): Boolean = key(url) in _checking.value
 
@@ -190,8 +199,11 @@ object LineHealth {
 
         _checking.update { it + k }
         try {
-            val alive = request(line)
-            _statusMap.update { it + (k to alive) }
+            val result = request(line)
+            _statusMap.update { it + (k to result.alive) }
+            if (result.alive && result.latencyMs >= 0) {
+                _latencyMap.update { it + (k to result.latencyMs) }
+            }
             checkedAt[k] = System.currentTimeMillis()
         } catch (ex: Exception) {
             _statusMap.update { it + (k to false) }
@@ -202,8 +214,11 @@ object LineHealth {
         }
     }
 
-    private fun request(line: ChannelLine): Boolean {
+    private data class ProbeResult(val alive: Boolean, val latencyMs: Long)
+
+    private fun request(line: ChannelLine): ProbeResult {
         val url = line.playableUrl
+        val startedAt = System.nanoTime()
         val conn = (URL(url).openConnection() as HttpURLConnection).apply {
             connectTimeout = CONNECT_TIMEOUT_MS
             readTimeout = READ_TIMEOUT_MS
@@ -220,7 +235,8 @@ object LineHealth {
                 // 只读一点点就断开，避免把直播流整段拖下来
                 runCatching { conn.inputStream.use { it.read(ByteArray(64)) } }
             }
-            alive
+            val latency = (System.nanoTime() - startedAt) / 1_000_000
+            ProbeResult(alive, latency)
         } finally {
             conn.disconnect()
         }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.doubao.tv.core.data.entities.channel.Channel
 import com.doubao.tv.core.data.entities.channel.ChannelGroupList
@@ -89,6 +90,26 @@ fun MainContent(
             mainContentState.handlePlayerError()
         }
     }
+    // 播放中连续缓冲超过 4 秒就换到延迟更低的线路；起播缓冲不触发。
+    LaunchedEffect(
+        videoPlayerState.isBuffering,
+        videoPlayerState.hasPlayedOnce,
+        videoPlayerState.error,
+    ) {
+        if (!videoPlayerState.isBuffering || !videoPlayerState.hasPlayedOnce || videoPlayerState.error != null) {
+            return@LaunchedEffect
+        }
+        delay(4_000)
+        while (
+            videoPlayerState.isBuffering &&
+            videoPlayerState.hasPlayedOnce &&
+            videoPlayerState.error == null
+        ) {
+            if (!mainContentState.handlePlayerStall()) break
+            delay(4_000)
+        }
+    }
+
     val channelNumberSelectState = rememberChannelNumberSelectState {
         val idx = it.toInt() - 1
         filteredChannelGroupListProvider().channelList.getOrNull(idx)?.let { channel ->

@@ -23,6 +23,7 @@ import androidx.media3.common.util.Util
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DecoderReuseEvaluation
+import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.analytics.AnalyticsListener
@@ -94,9 +95,21 @@ class Media3VideoPlayer(
 
         // MediaCodecVideoRenderer.skipMultipleFramesOnSameVsync =
         //     AppContainer.settings.current.videoPlayerSkipMultipleFramesOnSameVSync
+        // 直播场景把前向缓冲拉长，减少瞬时抖动直接转圈；上限 30 秒，避免低配盒子内存吃紧。
+        val loadControl = DefaultLoadControl.Builder()
+            .setBufferDurationsMs(
+                10_000,
+                30_000,
+                2_000,
+                4_000,
+            )
+            .setPrioritizeTimeOverSizeThresholds(true)
+            .build()
+
         return ExoPlayer.Builder(context)
             .setRenderersFactory(renderersFactory)
             .setTrackSelector(trackSelector)
+            .setLoadControl(loadControl)
             .build()
             .apply { playWhenReady = true }
     }
@@ -128,6 +141,7 @@ class Media3VideoPlayer(
                 setDefaultRequestProperties(AppContainer.settings.current.videoPlayerHeaders.toHeaders())
                 setConnectTimeoutMs(AppContainer.settings.current.videoPlayerLoadTimeout.toInt())
                 setReadTimeoutMs(AppContainer.settings.current.videoPlayerLoadTimeout.toInt())
+                setAllowCrossProtocolRedirects(true)
                 setKeepPostFor302Redirects(true)
                 setAllowCrossProtocolRedirects(true)
             },

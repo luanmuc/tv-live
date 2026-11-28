@@ -88,6 +88,52 @@ class PlaybackCoordinatorTest {
         assertEquals(2, (decision as PlaybackCoordinator.Decision.Switch).lineIndex)
     }
 
+
+    @Test
+    fun `prefers fastest alive line when latency is known`() {
+        val decision = coordinator.onError(
+            lineCount = 3,
+            currentLineIdx = 0,
+            isCatchup = false,
+            lineScore = { if (it == 1) 800L else 120L },
+            isLineAlive = { true },
+        )
+
+        assertEquals(2, decision.lineIndexOrNull())
+    }
+
+    @Test
+    fun `stall switches at most twice until success`() {
+        assertEquals(1, coordinator.onStall(3, 0, false) { true }.lineIndexOrNull())
+        clock += PlaybackCoordinator.DEFAULT_STALL_COOLDOWN_MS
+        assertEquals(2, coordinator.onStall(3, 1, false) { true }.lineIndexOrNull())
+        clock += PlaybackCoordinator.DEFAULT_STALL_COOLDOWN_MS
+
+        val exhausted = coordinator.onStall(3, 2, false) { true }
+        assertTrue(exhausted is PlaybackCoordinator.Decision.Exhausted)
+
+        // 没播放成功前不能靠 reset 冷却时间重新开始一轮
+        clock += PlaybackCoordinator.DEFAULT_STALL_COOLDOWN_MS
+        assertTrue(coordinator.onStall(3, 2, false) { true } is PlaybackCoordinator.Decision.Exhausted)
+    }
+
+    @Test
+    fun `successful playback resets stall counter`() {
+        coordinator.onStall(3, 0, false) { true }
+        clock += PlaybackCoordinator.DEFAULT_STALL_COOLDOWN_MS
+        coordinator.onStall(3, 1, false) { true }
+        coordinator.reset()
+        clock += PlaybackCoordinator.DEFAULT_STALL_COOLDOWN_MS
+
+        assertTrue(coordinator.onStall(3, 2, false) { true } is PlaybackCoordinator.Decision.Switch)
+    }
+
+    @Test
+    fun `stall never switches catchup playback`() {
+        val decision = coordinator.onStall(3, 0, true) { true }
+        assertTrue(decision is PlaybackCoordinator.Decision.Ignored)
+    }
+
     private fun PlaybackCoordinator.Decision.lineIndexOrNull(): Int? =
         (this as? PlaybackCoordinator.Decision.Switch)?.lineIndex
 }
