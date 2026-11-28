@@ -1,4 +1,4 @@
-package com.doubao.tv.core.data.utils
+package com.doubao.tv.feature.live.playback
 
 /**
  * 直播播放失败后的自动换线策略。

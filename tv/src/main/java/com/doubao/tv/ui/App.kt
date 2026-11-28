@@ -1,5 +1,6 @@
 package com.doubao.tv.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.IntRange
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -25,6 +26,8 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.debounce
 import com.doubao.tv.allinone.AllInOne
 import com.doubao.tv.core.data.entities.iptvsource.IptvSource.Companion.needExternalStoragePermission
+import com.doubao.tv.core.util.back.BackDispatcher
+import com.doubao.tv.ui.back.LocalBackDispatcher
 import com.doubao.tv.ui.material.Padding
 import com.doubao.tv.ui.material.PopupHandleableApplication
 import com.doubao.tv.ui.material.Snackbar
@@ -51,6 +54,15 @@ fun App(
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val doubleBackPressedExitState = rememberDoubleBackPressedExitState()
+    val backDispatcher = remember { BackDispatcher() }
+    val handleBack = {
+        if (doubleBackPressedExitState.allowExit) {
+            onBackPressed()
+        } else {
+            doubleBackPressedExitState.backPress()
+            Snackbar.show("再按一次退出")
+        }
+    }
 
     CompositionLocalProvider(
         LocalDensity provides Density(
@@ -60,18 +72,15 @@ fun App(
             },
             fontScale = LocalDensity.current.fontScale * settingsViewModel.uiFontScaleRatio,
         ),
+        LocalBackDispatcher provides backDispatcher,
     ) {
+        BackHandler {
+            if (!backDispatcher.dispatch()) handleBack()
+        }
         PopupHandleableApplication {
             MainScreen(
                 modifier = modifier,
-                onBackPressed = {
-                    if (doubleBackPressedExitState.allowExit) {
-                        onBackPressed()
-                    } else {
-                        doubleBackPressedExitState.backPress()
-                        Snackbar.show("再按一次退出")
-                    }
-                },
+                onBackPressed = handleBack,
             )
         }
 

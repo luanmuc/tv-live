@@ -1,4 +1,4 @@
-package com.doubao.tv.core.data.utils
+package com.doubao.tv.feature.live.playback
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

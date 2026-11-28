@@ -30,7 +30,7 @@ import com.doubao.tv.core.data.utils.ChannelUtil
 import com.doubao.tv.core.data.utils.Constants
 import com.doubao.tv.core.data.utils.LineHealth
 import com.doubao.tv.core.data.utils.Loggable
-import com.doubao.tv.core.data.utils.PlaybackCoordinator
+import com.doubao.tv.feature.live.playback.PlaybackCoordinator
 import com.doubao.tv.core.util.utils.urlHost
 import com.doubao.tv.ui.material.Snackbar
 import com.doubao.tv.ui.screen.settings.SettingsViewModel

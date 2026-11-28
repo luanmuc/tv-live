@@ -62,8 +62,8 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | --- | --- | --- | --- | --- |
 | APP-01 | `Configs` / `SettingsViewModel` 是双份 god object，新增设置要改 4～5 处 | `Configs` 仍 949 行；`SettingsViewModel` 已从 700 行降到约 500 行；66 个字段仍手写 getter/setter | 单一 `SettingsRepository` + 不可变 `AppSettings`；设置读写只有一条路径 | DONE（UI 层已单入口；`Configs` 作为 SharedPreferences 兼容层保留，其他直接写 `Configs` 的调用点后续迁移） |
 | APP-02 | 全局单例与组合期副作用 | 原 `MainViewModel.instance`、`SettingsViewModel.instance`、`mainViewModel.needRefresh = {}` | 引入 `AppContainer`（不强制 Hilt）；ViewModel 通过构造注入；移除组合期赋值 | DONE（`AppContainer` + 构造注入；两处 `instance` 已删；组合期赋值改 SharedFlow；`settingsVM` / `mainVM` 直接走 `viewModel()`） |
-| APP-03 | 新旧 UI 半迁移，直播页仍在 `screensold` | `screen` 67 文件 / `screensold` 61 文件；`Screens.Live` 走旧 `MainContent` | 抽出 `feature:live`；直播页、播放器、频道浮层迁移；旧包只留兼容壳 | TODO |
-| APP-04 | 导航是字符串路由，返回逻辑分散在 App/MainScreen/MainContent | 原 `Screens` 枚举 + route string；`BackHandler` 分散 | 类型安全 `Destination`；统一 `BackDispatcher`；启动页值校验 | DOING（外层与设置内层均已改 `@Serializable Destination`，启动页值校验已加；统一 BackDispatcher 未抽） |
+| APP-03 | 新旧 UI 半迁移，直播页仍在 `screensold` | `screen` 67 文件 / `screensold` 61 文件；`Screens.Live` 走旧 `MainContent` | 抽出 `feature:live`；直播页、播放器、频道浮层迁移；旧包只留兼容壳 | DOING（`:feature:live` 已建立并迁入 `PlaybackCoordinator`；直播 UI 未迁） |
+| APP-04 | 导航是字符串路由，返回逻辑分散在 App/MainScreen/MainContent | 原 `Screens` 枚举 + route string；`BackHandler` 分散 | 类型安全 `Destination`；统一 `BackDispatcher`；启动页值校验 | DONE（外层与设置内层均类型安全；`BackDispatcher` 统一 AppScreen 返回栈；启动页值校验已加） |
 | APP-05 | `core:data` 依赖 Compose/Android 状态，领域层不纯 | `LineHealth` 用 `mutableStateMapOf`；实体用 `@Immutable` | 领域模型纯 Kotlin；健康状态改 `StateFlow`；UI 层只消费 | TODO |
 | APP-06 | 播放失败自动换线有两条触发路径 | 原 `VideoPlayerState.onError` 内自增；`MainContent` 又监听 `error` 调 `handlePlayerError`；EPG 回看排除逻辑只在一处 | 单一 `PlaybackCoordinator` 状态机；同一次错误只切换一次；回看/直播策略显式 | DONE（`PlaybackCoordinator` 已抽出并单测；`MainContentState.handlePlayerError` 只调用它；回看/直播、冷却、上限、活线优先均显式） |
 | APP-07 | 每个请求新建 OkHttpClient，无连接池/ETag/统一超时 | `String.request` 每次 `OkHttpClient.Builder()` | 单例 OkHttpClient + 统一拦截器/超时/缓存策略 | DONE（已单例化 + 统一超时；ETag/缓存策略未做） |
@@ -138,12 +138,12 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 ### 批次 4：直播 feature 化
 
-- [ ] `:feature:live`。
+- [~] `:feature:live`：模块已建立，`PlaybackCoordinator` 已迁入；直播 UI 仍在 `screensold`，未迁。
 - [x] 外层类型安全导航 + 启动页值校验（`@Serializable Destination`）。
 - [x] 设置内层类型安全导航（`SettingsDestination`，路由名与旧字符串一致）。
-- [ ] 统一返回 `BackDispatcher`。
-- [x] `PlaybackCoordinator` 状态机（纯策略类 + 7 项单测，已接入 `MainContentState`）。
-- [ ] 旧 `screensold` 逐步退场。
+- [x] 统一返回 `BackDispatcher`（core:util 分发栈 + App/AppScreen 接入 + 4 项单测）。
+- [x] `PlaybackCoordinator` 状态机（已迁到 `:feature:live`，7 项单测）。
+- [ ] 旧 `screensold` 逐步退场（61 个文件，仍依赖 `ui.material` / `ui.theme` / `settings` 等 app 内部代码）。
 
 ## 3. 执行记录
 
@@ -156,6 +156,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 2026-11-28 | 批次 4（第一刀） | 新增 `PlaybackCoordinator` 纯策略类：回看不换线、单线不换、1 秒冷却、最多 `线路数-1` 次、优先活线；`MainContentState` 删除 `_autoSwitchLineCount` / `_lastAutoSwitchLineAt` 与 `nextAliveLineIndex`，统一调用协调器 | 7 项单测通过；`:tv:compileOriginalReleaseKotlin` 通过；云端 run 46101103087 成功，APK 版本/签名校验通过 | `:feature:live`、类型安全导航、统一返回、旧 `screensold` 退场未做 |
 | 2026-11-28 | 批次 4（导航） | 外层 `MainScreen` 从 `Screens` 字符串路由迁移到 `@Serializable Destination`（Agreement/Loading/Dashboard/Live/…/Settings）；`navigateSingleTop` 增加目的地重载；启动页保存值通过 `Destination.fromStoredName` 校验并回退 Loading；直播返回判断改用目的地 route | `:tv:compileOriginalReleaseKotlin` 通过；云端 run 46103508372 成功，APK 版本/签名校验通过 | 设置页内部仍是字符串子路由；统一 `BackDispatcher` 未抽 |
 | 2026-11-28 | 批次 4（设置路由） | 新增 `SettingsDestination`，13 个分类 + 16 个子分类全部改为独立 `@Serializable` 目的地；`SettingsScreen` 改用 `composable<T>`，旧 `"APP"` / `"IPTV_SOURCE"` 等 route 名通过 `@SerialName` 保留；`navigateSingleTop` 增加设置目的地重载 | `:tv:compileOriginalReleaseKotlin` 通过；云端 run 46105482942 成功，APK 版本/签名校验通过 | 统一 `BackDispatcher` 仍未抽 |
+| 2026-11-28 | 批次 4（返回/feature） | 新增 `BackDispatcher` 栈与 `LocalBackDispatcher`；`AppScreen` 不再各自抢 `BackHandler`，由 `App` 根统一分发；新增 `:feature:live` 模块并把 `PlaybackCoordinator` 从 `core:data` 迁入 | `BackDispatcherTest` 4 项通过；`:feature:live:testDebugUnitTest` 通过；`:tv:compileOriginalReleaseKotlin` 通过 | `screensold` 直播 UI 仍未迁入 feature；旧 UI 依赖 app 内部 material/theme/settings |
 
 ## 4. 构建验证记录
 

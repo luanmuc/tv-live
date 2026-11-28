@@ -151,6 +151,7 @@ dependencies {
     implementation(libs.tinypinyin)
 
     implementation(project(":core:data"))
+    implementation(project(":feature:live"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
     implementation(project(":allinone"))

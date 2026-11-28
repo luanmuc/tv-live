@@ -24,6 +24,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.runtime.Composable
+import com.doubao.tv.ui.back.LocalBackDispatcher
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -89,7 +92,20 @@ fun AppScreen(
         label = "",
     )
 
-    BackHandler { onBackPressed() }
+    val backDispatcher = LocalBackDispatcher.current
+    val currentOnBackPressed by rememberUpdatedState(onBackPressed)
+    if (backDispatcher == null) {
+        BackHandler { currentOnBackPressed() }
+    } else {
+        DisposableEffect(backDispatcher) {
+            val remove = backDispatcher.push {
+                currentOnBackPressed()
+                true
+            }
+            onDispose(remove)
+        }
+    }
+
     AppThemeWrapper {
         if (enableTopBarHidden) {
             AppScaffoldTopBar(

@@ -25,6 +25,7 @@ rootProject.name = "doubao-tv"
 include(":core:data")
 include(":core:util")
 include(":core:designsystem")
+include(":feature:live")
 include(":tv")
 // mobile 是半成品，默认不参与 TV 构建；需要时用 -PincludeMobile=true 显式打开。
 if (providers.gradleProperty("includeMobile").orNull == "true") {
