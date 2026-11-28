@@ -150,7 +150,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 2026-11-28 | 批次 1 | 建立本清单；HTTP 服务改为开发者模式启动并可 stop；随机 Token + HttpOnly Cookie 鉴权；移除任意文件读写/APK/二进制上传；configs 脱敏；移除全局 TrustAll；Rhino 改 safe objects + ClassShutter + 指令上限；m3u/txt 协议白名单；新增 StreamUrl 单测 | `:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | 基线 `7c41fde`；Token 已加；自签名例外、包签名、密钥加密未做 |
 | 2026-11-28 | 批次 2 | 选线扩池后按 playable 定稿；国际源按频道去死链；line-audit 分数回灌；assets 内容哈希释放 + 失败不写 lastCheck；保留 UA/KODIPROP；OkHttp 单例；README/workflow/mobile 收口；Python unittest + CI | `python3 -m unittest discover -s scripts` 4 项通过；`:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | 未跑全量采集；SRC-01/07/08、SEC-07 加密仍未做 |
 | 2026-11-28 | 批次 3（部分） | MainViewModel 的 `needRefresh` 组合期赋值改为 SharedFlow 事件；LineHealth 从全包扫描改为当前频道 + 收藏频道懒探测；打包 `line-stats.json` 并加载初始健康快照；播放错误换线收敛到 `handlePlayerError` 单入口；版本号收敛到 `version.properties` | `:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | SettingsRepository/AppContainer 仍未做；APP-06 未抽独立 coordinator |
-| 2026-11-28 | 批次 3（设置层） | 新增 `AppSettings`（66 字段不可变快照）与 `SettingsRepository`；`SettingsViewModel` 删除 66 份 `mutableStateOf` 与 `refresh()` 逐字段复制，构造注入仓库；新增 `AppContainer`；Compose 直接观察仓库 `current`；仓库只在字段变化时写 `Configs`；移除 `SettingsViewModel.instance` / `MainViewModel.instance` | `:tv:compileOriginalReleaseKotlin` 通过；设置层主体已由 run 46096707088 验证，单例移除后待下一次云端构建 | `Configs` 仍是 SharedPreferences 兼容层；其余直接写 `Configs` 的调用点待迁移 |
+| 2026-11-28 | 批次 3（设置层） | 新增 `AppSettings`（66 字段不可变快照）与 `SettingsRepository`；`SettingsViewModel` 删除 66 份 `mutableStateOf` 与 `refresh()` 逐字段复制，构造注入仓库；新增 `AppContainer`；Compose 直接观察仓库 `current`；仓库只在字段变化时写 `Configs`；移除 `SettingsViewModel.instance` / `MainViewModel.instance` | `:tv:compileOriginalReleaseKotlin` 通过；run 46096707088 与 run 46097780346 均成功，最终 APK 版本/签名校验通过 | `Configs` 仍是 SharedPreferences 兼容层；其余直接写 `Configs` 的调用点待迁移 |
 
 ## 4. 构建验证记录
 
@@ -158,6 +158,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | --- | --- | --- | --- | --- |
 | 2026-11-28 | `0e0f36f` | [run 46094249583](https://github.com/luanmuc/tv-live/actions/runs/46094249583) | `doubao-tv-1.4.10-refactor.apk`，32.5MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 `65:E9:...:10:CB` | 手动 `workflow_dispatch`，仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/I60hPHryAs` |
 | 2026-11-28 | `64a4802` | [run 46096707088](https://github.com/luanmuc/tv-live/actions/runs/46096707088) | `doubao-tv-1.4.10.apk`，32.56MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证设置层重构；仅 artifact，未发 Release；另存 `doubao-tv-1.4.10-settings-refactor.apk`，CDN `https://aka.doubaocdn.com/s/jDTbMQaFk9` |
+| 2026-11-28 | `16eae07` | [run 46097780346](https://github.com/luanmuc/tv-live/actions/runs/46097780346) | `doubao-tv-1.4.10.apk`，32.56MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证设置层 + 单例移除后的最终代码；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/feEgQh7VcC` |
 
 ## 5. 风险与回滚
 
