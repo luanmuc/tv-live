@@ -3,9 +3,9 @@
 电视端直播应用 + 内置直播源，单仓库维护。
 
 - 应用名：电视台
-- 版本：1.4.8
+- 版本：1.4.10
 - 包名：`com.doubao.tv`
-- 内置源：央视/卫视/港澳台多线路包（92 频道 / 735 线路）+ 港澳台及国际（189 频道）
+- 内置源：央视/卫视/港澳台多线路包（92 频道 / 764 线路）+ 港澳台及国际（189 条线路）
 - 源随 APK 打包，首次启动释放到应用私有目录，装完即可离线使用；联网后每 6 小时从仓库自动更新，优先走国内加速/可配置的国内 OSS，失败继续用本地副本
 - 播放时后台低速探测本源全部线路（3 并发、每条只读几十字节），自动换线优先跳可用线路，线路列表标注「可用/失效」
 - 播放失败自动切下一条线路，整轮失败才停在错误页
@@ -16,7 +16,7 @@
 ```
 tv-live/
 ├── tv/            # 电视端 App（主模块，出 APK）
-├── mobile/        # 手机端工程
+├── mobile/        # 手机端半成品，默认不参与构建（-PincludeMobile=true 显式打开）
 ├── core/          # data / util / designsystem
 │   └── data/src/main/assets/sources/   # 打进 APK 的源（由脚本生成，勿手改）
 ├── ijkplayer-java/
@@ -33,7 +33,7 @@ tv-live/
 │   └── SOURCES.md           # 接入点与维护说明
 └── .github/workflows/
     ├── refresh-sources.yml  # 每天 03:00 发现源 + 合并 + 巡检
-    ├── line-audit.yml       # 每天 04:30 独立线路巡检
+    ├── line-audit.yml       # 每周一 04:30 独立深巡检
     └── build-apk.yml        # 打 tag 出正式版（release 签名）
 ```
 
@@ -41,8 +41,8 @@ tv-live/
 
 | 订阅名 | 规模 | 节目单 |
 | --- | --- | --- |
-| 内置·央视卫视（多线路） | 92 个频道 / 735 条线路（含港澳台、少儿分组） | m3u 自带 `x-tvg-url` |
-| 内置·港澳台及国际 | 189 个频道（已剔除并入总包的 27 个） | m3u 自带 `x-tvg-url` |
+| 内置·央视卫视（多线路） | 92 个频道 / 764 条线路（含港澳台、少儿分组） | m3u 自带 `x-tvg-url` |
+| 内置·港澳台及国际 | 189 条线路（已剔除并入总包的频道） | m3u 自带 `x-tvg-url` |
 
 每频道最多 12 条线路（同一 host 最多 2 条），按「实测可播 → IPv6 → 其他」排序；有活线时最多再带 2 条兜底，整台没有活线才留 4 条死链备用。固定 29 个入口（含 15 个非 GitHub 的国内源站），另有 `crawl_sources.py` 动态发现源参与合并。CCTV 频道显示「CCTV-1 综合」这类中文全名，少儿频道单独分组。节目单按频道名匹配，台标优先用 m3u 内的 `tvg-logo`，缺省回落到台标模板。
 
@@ -51,9 +51,10 @@ tv-live/
 ## 构建
 
 ```bash
-# 云端：push 到 main 自动构建，产物更新到 latest Release
-# 正式版：打 tag 触发
-git tag v1.4 && git push origin v1.4
+# 云端正式版：打 tag 触发，构建成功后自动发布 Release
+git tag v1.4.10 && git push origin v1.4.10
+
+# 云端手动构建：在 Actions 里手动运行 build-apk，只留档 artifact、不发布 Release
 
 # 本地（JDK 17 + Android SDK 36）
 ./gradlew :tv:assembleOriginalDebug

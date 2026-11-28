@@ -42,6 +42,7 @@ PROBE_WORKERS = 64
 FETCH_TIMEOUT = 30
 DEEP_PROBE_WORKERS = 32
 SOURCE_STATS: dict[str, dict] = {}
+AUDIT_SCORES: dict[str, int] = {}
 
 CCTV_ALIAS = {
     "cctv1": "CCTV1", "cctv1综合": "CCTV1", "央视一套": "CCTV1", "cctv1综合频道": "CCTV1", "央视综合": "CCTV1",
@@ -92,6 +93,16 @@ CCTV_DISPLAY = {
 def display_name(std: str) -> str:
     """tvg-name/tvg-id 保持标准名给 EPG，逗号后的显示名用中文全称。"""
     return CCTV_DISPLAY.get(std, std)
+
+
+def extinf_line(std: str, name: str, logo: str, group: str, item: dict) -> str:
+    """生成 EXTINF，并把源清单里的 User-Agent 等属性带回去。"""
+    ua = (item.get("http_user_agent") or "").replace('"', "")
+    ua_attr = f' http-user-agent="{ua}"' if ua else ""
+    return (
+        f'#EXTINF:-1 tvg-id="{std}" tvg-name="{std}" tvg-logo="{logo}"'
+        f"{ua_attr} group-title=\"{group}\",{name}"
+    )
 
 
 SATELLITE = {
@@ -270,8 +281,13 @@ def parse(text: str) -> list[dict]:
                 "tvg_name": (re.search(r'tvg-name="(.*?)"', line) or [None, ""])[1] or name,
                 "logo": (re.search(r'tvg-logo="(.*?)"', line) or [None, ""])[1],
                 "group": (re.search(r'group-title="(.*?)"', line) or [None, ""])[1],
+                "http_user_agent": (re.search(r'http-user-agent="(.*?)"', line) or [None, ""])[1],
+                "directives": [],
             }
         elif line.startswith("#"):
+            # 保留播放器需要的线路级元数据，输出时原样带回。
+            if cur is not None and line.startswith(("#EXTVLCOPT", "#KODIPROP", "#EXTGRP")):
+                cur["directives"].append(line)
             continue
         elif cur is not None:
             u = clean_url(line)
@@ -415,6 +431,7 @@ def collect() -> list[dict]:
             st["matched"] += 1
             it["std"] = std
             it["source"] = label
+            it["audit_score"] = AUDIT_SCORES.get(it["url"], 0)
             if it["url"] in pool:
                 st["duplicate"] += 1
                 continue
@@ -627,14 +644,49 @@ def host_of(url: str) -> str:
     return url.split("//", 1)[-1].split("/", 1)[0]
 
 
+def load_audit_scores() -> None:
+    """把上一轮 line-audit 的 route_score 作为选线提示；只做加分，不替代实测。"""
+    AUDIT_SCORES.clear()
+    path = DIST / "line-audit.json"
+    if not path.exists():
+        return
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        print(f"  [警告] 读取巡检结果失败：{exc}")
+        return
+    for row in payload.get("lines", []):
+        url = row.get("url")
+        if url:
+            AUDIT_SCORES[url] = int(row.get("route_score", 0) or 0)
+    print(f"  载入上一轮巡检提示 {len(AUDIT_SCORES)} 条")
+
+
+def selection_rank(item: dict) -> tuple[int, int, float, str]:
+    """选线排序：深检可拉 > 存活 > 未知 > 死链；同级参考上一轮巡检分、延迟、源名。"""
+    if item.get("playable") is True:
+        level = 0
+    elif item.get("alive") is True:
+        level = 1
+    elif item.get("alive") is None:
+        level = 2
+    else:
+        level = 3
+    return (
+        level,
+        -int(item.get("audit_score", 0) or 0),
+        float(item.get("cost", 99)),
+        str(item.get("source", "")),
+    )
+
+
 def pick_lines(cands: list[dict], limit: int) -> list[dict]:
-    """只保留可用线路；完全没活线的频道才留少量死链兜底。
+    """同频道选线：优先深检可拉，其次存活；完全没活线才留少量死链兜底。
 
     同一 host 最多 2 条，尽量用不同源；活线之后最多再带 2 条未知/死链，
     避免一份 12 条里 10 条都是死链。
     """
-    rank = {True: 0, None: 1, False: 2}
-    ordered = sorted(cands, key=lambda x: (rank.get(x.get("alive"), 2), x.get("cost", 99)))
+    ordered = sorted(cands, key=selection_rank)
     alive = [it for it in ordered if it.get("alive") is True]
     unknown = [it for it in ordered if it.get("alive") is None]
     dead = [it for it in ordered if it.get("alive") is False]
@@ -778,13 +830,15 @@ def hkmotw_blocks(items: list[dict]) -> list[str]:
         cands = by_name.get(name)
         if not cands:
             continue
-        picked = deep_probe_all(pick_lines(cands, HK_MAX_LINES))
+        pool = sorted(cands, key=selection_rank)[: HK_MAX_LINES * 2]
+        deep_probe_all(pool)
+        picked = pick_lines(pool, HK_MAX_LINES)
         logo = next((c.get("logo") for c in picked if c.get("logo")), "")
         for it in picked:
-            blocks.append(
-                f'#EXTINF:-1 tvg-id="{name}" tvg-name="{name}" tvg-logo="{logo}" '
-                f'group-title="{HKMOTW_GROUP}",{name}\n{it["url"]}'
-            )
+            block = [extinf_line(name, name, logo, HKMOTW_GROUP, it)]
+            block.extend(it.get("directives", []))
+            block.append(it["url"])
+            blocks.append("\n".join(block))
     return blocks
 
 
@@ -810,12 +864,27 @@ def fill_missing_hkmotw(fresh: list[str], old_path: pathlib.Path) -> list[str]:
     if not missing or not old_path.exists():
         return fresh
     old = old_path.read_text(encoding="utf-8").splitlines()
+    old_blocks: list[list[str]] = []
+    cur: list[str] = []
+    for line in old[1:]:
+        if not line.strip():
+            continue
+        if line.startswith("#EXTINF"):
+            if cur:
+                old_blocks.append(cur)
+            cur = [line]
+        elif cur:
+            cur.append(line)
+    if cur:
+        old_blocks.append(cur)
+
     recovered = []
-    for i, ln in enumerate(old):
-        if f'group-title="{HKMOTW_GROUP}"' in ln:
-            name = ln.split(",")[-1].strip()
-            if name in missing and i + 1 < len(old):
-                recovered.append(f"{ln}\n{old[i + 1]}")
+    for block in old_blocks:
+        if not block or f'group-title="{HKMOTW_GROUP}"' not in block[0]:
+            continue
+        name = block[0].split(",")[-1].strip()
+        if name in missing and len(block) >= 2:
+            recovered.append("\n".join(block))
     if recovered:
         print(f"  [警告] 用旧文件补回 {len(recovered)} 条港澳台")
     return fresh + recovered
@@ -826,13 +895,23 @@ def build(items: list[dict]) -> None:
     for it in items:
         by_channel.setdefault(it["std"], []).append(it)
 
-    selected: dict[str, list[dict]] = {}
+    # 先按存活/延迟取稍宽的候选池，深检后再按 playable 定稿。
+    # 这样不会因为前 12 条恰好都是“能连上但分片拉不动”而把可播线路挤掉。
+    pools: dict[str, list[dict]] = {}
+    all_pool: list[dict] = []
     for std in sorted(by_channel, key=channel_sort_key):
-        selected[std] = pick_lines(by_channel[std], MAX_LINES)
+        pool = sorted(by_channel[std], key=selection_rank)[: MAX_LINES + 6]
+        pools[std] = pool
+        all_pool.extend(pool)
+
+    print(f"  深检候选 {len(all_pool)} 条…")
+    deep_probe_all(all_pool)
+
+    selected: dict[str, list[dict]] = {}
+    for std in sorted(pools, key=channel_sort_key):
+        selected[std] = pick_lines(pools[std], MAX_LINES)
 
     picked = [it for lines in selected.values() for it in lines]
-    print(f"  深检入选线路 {len(picked)} 条…")
-    deep_probe_all(picked)
     playable = sum(1 for it in picked if it.get("playable") is True)
     print(f"  分片可拉取 {playable}/{len(picked)} 条")
 
@@ -846,10 +925,12 @@ def build(items: list[dict]) -> None:
             group = "卫视"
         for it in lines:
             logo = it["logo"] or f"{FM_RAW}/tv/{std.upper()}.png"
-            blocks.append(
-                f'#EXTINF:-1 tvg-id="{std}" tvg-name="{std}" tvg-logo="{logo}" '
-                f'group-title="{group}",{display_name(std)}\n{it["url"]}'
-            )
+            block = [
+                extinf_line(std, display_name(std), logo, group, it),
+            ]
+            block.extend(it.get("directives", []))
+            block.append(it["url"])
+            blocks.append("\n".join(block))
 
     header = f'#EXTM3U x-tvg-url="{FM_RAW}/e.xml"'
     DIST.mkdir(parents=True, exist_ok=True)
@@ -937,6 +1018,7 @@ def main() -> int:
         return merge_hkmotw_only()
 
     print("收集候选源…")
+    load_audit_scores()
     items = collect()
     print(f"  去重后 {len(items)} 条")
 

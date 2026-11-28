@@ -5,6 +5,8 @@ import android.util.Log
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
+import java.security.MessageDigest
+import java.util.Locale
 
 /**
  * 内置直播源释放 + 在线更新
@@ -17,9 +19,8 @@ object BuiltinSources {
     private const val TAG = "BuiltinSources"
     private const val ASSET_DIR = "sources"
     private const val PREF_NAME = "builtin_sources"
-    private const val KEY_VERSION = "seeded_version"
+    private const val KEY_ASSET_HASH = "asset_hash"
     private const val KEY_LAST_CHECK = "last_update_check"
-    private const val SEEDED_VERSION = 10
 
     /** 在线检查间隔：6 小时 */
     private const val UPDATE_INTERVAL_MS = 6 * 60 * 60 * 1000L
@@ -53,22 +54,51 @@ object BuiltinSources {
         if (!targetDir.exists()) targetDir.mkdirs()
 
         val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val alreadySeeded = pref.getInt(KEY_VERSION, 0) >= SEEDED_VERSION
-
-        context.assets.list(ASSET_DIR)
+        val assetNames = context.assets.list(ASSET_DIR)
             ?.filter { it.endsWith(".m3u", ignoreCase = true) }
-            ?.forEach { name ->
-                val target = File(targetDir, name)
-                if (alreadySeeded && target.exists() && target.length() > 0L) return@forEach
-                runCatching {
-                    context.assets.open("$ASSET_DIR/$name").use { input ->
-                        target.outputStream().use { output -> input.copyTo(output) }
-                    }
+            ?.sorted()
+            ?: return
+        if (assetNames.isEmpty()) return
+
+        // 以 APK 内 assets 的内容哈希判断是否需要重新释放，避免手工维护 SEEDED_VERSION。
+        val bundledHash = hashAssets(context, assetNames)
+        val alreadySeeded = bundledHash != null && pref.getString(KEY_ASSET_HASH, null) == bundledHash
+
+        var allCopied = true
+        assetNames.forEach { name ->
+            val target = File(targetDir, name)
+            if (alreadySeeded && target.exists() && target.length() > 0L) return@forEach
+            val copied = runCatching {
+                context.assets.open("$ASSET_DIR/$name").use { input ->
+                    target.outputStream().use { output -> input.copyTo(output) }
+                }
+            }.isSuccess
+            if (!copied) allCopied = false
+        }
+
+        if (allCopied && bundledHash != null) {
+            pref.edit().putString(KEY_ASSET_HASH, bundledHash).apply()
+        }
+    }
+
+    private fun hashAssets(context: Context, names: List<String>): String? = runCatching {
+        val digest = MessageDigest.getInstance("SHA-256")
+        names.forEach { name ->
+            digest.update(name.toByteArray(Charsets.UTF_8))
+            digest.update('/'.code.toByte())
+            context.assets.open("$ASSET_DIR/$name").use { input ->
+                val buffer = ByteArray(8 * 1024)
+                while (true) {
+                    val read = input.read(buffer)
+                    if (read <= 0) break
+                    digest.update(buffer, 0, read)
                 }
             }
-
-        pref.edit().putInt(KEY_VERSION, SEEDED_VERSION).apply()
-    }
+        }
+        digest.digest().joinToString("") { String.format(Locale.US, "%02x", it.toInt() and 0xff) }
+    }.onFailure {
+        Log.w(TAG, "计算内置源哈希失败：${it.message}")
+    }.getOrNull()
 
     /**
      * 在线更新内置源。
@@ -87,12 +117,21 @@ object BuiltinSources {
         if (!dir.exists()) dir.mkdirs()
 
         var changed = false
+        var attempted = false
         REMOTE_FILES.forEach { file ->
+            attempted = true
             if (downloadOne(dir, file)) changed = true
         }
 
-        pref.edit().putLong(KEY_LAST_CHECK, now).apply()
-        if (changed) Log.i(TAG, "内置直播源已在线更新")
+        // 所有镜像都没有拿到可用文件时不能写 lastCheck，否则一次网络抖动会锁死 6 小时。
+        if (changed) {
+            pref.edit().putLong(KEY_LAST_CHECK, now).apply()
+            Log.i(TAG, "内置直播源已在线更新")
+        } else if (!attempted) {
+            pref.edit().putLong(KEY_LAST_CHECK, now).apply()
+        } else {
+            Log.w(TAG, "本轮在线更新没有可用源，保留 6 小时重试窗口")
+        }
         return changed
     }
 

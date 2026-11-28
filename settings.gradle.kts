@@ -26,7 +26,10 @@ include(":core:data")
 include(":core:util")
 include(":core:designsystem")
 include(":tv")
-include(":mobile")
+// mobile 是半成品，默认不参与 TV 构建；需要时用 -PincludeMobile=true 显式打开。
+if (providers.gradleProperty("includeMobile").orNull == "true") {
+    include(":mobile")
+}
 include(":ijkplayer-java")
 include(":allinone")
 

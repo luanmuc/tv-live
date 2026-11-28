@@ -53,7 +53,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | SEC-04 | 全局信任所有 TLS 证书 | `UnsafeTrustManager.enableUnsafeTrustManager`；`OkHttpExtensions` 每个请求挂 `TrustAllSSLSocketFactory`；`TrustAllSSLSocketFactory` 初始化时改全局 `HttpsURLConnection` | 默认恢复系统证书校验；不再全局修改 `HttpsURLConnection`；自签名源改为显式、单源、可关闭的例外 | DONE（默认校验已恢复；单源例外未提供） |
 | SEC-05 | 远端 `transformJs` 用 Rhino `initStandardObjects()` 执行，可触达 Java 类、无超时 | `IptvRepository.transform` | 使用安全标准对象 + ClassShutter 禁止 Java 访问 + 指令数超时；最终改为声明式转换 | DONE（安全对象/ClassShutter/指令上限已加；最终声明式转换待后续） |
 | SEC-06 | 源 URL 缺少协议白名单；远端包只校验 `#EXTM3U` + 行数 | `M3uIptvParser` 接受任意非注释行；`BuiltinSources.looksValid` 只数 `#EXTINF` | App 解析器只接受明确的媒体协议；拒绝 `file://`、`javascript:` 等；远端包增加完整性校验 | DOING（协议白名单已做；包签名/哈希待补） |
-| SEC-07 | 密钥明文存 SharedPreferences，`allowBackup` 可能带走 | `Configs` 的 token/password；Manifest | 迁移到 EncryptedSharedPreferences/Keystore；关闭或限制备份 | TODO |
+| SEC-07 | 密钥明文存 SharedPreferences，`allowBackup` 可能带走 | `Configs` 的 token/password；Manifest | 迁移到 EncryptedSharedPreferences/Keystore；关闭或限制备份 | DOING（已关闭 allowBackup；密钥仍未加密） |
 
 ### P1 架构与状态
 
@@ -65,19 +65,19 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | APP-04 | 导航是字符串路由，返回逻辑分散在 App/MainScreen/MainContent | `Screens` 枚举 + route string；`BackHandler` 分散 | 类型安全 `Destination`；统一 `BackDispatcher`；启动页值校验 | TODO |
 | APP-05 | `core:data` 依赖 Compose/Android 状态，领域层不纯 | `LineHealth` 用 `mutableStateMapOf`；实体用 `@Immutable` | 领域模型纯 Kotlin；健康状态改 `StateFlow`；UI 层只消费 | TODO |
 | APP-06 | 播放失败自动换线有两条触发路径 | `VideoPlayerState.onError` 内自增；`MainContent` 又监听 `error` 调 `handlePlayerError`；EPG 回看排除逻辑只在一处 | 单一 `PlaybackCoordinator` 状态机；同一次错误只切换一次；回看/直播策略显式 | TODO |
-| APP-07 | 每个请求新建 OkHttpClient，无连接池/ETag/统一超时 | `String.request` 每次 `OkHttpClient.Builder()` | 单例 OkHttpClient + 统一拦截器/超时/缓存策略 | TODO |
+| APP-07 | 每个请求新建 OkHttpClient，无连接池/ETag/统一超时 | `String.request` 每次 `OkHttpClient.Builder()` | 单例 OkHttpClient + 统一拦截器/超时/缓存策略 | DONE（已单例化 + 统一超时；ETag/缓存策略未做） |
 | APP-08 | App 启动后全量探测 764 条线路，与 CI 巡检重复 | `LineHealth.start` 探测全部线路；CI 已有 `line-stats` | 内置初始健康快照；只对当前频道/收藏懒探测 | TODO |
 
 ### P1 源流水线
 
 | ID | 问题 | 证据 | 验收标准 | 状态 |
 | --- | --- | --- | --- | --- |
-| SRC-01 | `build_pack.py` 单文件承担抓取/归一/探测/选线/输出，脚本互相 import | 957 行；`crawl_check` import `build_pack`；无 Python 测试 | 拆成 `sources_pipeline` 包；CLI 兼容；pytest 覆盖关键函数 | TODO |
-| SRC-02 | 选线只看 `alive`，深检 `playable` 不参与选择 | `pick_lines` 排序键只有 `alive/cost`；总包 764 条中 488 条可拉 | 两阶段选线：深检后按 `playable → alive → latency → 源多样性 → host 上限` | TODO |
-| SRC-03 | 国际源死链全量写入 | `refresh_sources.probe_blocks` 只排序不剔除；189 条中 77 条存活 | 有活线时不再硬塞死链；每频道设置上限和兜底 | TODO |
-| SRC-04 | `line-audit` 不回灌；03:00 与 04:30 重复巡检 | 产物只提交；两个 workflow 都跑 `crawl_check` | 巡检结果进入下一次选线；去掉重复任务或改成周度深检 | TODO |
-| SRC-05 | 输出丢失 `http-user-agent` / `#KODIPROP` 等元数据 | `build_pack.parse` 只保留 name/logo/group/url；输出不写 KODIPROP | 能透明保留的元数据必须保留；不能支持的源要显式丢弃并记录原因 | TODO |
-| SRC-06 | `SEEDED_VERSION` 手工；更新失败也写 lastCheck | `SEEDED_VERSION = 10`；1.4.9→1.4.10 源包 735→764 但版本未变；失败后 6 小时才重试 | 用 assets 内容哈希判定是否重新释放；失败短退避，成功才记录 lastCheck | TODO |
+| SRC-01 | `build_pack.py` 单文件承担抓取/归一/探测/选线/输出，脚本互相 import | 957 行；`crawl_check` import `build_pack`；已有少量 unittest，未拆包 | 拆成 `sources_pipeline` 包；CLI 兼容；pytest 覆盖关键函数 | TODO |
+| SRC-02 | 选线只看 `alive`，深检 `playable` 不参与选择 | `pick_lines` 排序键只有 `alive/cost`；总包 764 条中 488 条可拉 | 两阶段选线：深检后按 `playable → alive → latency → 源多样性 → host 上限` | DONE（代码已改：先扩池深检，再按 playable 定稿；待跑全量验证） |
+| SRC-03 | 国际源死链全量写入 | `refresh_sources.probe_blocks` 只排序不剔除；189 条中 77 条存活 | 有活线时不再硬塞死链；每频道设置上限和兜底 | DONE（代码已改：按标准频道 ID 分组，活线优先，无活线才留 2 条兜底；待跑全量验证） |
+| SRC-04 | `line-audit` 不回灌；03:00 与 04:30 重复巡检 | 产物只提交；两个 workflow 都跑 `crawl_check` | 巡检结果进入下一次选线；去掉重复任务或改成周度深检 | DONE（已回灌 route_score；每日重复巡检移除，独立任务改周度） |
+| SRC-05 | 输出丢失 `http-user-agent` / `#KODIPROP` 等元数据 | `build_pack.parse` 只保留 name/logo/group/url；输出不写 KODIPROP | 能透明保留的元数据必须保留；不能支持的源要显式丢弃并记录原因 | DONE（已保留 EXTINF 的 UA、#EXTVLCOPT、#KODIPROP、#EXTGRP；待全量输出验证） |
+| SRC-06 | `SEEDED_VERSION` 手工；更新失败也写 lastCheck | 旧版 `SEEDED_VERSION = 10`，1.4.9→1.4.10 源包 735→764 但版本未变；失败后 6 小时才重试；现已改哈希 | 用 assets 内容哈希判定是否重新释放；失败短退避，成功才记录 lastCheck | DOING（已改为 assets SHA-256 哈希释放；全部失败不写 lastCheck；仍未做内容清单/单文件版本） |
 | SRC-07 | 远端包无签名/哈希；镜像可篡改 | `BuiltinSources.looksValid` 只校验开头和行数 | 包级签名或哈希校验；拒绝异常协议；镜像失败不影响旧包 | TODO |
 | SRC-08 | 频道名/别名逻辑在 Python 与 Kotlin 各一份 | `build_pack.standard_name`、`hkmotw_ids`；`ChannelAlias`、`ChannelUtil` | 一份共享频道目录（JSON/YAML）生成两端资源；单一 ID/别名/排序来源 | TODO |
 
@@ -85,11 +85,11 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 | ID | 问题 | 证据 | 验收标准 | 状态 |
 | --- | --- | --- | --- | --- |
-| BLD-01 | README 版本/源数量过期 | README 写 1.4.8 / 735；实际 1.4.10 / 764 | README 由版本文件/脚本生成，或发版检查强制同步 | TODO |
-| BLD-02 | README 说 push main 自动构建，workflow 只接受 tag/手动 | `build-apk.yml` | 文档与 workflow 一致；正式版只走 tag | TODO |
-| BLD-03 | `mobile` 半成品仍在默认构建 | `settings.gradle.kts` include `:mobile`；docs 明确不要出包 | 从默认构建移除，或改为显式 profile | TODO |
-| BLD-04 | 没有有效测试/静态检查 | `tv` 无 test；core 只有模板测试；scripts 无 pytest；CI 只编译 | CI 跑单测、lint、Python pytest；至少覆盖导航、解析、选线 | TODO |
-| BLD-05 | 版本号/种子版本多处手写 | `tv/build.gradle.kts`、README、`SEEDED_VERSION` | 单一版本源；tag 与 versionName 自动校验；seed 自动计算 | TODO |
+| BLD-01 | README 版本/源数量过期 | README 写 1.4.8 / 735；实际 1.4.10 / 764 | README 由版本文件/脚本生成，或发版检查强制同步 | DONE（已同步 1.4.10 / 764 / 189；自动生成仍待做） |
+| BLD-02 | README 说 push main 自动构建，workflow 只接受 tag/手动 | `build-apk.yml` | 文档与 workflow 一致；正式版只走 tag | DONE（已改为 tag 发布 / 手动只留档） |
+| BLD-03 | `mobile` 半成品仍在默认构建 | `settings.gradle.kts` include `:mobile`；docs 明确不要出包 | 从默认构建移除，或改为显式 profile | DONE（默认不 include，-PincludeMobile=true 显式打开） |
+| BLD-04 | 没有有效测试/静态检查 | `tv` 无 test；core 只有模板测试；scripts 无 pytest；CI 只编译 | CI 跑单测、lint、Python pytest；至少覆盖导航、解析、选线 | DOING（Python unittest 4 项 + core 单测已进 CI；tv 测试/lint 未做） |
+| BLD-05 | 版本号/种子版本多处手写 | `tv/build.gradle.kts`、README；`SEEDED_VERSION` 已移除，改 assets 哈希 | 单一版本源；tag 与 versionName 自动校验；seed 自动计算 | DOING（seed 已自动；versionName/tag 仍手写） |
 
 ## 2. 执行批次
 

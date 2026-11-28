@@ -13,7 +13,18 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import okhttp3.internal.closeQuietly
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resumeWithException
+
+private val defaultClient: OkHttpClient by lazy {
+    OkHttpClient.Builder()
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true)
+        .followRedirects(true)
+        .build()
+}
 
 @OptIn(ExperimentalCoroutinesApi::class)
 suspend fun Call.await(): Response = suspendCancellableCoroutine { continuation ->
@@ -54,16 +65,13 @@ suspend fun <T> String.request(
     val url = this
 
     return withContext(Dispatchers.IO) {
-        // 使用系统默认 TLS 校验；不得为直播源全局放开证书校验。
-        val client = OkHttpClient.Builder()
-            .followRedirects(true)
-            .build()
+        // 复用连接池/线程池；使用系统默认 TLS 校验，不得为直播源全局放开证书校验。
         val request = Request.Builder()
             .url(url)
             .let(builder)
             .build()
 
-        val response = client.newCall(request).await()
+        val response = defaultClient.newCall(request).await()
 
         try {
             if (!response.isSuccessful) throw Exception("${response.code}: ${response.message}")

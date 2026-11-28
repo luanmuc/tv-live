@@ -23,6 +23,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: 源脚本单测
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
+
       - name: 发现新源
         run: timeout 300 python3 scripts/crawl_sources.py || true
 
@@ -31,9 +34,6 @@ jobs:
 
       - name: 合并央视卫视多线路源
         run: timeout 1800 python3 scripts/build_pack.py
-
-      - name: 线路巡检
-        run: timeout 900 python3 scripts/crawl_check.py || true
 
       - name: 健康检查
         run: python3 scripts/refresh_sources.py --check

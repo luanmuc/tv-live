@@ -42,6 +42,8 @@ IPTV_ORG_EPG = "https://iptv-org.github.io/epg/guides/cn.xml"
 
 UA = "Mozilla/5.0 (compatible; tv-live-source-bot/1.0)"
 MIN_CHANNELS = 50
+MAX_INTL_LINES = 3
+MAX_INTL_FALLBACK = 2
 RETRY = 2
 
 
@@ -98,17 +100,37 @@ def dedupe(blocks: list[str]) -> list[str]:
     return out
 
 
+def _block_key(block: str) -> str:
+    first = block.splitlines()[0]
+    match = re.search(r'tvg-id="([^"]+)"', first)
+    if match:
+        return match.group(1).split("@", 1)[0]
+    return first.split(",")[-1].strip()
+
+
 def probe_blocks(blocks: list[str]) -> list[str]:
-    """对国际源逐条探测，存活/延迟优先，死链保留在最后。"""
+    """对国际源逐条探测；每台优先留活线，没活线才留少量兜底。"""
     items = [{"url": b.splitlines()[-1]} for b in blocks]
     items = probe_all(items)
     rank = {True: 0, None: 1, False: 2}
-    pairs = sorted(
-        zip(blocks, items),
-        key=lambda p: (rank.get(p[1].get("alive"), 2), p[1].get("cost", 99)),
-    )
+
+    grouped: dict[str, list[tuple[str, dict]]] = {}
+    for block, item in zip(blocks, items):
+        grouped.setdefault(_block_key(block), []).append((block, item))
+
+    selected: list[str] = []
+    for pairs in grouped.values():
+        ordered = sorted(
+            pairs,
+            key=lambda p: (rank.get(p[1].get("alive"), 2), p[1].get("cost", 99)),
+        )
+        alive = [p for p in ordered if p[1].get("alive") is True]
+        fallback = [p for p in ordered if p[1].get("alive") is not True]
+        chosen = alive[:MAX_INTL_LINES] if alive else fallback[:MAX_INTL_FALLBACK]
+        selected.extend(block for block, _ in chosen)
+
     alive = sum(1 for i in items if i.get("alive") is True)
-    print(f"  国际源探测：可用 {alive}/{len(items)}")
+    print(f"  国际源探测：可用 {alive}/{len(items)}，保留 {len(selected)}/{len(blocks)} 条")
     payload = {
         "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
         "summary": {
@@ -116,6 +138,7 @@ def probe_blocks(blocks: list[str]) -> list[str]:
             "alive": alive,
             "unknown": sum(1 for i in items if i.get("alive") is None),
             "dead": sum(1 for i in items if i.get("alive") is False),
+            "selected": len(selected),
         },
         "lines": [
             {
@@ -131,7 +154,7 @@ def probe_blocks(blocks: list[str]) -> list[str]:
     (DIST / "intl-line-stats.json").write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    return [b for b, _ in pairs]
+    return selected
 
 
 def write(path: pathlib.Path, header: str, blocks: list[str], title: str, probe: bool = False) -> bool:

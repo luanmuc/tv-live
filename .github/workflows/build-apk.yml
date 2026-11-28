@@ -58,8 +58,14 @@ jobs:
         with:
           cache-read-only: false
 
+      - name: 源脚本单测
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
+
       - name: 内置源健康检查
         run: python3 scripts/refresh_sources.py --check
+
+      - name: Core 单元测试
+        run: ./gradlew :core:data:testReleaseUnitTest --no-daemon --build-cache
 
       # 只出正式版：签名密钥缺失直接失败，不再回退 debug 包
       - name: 校验签名密钥
