@@ -52,8 +52,8 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | SEC-03 | 任意路径文件读写、APK/二进制上传安装接口 | 原 `/api/file/content`、`/api/file/content-with-dir`、`/api/upload/apk`、`/api/upload/allinone` | 从 Release 路由中移除；不再保留调试上传入口 | DONE（随 HTTP 服务整体删除） |
 | SEC-04 | 全局信任所有 TLS 证书 | `UnsafeTrustManager.enableUnsafeTrustManager`；`OkHttpExtensions` 每个请求挂 `TrustAllSSLSocketFactory`；`TrustAllSSLSocketFactory` 初始化时改全局 `HttpsURLConnection` | 默认恢复系统证书校验；不再全局修改 `HttpsURLConnection`；自签名源改为显式、单源、可关闭的例外 | DONE（默认校验已恢复；单源例外未提供） |
 | SEC-05 | 远端 `transformJs` 用 Rhino `initStandardObjects()` 执行，可触达 Java 类、无超时 | `IptvRepository.transform` | 使用安全标准对象 + ClassShutter 禁止 Java 访问 + 指令数超时；最终改为声明式转换 | DONE（安全对象/ClassShutter/指令上限已加；最终声明式转换待后续） |
-| SEC-06 | 源 URL 缺少协议白名单；远端包只校验 `#EXTM3U` + 行数 | `M3uIptvParser` 接受任意非注释行；`BuiltinSources.looksValid` 只数 `#EXTINF` | App 解析器只接受明确的媒体协议；拒绝 `file://`、`javascript:` 等；远端包增加完整性校验 | DOING（协议白名单已做；包签名/哈希待补） |
-| SEC-07 | 密钥明文存 SharedPreferences，`allowBackup` 可能带走 | `Configs` 的 token/password；Manifest | 迁移到 EncryptedSharedPreferences/Keystore；关闭或限制备份 | DOING（已关闭 allowBackup；密钥仍未加密） |
+| SEC-06 | 源 URL 缺少协议白名单；远端包只校验 `#EXTM3U` + 行数 | `M3uIptvParser` 接受任意非注释行；`BuiltinSources.looksValid` 只数 `#EXTINF` | App 解析器只接受明确的媒体协议；拒绝 `file://`、`javascript:` 等；远端包增加完整性校验 | DONE（协议白名单；批次 6 增加 `source-manifest.json` + RSA 签名，App 用自身 APK 签名证书验签并逐文件校验 SHA-256） |
+| SEC-07 | 密钥明文存 SharedPreferences，`allowBackup` 可能带走 | 原 `Configs` 的 token/password；Manifest | 迁移到 EncryptedSharedPreferences/Keystore；关闭或限制备份 | DONE（批次 5 删除云同步后已无 token/password 字段；`allowBackup=false`。后续若再加密钥，必须走 Keystore） |
 
 ### P1 架构与状态
 
@@ -113,7 +113,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 - [ ] Token 轮换/一次性配对码；当前 Token 会出现在 URL query，可能进浏览器历史或代理日志。
 - [ ] 自签名 HTTPS 源的单 host 例外（当前统一走系统信任，个别源会失败）。
 - [ ] 远端源包的签名/哈希校验（当前只做协议白名单和最小行数）。
-- [ ] SharedPreferences 密钥加密与备份策略（SEC-07）。
+- [x] SharedPreferences 密钥加密与备份策略（SEC-07）：云同步删除后已无 token/password 字段；`allowBackup=false`。
 
 ### 批次 2：源流水线可测试化与质量闭环
 
@@ -155,7 +155,17 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 - [x] 删除推送页、Dashboard 推送入口、HTTP 服务/前台 Service、Manifest 注册与 Activity 启停。
 - [x] IPTV/EPG“添加其他源”改为本机 `AddSourceDialog`，不再依赖手机网页推送。
 - [x] `MainViewModel.refreshChannelFavoriteList` 改走 `SettingsRepository.update`。
-- [ ] `Configs` 其余直接读取点、SEC-06/07 仍未迁移/补齐。
+- [ ] `Configs` 其余直接读取点仍未迁移；SEC-06/07 已在批次 6 补齐。
+
+### 批次 6：源包完整性与签名绑定
+
+- [x] 新增 `SourceManifest`/`SourceManifestVerifier`：解析清单、RSA 验签、逐文件 SHA-256 校验。
+- [x] `BuiltinSources` 在线更新改为先拉 `source-manifest.json` + `.sig`，用 APK 自身签名证书验签；失败即拒绝更新。
+- [x] 清单与 `.sig` 随 APK assets 释放；远端文件哈希不符、协议不合法或清单缺失都不替换旧文件。
+- [x] 新增 `scripts/sign_sources.py`：从 APK keystore 导出私钥，签 `source-manifest.json` 并输出 base64 签名。
+- [x] `build-apk` 构建前自动签名清单；`refresh-sources` 每日源更新后重新签名并提交。
+- [x] `SourceManifestTest`：解析、哈希匹配、RSA 验签、篡改拒绝。
+- [x] 复核：APK 内 `source-manifest.json` 用 APK 证书 `openssl dgst -verify` 通过。
 
 ## 3. 执行记录
 
@@ -172,6 +182,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 | 2026-11-28 | 批次 4（直播 UI 模块化） | 新增 `:core:settings`（设置快照/仓库/VM/Configs/主题与显示模式枚举）与 `:core:ui`（material/theme/tooling/AppScreen/路由/Destination/ModifierUtils/共享频道条目）；`:feature:live` 迁入全部 `screensold` 61 文件与直播频道信息组件，包名改为 `com.doubao.tv.feature.live.ui`；app 依赖 core:ui/core:settings，旧 `screensold` 删除 | `:tv:compileOriginalReleaseKotlin` 通过；`:core:data`/`:core:util`/`:feature:live` 单测全部通过；本地 `:tv:assembleOriginalRelease` 通过（R8/资源压缩/打包） | 包名保留 `PlaybackCoordinator` 的 `feature.live.playback`；`Configs` 仍为 SharedPreferences 兼容层 |
 | 2026-11-28 | 批次 5 | `LineHealth` Flow 化、`core:data` 去 Compose；删除云同步包/页面/字段/枚举；删除调试页/覆盖层/字段；删除推送页与 HTTP 服务；源添加改本机弹窗；收藏写入收口到 `SettingsRepository` | `:tv:compileOriginalReleaseKotlin` 通过；`:core:data`/`:core:util`/`:feature:live` 单测通过 | 本地 `assembleOriginalRelease` 因缺 `keystore.jks` 未完成打包，改走云端签名构建 |
+| 2026-11-28 | 批次 6 | 源清单按 APK 签名证书签名；App 先验签再逐文件校验 SHA-256；新增 `sign_sources.py`；build/refresh 两条 workflow 均接入；SEC-07 随云同步字段删除关闭 | `SourceManifestTest` 3 项通过；`:core:data`/`:core:util`/`:feature:live` 单测通过；`:tv:compileOriginalReleaseKotlin` 通过；云端 run 46121470785 成功；APK 内清单 `Verified OK` | 源清单签名使用现有 APK keystore，不新增密钥；APK 版本仍为 1.4.10 |
 
 ## 4. 构建验证记录
 
