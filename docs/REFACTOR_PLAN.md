@@ -62,7 +62,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | --- | --- | --- | --- | --- |
 | APP-01 | `Configs` / `SettingsViewModel` 是双份 god object，新增设置要改 4～5 处 | `Configs` 仍 949 行；`SettingsViewModel` 已从 700 行降到约 500 行；66 个字段仍手写 getter/setter | 单一 `SettingsRepository` + 不可变 `AppSettings`；设置读写只有一条路径 | DONE（UI 层已单入口；`Configs` 作为 SharedPreferences 兼容层保留，其他直接写 `Configs` 的调用点后续迁移） |
 | APP-02 | 全局单例与组合期副作用 | 原 `MainViewModel.instance`、`SettingsViewModel.instance`、`mainViewModel.needRefresh = {}` | 引入 `AppContainer`（不强制 Hilt）；ViewModel 通过构造注入；移除组合期赋值 | DONE（`AppContainer` + 构造注入；两处 `instance` 已删；组合期赋值改 SharedFlow；`settingsVM` / `mainVM` 直接走 `viewModel()`） |
-| APP-03 | 新旧 UI 半迁移，直播页仍在 `screensold` | `screen` 67 文件 / `screensold` 61 文件；`Screens.Live` 走旧 `MainContent` | 抽出 `feature:live`；直播页、播放器、频道浮层迁移；旧包只留兼容壳 | DOING（`:feature:live` 已建立并迁入 `PlaybackCoordinator`；直播 UI 未迁） |
+| APP-03 | 新旧 UI 半迁移，直播页仍在 `screensold` | 旧 `screensold` 61 文件已删除；直播 UI 全部在 `:feature:live` | 抽出 `feature:live`；直播页、播放器、频道浮层迁移；旧包退场 | DONE（直播 UI 全量迁入 `:feature:live`；`ui:material/theme/tooling/AppScreen` 下沉 `core:ui`；设置层下沉 `core:settings`） |
 | APP-04 | 导航是字符串路由，返回逻辑分散在 App/MainScreen/MainContent | 原 `Screens` 枚举 + route string；`BackHandler` 分散 | 类型安全 `Destination`；统一 `BackDispatcher`；启动页值校验 | DONE（外层与设置内层均类型安全；`BackDispatcher` 统一 AppScreen 返回栈；启动页值校验已加） |
 | APP-05 | `core:data` 依赖 Compose/Android 状态，领域层不纯 | `LineHealth` 用 `mutableStateMapOf`；实体用 `@Immutable` | 领域模型纯 Kotlin；健康状态改 `StateFlow`；UI 层只消费 | TODO |
 | APP-06 | 播放失败自动换线有两条触发路径 | 原 `VideoPlayerState.onError` 内自增；`MainContent` 又监听 `error` 调 `handlePlayerError`；EPG 回看排除逻辑只在一处 | 单一 `PlaybackCoordinator` 状态机；同一次错误只切换一次；回看/直播策略显式 | DONE（`PlaybackCoordinator` 已抽出并单测；`MainContentState.handlePlayerError` 只调用它；回看/直播、冷却、上限、活线优先均显式） |
@@ -138,12 +138,12 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 ### 批次 4：直播 feature 化
 
-- [~] `:feature:live`：模块已建立，`PlaybackCoordinator` 已迁入；直播 UI 仍在 `screensold`，未迁。
+- [x] `:feature:live`：模块完成直播 UI、播放器、频道浮层迁移；旧 `screensold` 包删除。
 - [x] 外层类型安全导航 + 启动页值校验（`@Serializable Destination`）。
 - [x] 设置内层类型安全导航（`SettingsDestination`，路由名与旧字符串一致）。
 - [x] 统一返回 `BackDispatcher`（core:util 分发栈 + App/AppScreen 接入 + 4 项单测）。
 - [x] `PlaybackCoordinator` 状态机（已迁到 `:feature:live`，7 项单测）。
-- [ ] 旧 `screensold` 逐步退场（61 个文件，仍依赖 `ui.material` / `ui.theme` / `settings` 等 app 内部代码）。
+- [x] 旧 `screensold` 退场（61 个文件迁入 feature，共享 UI 下沉 `core:ui`，设置层下沉 `core:settings`）。
 
 ## 3. 执行记录
 
@@ -158,6 +158,8 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 2026-11-28 | 批次 4（设置路由） | 新增 `SettingsDestination`，13 个分类 + 16 个子分类全部改为独立 `@Serializable` 目的地；`SettingsScreen` 改用 `composable<T>`，旧 `"APP"` / `"IPTV_SOURCE"` 等 route 名通过 `@SerialName` 保留；`navigateSingleTop` 增加设置目的地重载 | `:tv:compileOriginalReleaseKotlin` 通过；云端 run 46105482942 成功，APK 版本/签名校验通过 | 统一 `BackDispatcher` 仍未抽 |
 | 2026-11-28 | 批次 4（返回/feature） | 新增 `BackDispatcher` 栈与 `LocalBackDispatcher`；`AppScreen` 不再各自抢 `BackHandler`，由 `App` 根统一分发；新增 `:feature:live` 模块并把 `PlaybackCoordinator` 从 `core:data` 迁入 | `BackDispatcherTest` 4 项通过；`:feature:live:testDebugUnitTest` 通过；`:tv:compileOriginalReleaseKotlin` 通过 | `screensold` 直播 UI 仍未迁入 feature；旧 UI 依赖 app 内部 material/theme/settings |
 
+| 2026-11-28 | 批次 4（直播 UI 模块化） | 新增 `:core:settings`（设置快照/仓库/VM/Configs/主题与显示模式枚举）与 `:core:ui`（material/theme/tooling/AppScreen/路由/Destination/ModifierUtils/共享频道条目）；`:feature:live` 迁入全部 `screensold` 61 文件与直播频道信息组件，包名改为 `com.doubao.tv.feature.live.ui`；app 依赖 core:ui/core:settings，旧 `screensold` 删除 | `:tv:compileOriginalReleaseKotlin` 通过；`:core:data`/`:core:util`/`:feature:live` 单测通过（12 项）；本地 `:tv:assembleOriginalRelease` 通过（R8/资源压缩/打包） | 包名保留 `PlaybackCoordinator` 的 `feature.live.playback`；`Configs` 仍为 SharedPreferences 兼容层 |
+
 ## 4. 构建验证记录
 
 | 日期 | 提交 | 工作流 | 产物 | 说明 |
@@ -168,6 +170,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 2026-11-28 | `8ef5b15` | [run 46101103087](https://github.com/luanmuc/tv-live/actions/runs/46101103087) | `doubao-tv-1.4.10.apk`，32.56MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证 `PlaybackCoordinator`；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/qerCdbPZmk` |
 | 2026-11-28 | `6937c8f` | [run 46103508372](https://github.com/luanmuc/tv-live/actions/runs/46103508372) | `doubao-tv-1.4.10.apk`，32.59MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证类型安全导航；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/kQPNBRYCQb` |
 | 2026-11-28 | `3a772a8` | [run 46105482942](https://github.com/luanmuc/tv-live/actions/runs/46105482942) | `doubao-tv-1.4.10.apk`，32.7MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证设置页类型安全路由；仅 artifact，未发 Release；CDN `https://aka.doubaocdn.com/s/O6B0juG3sN` |
+| 2026-11-28 | `222693e` | [run 46109037161](https://github.com/luanmuc/tv-live/actions/runs/46109037161) | `doubao-tv-1.4.10.apk`，32.7MB，versionCode 15 / versionName 1.4.10，签名 SHA-256 与旧包一致 | 手动 `workflow_dispatch` 验证 BackDispatcher + `:feature:live`；仅 artifact，未发 Release；CDN 待上传确认 |
 
 ## 5. 风险与回滚
 

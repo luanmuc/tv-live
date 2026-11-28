@@ -34,9 +34,9 @@ import com.doubao.tv.ui.material.rememberDebounceState
 import com.doubao.tv.ui.rememberChildPadding
 import com.doubao.tv.ui.screen.channels.ChannelsScreen
 import com.doubao.tv.ui.screen.search.SearchScreen
-import com.doubao.tv.ui.screensold.channel.ChannelTempScreen
-import com.doubao.tv.ui.screensold.videoplayer.VideoPlayerScreen
-import com.doubao.tv.ui.screensold.videoplayer.rememberVideoPlayerState
+import com.doubao.tv.feature.live.ui.channel.ChannelTempScreen
+import com.doubao.tv.feature.live.ui.videoplayer.VideoPlayerScreen
+import com.doubao.tv.feature.live.ui.videoplayer.rememberVideoPlayerState
 import com.doubao.tv.ui.utils.Configs
 import com.doubao.tv.ui.utils.handleKeyEvents
 

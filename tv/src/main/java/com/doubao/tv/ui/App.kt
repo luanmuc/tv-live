@@ -2,9 +2,6 @@ package com.doubao.tv.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.IntRange
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -16,10 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -39,8 +33,6 @@ import com.doubao.tv.ui.screen.monitor.MonitorPopup
 import com.doubao.tv.ui.screen.settings.SettingsViewModel
 import com.doubao.tv.ui.screen.settings.settingsVM
 import com.doubao.tv.ui.theme.DESIGN_WIDTH
-import com.doubao.tv.ui.theme.SAFE_AREA_HORIZONTAL_PADDING
-import com.doubao.tv.ui.theme.SAFE_AREA_VERTICAL_PADDING
 import com.doubao.tv.ui.tooling.PreviewWithLayoutGrids
 import com.doubao.tv.ui.utils.rememberReadExternalStoragePermission
 import java.io.File
@@ -142,19 +134,3 @@ class DoubleBackPressedExitState internal constructor(
 fun rememberDoubleBackPressedExitState(@IntRange(from = 0) resetSeconds: Int = 2) =
     remember { DoubleBackPressedExitState(resetSeconds = resetSeconds) }
         .also { LaunchedEffect(it) { it.observe() } }
-
-val ParentPadding = PaddingValues(
-    vertical = SAFE_AREA_VERTICAL_PADDING.dp,
-    horizontal = SAFE_AREA_HORIZONTAL_PADDING.dp,
-)
-
-@Composable
-fun rememberChildPadding(direction: LayoutDirection = LocalLayoutDirection.current) =
-    remember {
-        Padding(
-            start = ParentPadding.calculateStartPadding(direction),
-            top = ParentPadding.calculateTopPadding(),
-            end = ParentPadding.calculateEndPadding(direction),
-            bottom = ParentPadding.calculateBottomPadding()
-        )
-    }

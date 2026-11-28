@@ -213,7 +213,7 @@ fun MainScreen(
                     BackHandler { backFromLive() }
 
                     key(settingsViewModel.videoPlayerCore) {
-                        com.doubao.tv.ui.screensold.main.components.MainContent(
+                        com.doubao.tv.feature.live.ui.main.components.MainContent(
                             filteredChannelGroupListProvider = filteredChannelGroupListProvider,
                             favoriteChannelListProvider = favoriteChannelListProvider,
                             epgListProvider = epgListProvider,

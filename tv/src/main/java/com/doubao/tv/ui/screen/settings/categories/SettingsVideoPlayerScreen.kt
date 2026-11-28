@@ -1,5 +1,7 @@
 package com.doubao.tv.ui.screen.settings.categories
 
+import com.doubao.tv.settings.VideoPlayerDisplayMode
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.runtime.Composable

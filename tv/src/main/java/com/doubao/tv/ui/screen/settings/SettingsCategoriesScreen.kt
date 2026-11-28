@@ -190,46 +190,7 @@ private fun SettingsCategoryItemThemeBackground() {
     )
 }
 
-enum class SettingsCategories(
-    val icon: ImageVector,
-    val title: String,
-) {
-    APP(Icons.Outlined.Devices, "应用"),
-    IPTV(Icons.Outlined.LiveTv, "直播源"),
-    EPG(Icons.AutoMirrored.Outlined.LibraryBooks, "节目单"),
-    UI(Icons.Outlined.DisplaySettings, "界面"),
-    CONTROL(Icons.Outlined.ControlCamera, "控制"),
-    VIDEO_PLAYER(Icons.Outlined.SmartDisplay, "播放器"),
-    UPDATE(Icons.Outlined.Update, "更新"),
 
-    // FAVORITE(Icons.Outlined.FavoriteBorder, "收藏"),
-    // EPG_RESERVE(Icons.Default.BookmarkBorder, "预约"),
-    NETWORK(Icons.Outlined.Wifi, "网络"),
-    THEME(Icons.Outlined.ColorLens, "主题"),
-    CLOUD_SYNC(Icons.Outlined.CloudSync, "云同步"),
-    DEBUG(Icons.Outlined.BugReport, "调试"),
-    LOG(Icons.AutoMirrored.Outlined.FormatListBulleted, "日志"),
-    PERMISSIONS(Icons.Outlined.Shield, "权限"),
-}
-
-enum class SettingsSubCategories {
-    IPTV_SOURCE,
-    IPTV_SOURCE_CACHE_TIME,
-    CHANNEL_GROUP_VISIBILITY,
-    IPTV_HYBRID_MODE,
-    EPG_SOURCE,
-    EPG_REFRESH_TIME_THRESHOLD,
-    UI_TIME_SHOW_MODE,
-    UI_SCREEN_AUTO_CLOSE_DELAY,
-    UI_DENSITY_SCALE_RATIO,
-    UI_FONT_SCALE_RATIO,
-    VIDEO_PLAYER_CORE,
-    VIDEO_PLAYER_RENDER_MODE,
-    VIDEO_PLAYER_DISPLAY_MODE,
-    VIDEO_PLAYER_LOAD_TIMEOUT,
-    UPDATE_CHANNEL,
-    CLOUD_SYNC_PROVIDER,
-}
 
 @Preview(device = "id:Android TV (720p)")
 @Composable

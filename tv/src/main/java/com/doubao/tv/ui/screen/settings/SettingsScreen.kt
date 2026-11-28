@@ -1,5 +1,7 @@
 package com.doubao.tv.ui.screen.settings
 
+import com.doubao.tv.settings.VideoPlayerDisplayMode
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue

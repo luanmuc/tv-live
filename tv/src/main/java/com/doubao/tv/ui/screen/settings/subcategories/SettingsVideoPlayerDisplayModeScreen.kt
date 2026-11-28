@@ -20,7 +20,7 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.doubao.tv.ui.rememberChildPadding
 import com.doubao.tv.ui.screen.components.AppScreen
-import com.doubao.tv.ui.screensold.videoplayer.VideoPlayerDisplayMode
+import com.doubao.tv.settings.VideoPlayerDisplayMode
 import com.doubao.tv.ui.theme.MyTvTheme
 import com.doubao.tv.ui.utils.handleKeyEvents
 

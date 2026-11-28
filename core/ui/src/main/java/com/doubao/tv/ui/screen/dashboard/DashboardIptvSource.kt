@@ -1,0 +1,73 @@
+package com.doubao.tv.ui.screen.dashboard
+
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.SyncAlt
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.unit.dp
+import androidx.tv.material3.Icon
+import androidx.tv.material3.Text
+import com.doubao.tv.core.data.entities.iptvsource.IptvSource
+import com.doubao.tv.ui.utils.handleKeyEvents
+
+@Composable
+fun DashboardScreeIptvSource(
+    modifier: Modifier = Modifier,
+    currentIptvSourceProvider: () -> IptvSource = { IptvSource() },
+    toSettingsIptvSourceScreen: () -> Unit = {},
+    clearCurrentIptvSourceCache: () -> Unit = {},
+) {
+    val currentIptvSource = currentIptvSourceProvider()
+
+    var isFocused by remember { mutableStateOf(false) }
+
+    val alpha = remember { Animatable(1f) }
+    LaunchedEffect(isFocused) {
+        if (isFocused) {
+            while (true) {
+                alpha.animateTo(0.2f, tween(durationMillis = 1000))
+                alpha.animateTo(1f, tween(durationMillis = 1000))
+            }
+        } else {
+            alpha.animateTo(1f)
+        }
+    }
+
+    Box(
+        modifier = modifier
+            .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
+            .focusable()
+            .handleKeyEvents(
+                onSelect = toSettingsIptvSourceScreen,
+                onLongSelect = clearCurrentIptvSourceCache,
+            )
+            .alpha(alpha.value)
+            .background(Color.Transparent,RectangleShape),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(currentIptvSource.name)
+            if (isFocused) Icon(Icons.Default.SyncAlt, contentDescription = null)
+        }
+    }
+}
+

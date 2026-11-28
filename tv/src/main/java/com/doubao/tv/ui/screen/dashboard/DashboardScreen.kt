@@ -115,50 +115,6 @@ fun DashboardScreen(
     }
 }
 
-@Composable
-fun DashboardScreeIptvSource(
-    modifier: Modifier = Modifier,
-    currentIptvSourceProvider: () -> IptvSource = { IptvSource() },
-    toSettingsIptvSourceScreen: () -> Unit = {},
-    clearCurrentIptvSourceCache: () -> Unit = {},
-) {
-    val currentIptvSource = currentIptvSourceProvider()
-
-    var isFocused by remember { mutableStateOf(false) }
-
-    val alpha = remember { Animatable(1f) }
-    LaunchedEffect(isFocused) {
-        if (isFocused) {
-            while (true) {
-                alpha.animateTo(0.2f, tween(durationMillis = 1000))
-                alpha.animateTo(1f, tween(durationMillis = 1000))
-            }
-        } else {
-            alpha.animateTo(1f)
-        }
-    }
-
-    Box(
-        modifier = modifier
-            .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
-            .focusable()
-            .handleKeyEvents(
-                onSelect = toSettingsIptvSourceScreen,
-                onLongSelect = clearCurrentIptvSourceCache,
-            )
-            .alpha(alpha.value)
-            .background(Color.Transparent,RectangleShape),
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            Text(currentIptvSource.name)
-            if (isFocused) Icon(Icons.Default.SyncAlt, contentDescription = null)
-        }
-    }
-}
-
 @Preview(device = "id:Android TV (720p)")
 @Composable
 private fun DashboardScreenScreen() {

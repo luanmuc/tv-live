@@ -153,6 +153,8 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":feature:live"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:settings"))
+    implementation(project(":core:ui"))
     implementation(project(":core:util"))
     implementation(project(":allinone"))
     implementation(project(":ijkplayer-java"))
