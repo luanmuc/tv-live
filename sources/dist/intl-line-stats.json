@@ -1,10 +1,11 @@
 {
-  "generated_at": "2026-11-27T16:33:51+00:00",
+  "generated_at": "2026-11-28T01:48:05+00:00",
   "summary": {
     "total": 189,
-    "alive": 77,
+    "alive": 78,
     "unknown": 0,
-    "dead": 112
+    "dead": 111,
+    "selected": 186
   },
   "lines": [
     {
@@ -12,322 +13,322 @@
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 87
+      "latency_ms": 93
     },
     {
       "url": "http://play.kankanlive.com/live/1711956137852982.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 1695
+      "latency_ms": 2009
     },
     {
       "url": "https://janya-digimix.akamaized.net/vglive-sk-999451/chinese/ngrp:angelchinese_all/playlist.m3u8",
       "alive": false,
       "kind": "other",
       "status_code": 206,
-      "latency_ms": 808
+      "latency_ms": 806
     },
     {
       "url": "https://restream.pdtvhd.com/memfs/c1cd2ed0-3b2b-4c25-af98-a7fb0b1eb130.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 2145
+      "latency_ms": 814
     },
     {
       "url": "https://hplayer1.juyun.tv/camera/154379194.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 1806
+      "latency_ms": 1618
     },
     {
       "url": "https://stream2.jlntv.cn/baicheng1/sd/live.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 3897
+      "latency_ms": 1702
     },
     {
       "url": "http://ivi.bupt.edu.cn/hls/btv1.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 98077
+      "latency_ms": 97490
     },
     {
       "url": "http://go.bkpcp.top/mg/bjws",
-      "alive": true,
-      "kind": "hls",
-      "status_code": 206,
-      "latency_ms": 3997
+      "alive": false,
+      "kind": "error",
+      "status_code": null,
+      "latency_ms": 68233
     },
     {
       "url": "http://112.25.48.68/live/program/live/btws/1300000/mnf.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16417
+      "latency_ms": 16415
     },
     {
       "url": "https://video.bread-tv.com:8091/hls-live24/online/index.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 854
+      "latency_ms": 863
     },
     {
       "url": "http://223.111.191.105/downflv.brtvcloud.com/kkkkasd/winfr.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16412
+      "latency_ms": 16416
     },
     {
       "url": "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL1.smil/playlist.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 623
+      "latency_ms": 580
     },
     {
       "url": "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL2.smil/playlist.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 626
+      "latency_ms": 587
     },
     {
       "url": "http://74.91.26.218:82/live/cctv1hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 128
+      "latency_ms": 1158
     },
     {
       "url": "http://69.30.245.50/live/cctv1.m3u8",
       "alive": false,
       "kind": "other",
       "status_code": 200,
-      "latency_ms": 66
+      "latency_ms": 72
     },
     {
       "url": "http://74.91.26.218:82/live/cctv2hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 128
+      "latency_ms": 1150
     },
     {
       "url": "http://74.91.26.218:82/live/cctv3hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 129
+      "latency_ms": 146
     },
     {
       "url": "http://198.204.240.250:82/live/cctv4k.m3u8",
       "alive": false,
       "kind": "other",
       "status_code": 200,
-      "latency_ms": 136
+      "latency_ms": 147
     },
     {
       "url": "https://php.jdshipin.com/TVOD/iptv.php?id=cctv5p",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 161
+      "latency_ms": 522
     },
     {
       "url": "https://live.eac-news.com/CCTV/streams/cctv6.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 1561
+      "latency_ms": 1675
     },
     {
       "url": "http://69.30.245.50/live/cctv6.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 128
+      "latency_ms": 144
     },
     {
       "url": "http://74.91.26.218:82/live/cctv7hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 137
+      "latency_ms": 1147
     },
     {
       "url": "http://74.91.26.218:82/live/cctv8hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 128
+      "latency_ms": 143
     },
     {
       "url": "http://192.151.150.154/live/cctv8k.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 132
+      "latency_ms": 143
     },
     {
       "url": "https://xykt-fix.github.io/Y77.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 118
+      "latency_ms": 53
     },
     {
       "url": "http://74.91.26.218:82/live/cctv10hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 136
+      "latency_ms": 1155
     },
     {
       "url": "http://74.91.26.218:82/live/cctv11hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 136
+      "latency_ms": 1161
     },
     {
       "url": "http://74.91.26.218:82/live/cctv12hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 129
+      "latency_ms": 1226
     },
     {
       "url": "http://74.91.26.218:82/live/cctv13hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 138
+      "latency_ms": 157
     },
     {
       "url": "http://go.bkpcp.top/mg/cctv13",
       "alive": false,
       "kind": "other",
       "status_code": 200,
-      "latency_ms": 2503
+      "latency_ms": 12518
     },
     {
       "url": "http://74.91.26.218:82/live/cctv14hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 130
+      "latency_ms": 151
     },
     {
       "url": "http://74.91.26.218:82/live/cctv15hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 132
+      "latency_ms": 144
     },
     {
       "url": "http://74.91.26.218:82/live/cctv16hd.m3u8",
       "alive": false,
       "kind": "other",
       "status_code": 200,
-      "latency_ms": 74
+      "latency_ms": 76
     },
     {
       "url": "http://74.91.26.218:82/live/cctv17hd.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 130
+      "latency_ms": 1185
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/ystq.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 189
+      "latency_ms": 190
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/ysjp.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 184
+      "latency_ms": 1205
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/gefwq.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 190
+      "latency_ms": 1517
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/wsjk.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 189
+      "latency_ms": 1185
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/hjjc.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 189
+      "latency_ms": 1252
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/fyzq.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 183
+      "latency_ms": 1205
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/fyyy.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 192
+      "latency_ms": 1241
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/fyjc.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 191
+      "latency_ms": 1192
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/dyjc.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 196
+      "latency_ms": 190
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/gfjs.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 185
+      "latency_ms": 1244
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/nxss.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 184
+      "latency_ms": 190
     },
     {
       "url": "http://38.75.136.137:98/gslb/dsdqpub/sjdl.m3u8?auth=testpub",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 194
+      "latency_ms": 1246
     },
     {
       "url": "http://117.161.133.51:81/gitv_live/G_CETV-1/G_CETV-1.m3u8?p=GITV",
@@ -341,119 +342,119 @@
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16413
+      "latency_ms": 16417
     },
     {
       "url": "http://113.64.146.48:1688/hls/4/index.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 509
+      "latency_ms": 1202
     },
     {
       "url": "http://39.134.19.68/dbiptv.sn.chinamobile.com/PLTV/88888888/224/3221226465/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16416
+      "latency_ms": 16417
     },
     {
       "url": "http://39.134.19.153/dbiptv.sn.chinamobile.com/PLTV/88888888/224/3221226462/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16412
+      "latency_ms": 16415
     },
     {
       "url": "http://play1-qk.nmtv.cn/live/1735546697341033.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 1394
+      "latency_ms": 1398
     },
     {
       "url": "http://hls.weathertv.cn/tslslive/qCFIfHB/hls/live_sd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 17350
+      "latency_ms": 17388
     },
     {
       "url": "http://hwapi.yntv.net/ew265l/848y54.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1326
+      "latency_ms": 2092
     },
     {
       "url": "http://live.cztv.cc:85/live/xwpd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 20745
+      "latency_ms": 16997
     },
     {
       "url": "http://live.cztv.cc:85/live/ggpd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 20742
+      "latency_ms": 16997
     },
     {
       "url": "http://live.cztv.cc:85/live/sjpd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 20742
+      "latency_ms": 16998
     },
     {
       "url": "http://125.210.152.18:9090/live/FXZL_750.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16411
+      "latency_ms": 16414
     },
     {
       "url": "http://live2.rxip.sc96655.com/live/zxs_4000.m3u8?A=&E=&K=&P=&S=&U=",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 3032
+      "latency_ms": 2992
     },
     {
       "url": "http://39.135.138.59:18890/PLTV/88888910/224/3221225655/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16410
+      "latency_ms": 16417
     },
     {
       "url": "http://stream.sun0769.com/dgrtv1/mp4tv1_1500.flv",
       "alive": false,
       "kind": "other",
       "status_code": 200,
-      "latency_ms": 1454
+      "latency_ms": 2358
     },
     {
       "url": "https://restream.pdtvhd.com/memfs/0b1b95c9-3543-4af9-9fdb-cf45f1602f17.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 3031
+      "latency_ms": 2021
     },
     {
       "url": "http://117.156.28.119/270000001111/1110000028/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16416
+      "latency_ms": 16410
     },
     {
       "url": "http://183.207.248.71/cntv/live1/fengshanggw/fengshanggw",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 17872
+      "latency_ms": 17203
     },
     {
       "url": "http://120.39.52.202:5140/福建综合",
@@ -474,273 +475,273 @@
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 255
+      "latency_ms": 245
     },
     {
       "url": "http://111.59.24.227:8181/tsfile/live/1001_1.m3u8?authid=0&key=txiptv&playlive=1",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 523
+      "latency_ms": 513
     },
     {
       "url": "https://tencentplaybusiness.gztv.com/live/zonghes.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 1566
+      "latency_ms": 1476
     },
     {
       "url": "http://183.207.248.71/gitv/live1/G_GUIZHOU/G_GUIZHOU",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 18889
+      "latency_ms": 17260
     },
     {
       "url": "https://stream.hrbtv.net/xwzh/playlist.m3u8?_upt=ef41dd531755913594",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1281
+      "latency_ms": 1255
     },
     {
       "url": "https://stream.hrbtv.net/yspd/playlist.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1279
+      "latency_ms": 1238
     },
     {
       "url": "https://event.pull.hebtv.com/live/live101.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1234
+      "latency_ms": 1423
     },
     {
       "url": "http://pili-live-hls.hebitv.com/hebi/hebi.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 918
+      "latency_ms": 819
     },
     {
       "url": "http://223.110.245.161/ott.js.chinamobile.com/PLTV/3/224/3221227492/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16417
+      "latency_ms": 16416
     },
     {
       "url": "http://117.156.28.119/270000001111/1110000149/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16417
+      "latency_ms": 16405
     },
     {
       "url": "http://117.156.28.119/270000001111/1110000146/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16416
+      "latency_ms": 16404
     },
     {
       "url": "https://homeplushls.wns.live/hls/stream.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 1534
+      "latency_ms": 1142
     },
     {
       "url": "https://p8.vzan.com/slowlive/415983998730568937/live.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1167
+      "latency_ms": 1124
     },
     {
       "url": "http://35848.hlsplay.aodianyun.com/guangdianyun_35848/tv_channel_346.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2228
+      "latency_ms": 2090
     },
     {
       "url": "http://35848.hlsplay.aodianyun.com/guangdianyun_35848/tv_channel_348.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2223
+      "latency_ms": 1950
     },
     {
       "url": "http://hlsal-ldvt.qing.mgtv.com/nn_live/nn_x64/dWlwPTEyNy4wLjAuMSZ1aWQ9cWluZy1jbXMmbm5fdGltZXpvbmU9OCZjZG5leF9pZD1hbF9obHNfbGR2dCZ1dWlkPTliODY4NmU5ZTM2YzYwMmMmZT02OTE0NjA0JnY9MSZpZD1ITldTWkdTVCZzPTcwN2RiYTc2YzJjNmJmMTQ4MmUyZGYzOWU2NWM3YWFi/HNWSZGST.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 1182
+      "latency_ms": 1263
     },
     {
       "url": "http://35848.hlsplay.aodianyun.com/guangdianyun_35848/tv_channel_349.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2214
+      "latency_ms": 1839
     },
     {
       "url": "http://183.207.248.71/gitv/live1/G_JSCS/G_JSCS",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 18879
+      "latency_ms": 17190
     },
     {
       "url": "http://223.110.245.151/ott.js.chinamobile.com/PLTV/3/224/3221225923/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16411
+      "latency_ms": 16417
     },
     {
       "url": "http://223.110.243.134/PLTV/4/224/3221225937/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16410
+      "latency_ms": 16412
     },
     {
       "url": "http://183.207.248.71/gitv/live1/G_JSGG/G_JSGG",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 17854
+      "latency_ms": 17184
     },
     {
       "url": "http://39.134.24.166/dbiptv.sn.chinamobile.com/PLTV/88888890/224/3221226200/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16416
+      "latency_ms": 16417
     },
     {
       "url": "http://183.207.248.71/gitv/live1/G_JSTY/G_JSTY",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 21337
+      "latency_ms": 17241
     },
     {
       "url": "http://183.207.248.71/gitv/live1/G_JSZY/G_JSZY",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 19898
+      "latency_ms": 17202
     },
     {
       "url": "https://play-live-hls.jxtvcn.com.cn/live-city/tv_jxtv6.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2893
+      "latency_ms": 3272
     },
     {
       "url": "https://play-live-hls.jxtvcn.com.cn/live-city/tv_jxtv2.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2873
+      "latency_ms": 3272
     },
     {
       "url": "https://play-live-hls.jxtvcn.com.cn/live-city/tv_jxtv3.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2881
+      "latency_ms": 3257
     },
     {
       "url": "https://play-live-hls.jxtvcn.com.cn/live-city/tv_jxtv4.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2868
+      "latency_ms": 3231
     },
     {
       "url": "https://play-live-hls.jxtvcn.com.cn/live-city/tv_jxtv5.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2877
+      "latency_ms": 3212
     },
     {
       "url": "http://39.134.115.163:8080/PLTV/88888910/224/3221225705/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16416
+      "latency_ms": 16417
     },
     {
       "url": "https://lsfb.avap.jilintv.cn/zqvk7vpj/channel/7e8474e6daea44ccaa5aa2300191439e/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 3832
+      "latency_ms": 3144
     },
     {
       "url": "https://lsfb.avap.jilintv.cn/zqvk7vpj/channel/0a76740c72b74fabae611845aa21e06a/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 3700
+      "latency_ms": 11126
     },
     {
       "url": "https://lsfb.avap.jilintv.cn/zqvk7vpj/channel/906341e6f19b4c4bacdc89941eb85d12/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 3642
+      "latency_ms": 11134
     },
     {
       "url": "https://lsfb.avap.jilintv.cn/zqvk7vpj/channel/3ffc4824dce54b92be185555923ce382/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 11598
+      "latency_ms": 3178
     },
     {
       "url": "https://stream.jmtv.com.cn/xwzh/sd/live.m3u8?_upt=341f4b8e1791883036",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1796
+      "latency_ms": 2020
     },
     {
       "url": "http://117.156.28.119/270000001111/1110000001/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16413
+      "latency_ms": 16417
     },
     {
       "url": "http://110.185.237.164:8888/hls/30/index.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1617
+      "latency_ms": 531
     },
     {
       "url": "https://liveplus.lzr.com.cn/xwzh/HD/live.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1220
+      "latency_ms": 1721
     },
     {
       "url": "https://liveplus.lzr.com.cn/wlpd/HD/live.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1005
+      "latency_ms": 1715
     },
     {
       "url": "http://118.122.2.29:9999/hls/47/index.m3u8",
@@ -754,14 +755,14 @@
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16417
+      "latency_ms": 16411
     },
     {
       "url": "https://play-live-hls.jxtvcn.com.cn/live-city/tv_nanchang.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2494
+      "latency_ms": 3026
     },
     {
       "url": "http://1.24.190.98:10080/hls/40/index.m3u8",
@@ -775,7 +776,7 @@
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1637
+      "latency_ms": 1198
     },
     {
       "url": "http://39.134.115.163:8080/PLTV/88888910/224/3221225726/index.m3u8",
@@ -789,7 +790,7 @@
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2639
+      "latency_ms": 1732
     },
     {
       "url": "rtmp://splay-qukan.cztv.com/live/1792059352668052?auth_key=1886667371-a351173879224e5fbbb4412bf9f96eff-0-de13c2186941a507a27a3438213d2169",
@@ -803,21 +804,21 @@
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16412
+      "latency_ms": 16414
     },
     {
       "url": "http://119.166.53.110:85/tsfile/live/1000_1.m3u8?authid=0&key=txiptv&playlive=1",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16410
+      "latency_ms": 16412
     },
     {
       "url": "http://video10.qtv.com.cn/drm/qtv2at/manifest.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 10043
+      "latency_ms": 1091
     },
     {
       "url": "http://119.166.53.110:85/tsfile/live/1002_1.m3u8?authid=0&key=txiptv&playlive=1",
@@ -831,28 +832,28 @@
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16417
+      "latency_ms": 16409
     },
     {
       "url": "http://video10.qtv.com.cn/drm/qtv5at/manifest.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 10091
+      "latency_ms": 833
     },
     {
       "url": "http://119.166.53.110:85/tsfile/live/0002_1.m3u8?authid=0&key=txiptv&playlive=1",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16409
+      "latency_ms": 16417
     },
     {
       "url": "http://125.210.152.18:9090/live/SDWSHD_H265.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16409
+      "latency_ms": 16417
     },
     {
       "url": "http://39.134.115.163:8080/PLTV/88888910/224/3221225697/index.m3u8",
@@ -866,49 +867,49 @@
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 799
+      "latency_ms": 768
     },
     {
       "url": "http://livealone302.iqilu.com/iqilu/sepd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 793
+      "latency_ms": 740
     },
     {
       "url": "http://livealone302.iqilu.com/iqilu/shpd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 790
+      "latency_ms": 738
     },
     {
       "url": "http://livealone302.iqilu.com/iqilu/qlpd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 754
+      "latency_ms": 734
     },
     {
       "url": "http://livealone302.iqilu.com/iqilu/typd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 742
+      "latency_ms": 533
     },
     {
       "url": "http://livealone302.iqilu.com/iqilu/zypd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 648
+      "latency_ms": 429
     },
     {
       "url": "https://livepull-tcms.sztv.com.cn/live/sz4Kpgm.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 4045
+      "latency_ms": 3536
     },
     {
       "url": "rtmp://124.167.237.85:9935/live/xwzh2_sb",
@@ -929,105 +930,105 @@
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 518
+      "latency_ms": 562
     },
     {
       "url": "http://stream2.jlntv.cn/sptv/sd/live.m3u8?_upt=f27750421743154598",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 972
+      "latency_ms": 2057
     },
     {
       "url": "http://39.134.115.163:8080/PLTV/88888910/224/3221225698/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16414
+      "latency_ms": 16417
     },
     {
       "url": "http://lsfb.avap.jilintv.cn/zqvk7vpj/channel/43ea5771aa44421591f9dfd2b71f1b9b/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 2075
+      "latency_ms": 2338
     },
     {
       "url": "https://chibrics.mediacdn.ru/cdn/brics/chinese/playlist.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1282
+      "latency_ms": 1330
     },
     {
       "url": "https://voa-ingest.akamaized.net/hls/live/2033878/tvmc08/playlist.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 152
+      "latency_ms": 293
     },
     {
       "url": "http://stream2.xiancity.cn/xatv3/playlist.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 1895
+      "latency_ms": 1534
     },
     {
       "url": "http://stream2.xiancity.cn/xatv5/playlist.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 1895
+      "latency_ms": 1478
     },
     {
       "url": "https://klmysjtzb.rcsxzx.com/hls/klmy2.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 51123
+      "latency_ms": 49459
     },
     {
       "url": "http://110.153.180.106:55555/out_3/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16414
+      "latency_ms": 16410
     },
     {
       "url": "http://110.153.180.106:55555/out_2/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16416
+      "latency_ms": 16414
     },
     {
       "url": "http://120.70.60.179:9901/tsfile/live/1002_1.m3u8?authid=0&key=txiptv&playlive=1",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 695
+      "latency_ms": 624
     },
     {
       "url": "https://pili-live-hls-zdzz-tv.zzxwcm.cn/zdzz-tv/nqzh.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 1550
+      "latency_ms": 1646
     },
     {
       "url": "https://live.vtibet.cn/live/ZYWS20261016.stream.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 2428
+      "latency_ms": 2262
     },
     {
       "url": "http://223.110.245.167/ott.js.chinamobile.com/PLTV/3/224/3221225947/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16415
+      "latency_ms": 16410
     },
     {
       "url": "http://223.110.245.139/PLTV/4/224/3221227008/index.m3u8",
@@ -1038,31 +1039,31 @@
     },
     {
       "url": "https://liveplay.ycrmt.cn/sxgd/zhpd.m3u8",
-      "alive": false,
-      "kind": "error",
-      "status_code": null,
-      "latency_ms": 65216
+      "alive": true,
+      "kind": "hls",
+      "status_code": 206,
+      "latency_ms": 1851
     },
     {
       "url": "https://liveplay.ycrmt.cn/sxgd/lysh.m3u8",
-      "alive": false,
-      "kind": "error",
-      "status_code": null,
-      "latency_ms": 65184
+      "alive": true,
+      "kind": "hls",
+      "status_code": 206,
+      "latency_ms": 1867
     },
     {
       "url": "http://183.207.249.15/PLTV/4/224/3221225933/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16415
+      "latency_ms": 16412
     },
     {
       "url": "https://hwapi.yunshicloud.com/8xughf/e0bx15.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 20703
+      "latency_ms": 18813
     },
     {
       "url": "rtmp://splay-qukan.cztv.com/live/1792055184232041?auth_key=1886663369-8067bfcb3c684fe98dc7e8ab4b018582-0-3adb461e15e39f56e7a75b9b7f80377d",
@@ -1090,7 +1091,7 @@
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1842
+      "latency_ms": 1428
     },
     {
       "url": "rtmp://splay-qukan.cztv.com/live/1792059771757250?auth_key=1886667772-951bbd2034684d73940470ed3eebc32a-0-adc4291abba5c186e3ead67a1683e790",
@@ -1104,14 +1105,14 @@
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16416
+      "latency_ms": 16407
     },
     {
       "url": "http://103.172.187.30:12000/stream/mytv/null-11/master.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16411
+      "latency_ms": 16405
     },
     {
       "url": "http://202.69.67.66:443/webcast/bshdlive-pc/playlist.m3u8",
@@ -1125,98 +1126,98 @@
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16417
+      "latency_ms": 16415
     },
     {
       "url": "https://hoytv-live-stream.hoy.tv/ch76/index-fhd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 556
+      "latency_ms": 587
     },
     {
       "url": "https://hoytv-live-stream.hoy.tv/ch78/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 555
+      "latency_ms": 469
     },
     {
       "url": "https://hoytv-live-stream.hoy.tv/ch77/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 443
+      "latency_ms": 467
     },
     {
       "url": "https://petclub-samsungaus.amagi.tv/playlist.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 784
+      "latency_ms": 736
     },
     {
       "url": "https://rthktv31-live.akamaized.net/hls/live/2036818/RTHKTV31/master.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 1586
+      "latency_ms": 1180
     },
     {
       "url": "https://rthktv32-live.akamaized.net/hls/live/2036819/RTHKTV32/master.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 545
+      "latency_ms": 556
     },
     {
       "url": "https://rthktv33-live.akamaized.net/hls/live/2101641/RTHKTV33/master.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 561
+      "latency_ms": 628
     },
     {
       "url": "https://rthktv34-live.akamaized.net/hls/live/2101642/RTHKTV34/master.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 648
+      "latency_ms": 663
     },
     {
       "url": "https://rthktv35-live.akamaized.net/hls/live/2101643/RTHKTV35/master.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 713
+      "latency_ms": 709
     },
     {
       "url": "https://live3.tdm.com.mo/ch2/ch2.live/playlist.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 49351
+      "latency_ms": 49594
     },
     {
       "url": "https://live3.tdm.com.mo/ch3/ch3.live/playlist.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 49170
+      "latency_ms": 49372
     },
     {
       "url": "http://125.227.210.55:3056/VideoInput/play.ts",
       "alive": true,
       "kind": "ts",
       "status_code": 200,
-      "latency_ms": 443
+      "latency_ms": 462
     },
     {
       "url": "http://125.227.210.55:4050/VideoInput/play.ts",
       "alive": true,
       "kind": "ts",
       "status_code": 200,
-      "latency_ms": 508
+      "latency_ms": 469
     },
     {
       "url": "https://5ddce30eb4b55.streamlock.net/bltvhd/bltv1/playlist.m3u8",
@@ -1230,105 +1231,105 @@
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 332
+      "latency_ms": 315
     },
     {
       "url": "http://125.227.210.55:1001/VideoInput/play.ts",
       "alive": true,
       "kind": "ts",
       "status_code": 200,
-      "latency_ms": 458
+      "latency_ms": 468
     },
     {
       "url": "http://seb.sason.top/sc/hsxw_fhd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 569
+      "latency_ms": 589
     },
     {
       "url": "http://www.dalitv.com.tw:4568/live/dali/index.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 1049
+      "latency_ms": 835
     },
     {
       "url": "http://125.227.210.55:1004/VideoInput/play.ts",
       "alive": true,
       "kind": "ts",
       "status_code": 200,
-      "latency_ms": 437
+      "latency_ms": 466
     },
     {
       "url": "https://live.streamingfast.net/osmflivech2.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 607
+      "latency_ms": 633
     },
     {
       "url": "http://125.227.210.55:1003/VideoInput/play.ts",
       "alive": true,
       "kind": "ts",
       "status_code": 200,
-      "latency_ms": 443
+      "latency_ms": 488
     },
     {
       "url": "http://nmk.ioapk.com:5050/4gtv-live107/index.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 863
+      "latency_ms": 874
     },
     {
       "url": "https://live.ntdtv.com/aplive200/playlist.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 469
+      "latency_ms": 698
     },
     {
       "url": "http://seb.sason.top/sc/sllive_fhd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 586
+      "latency_ms": 835
     },
     {
       "url": "http://111.59.139.85:11888/tsfile/live/1220_1.m3u8?key=txiptv",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 16417
+      "latency_ms": 16416
     },
     {
       "url": "https://lbs-us1.suprememastertv.com/720p.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 242
+      "latency_ms": 230
     },
     {
       "url": "https://streamipcfapp.akamaized.net/live/_definst_/live_720/key_b1500.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 206,
-      "latency_ms": 2336
+      "latency_ms": 1300
     },
     {
       "url": "http://seb.sason.top/sc/tvbsxw_fhd.m3u8",
       "alive": false,
       "kind": "error",
       "status_code": null,
-      "latency_ms": 483
+      "latency_ms": 735
     },
     {
       "url": "https://mobile.ccdntech.com/transcoder/_definst_/vod164_Live/live/chunklist_w1177047531.m3u8",
       "alive": true,
       "kind": "hls",
       "status_code": 200,
-      "latency_ms": 1150
+      "latency_ms": 1090
     }
   ]
 }
