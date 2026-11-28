@@ -72,7 +72,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 | ID | 问题 | 证据 | 验收标准 | 状态 |
 | --- | --- | --- | --- | --- |
-| SRC-01 | `build_pack.py` 单文件承担抓取/归一/探测/选线/输出，脚本互相 import | 957 行；`crawl_check` import `build_pack`；已有少量 unittest，未拆包 | 拆成 `sources_pipeline` 包；CLI 兼容；pytest 覆盖关键函数 | DONE（新增 `scripts/sources_pipeline`：common/channels/parsing；`build_pack.py` 972→789 行，CLI 参数与 `import build_pack` 兼容；unittest 7 项通过） |
+| SRC-01 | `build_pack.py` 单文件承担抓取/归一/探测/选线/输出，脚本互相 import | 957 行；`crawl_check` import `build_pack`；已有少量 unittest，未拆包 | 拆成 `sources_pipeline` 包；CLI 兼容；pytest 覆盖关键函数 | DONE（新增 `scripts/sources_pipeline`：common/channels/parsing；`build_pack.py` 972→789 行，CLI 参数与 `import build_pack` 兼容；unittest 8 项通过） |
 | SRC-02 | 选线只看 `alive`，深检 `playable` 不参与选择 | `pick_lines` 排序键只有 `alive/cost`；总包 764 条中 488 条可拉 | 两阶段选线：深检后按 `playable → alive → latency → 源多样性 → host 上限` | DONE（代码已改：先扩池深检，再按 playable 定稿；待跑全量验证） |
 | SRC-03 | 国际源死链全量写入 | `refresh_sources.probe_blocks` 只排序不剔除；189 条中 77 条存活 | 有活线时不再硬塞死链；每频道设置上限和兜底 | DONE（代码已改：按标准频道 ID 分组，活线优先，无活线才留 2 条兜底；待跑全量验证） |
 | SRC-04 | `line-audit` 不回灌；03:00 与 04:30 重复巡检 | 产物只提交；两个 workflow 都跑 `crawl_check` | 巡检结果进入下一次选线；去掉重复任务或改成周度深检 | DONE（已回灌 route_score；每日重复巡检移除，独立任务改周度） |
@@ -191,6 +191,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 | 2026-11-28 | 批次 4（直播 UI 模块化） | 新增 `:core:settings`（设置快照/仓库/VM/Configs/主题与显示模式枚举）与 `:core:ui`（material/theme/tooling/AppScreen/路由/Destination/ModifierUtils/共享频道条目）；`:feature:live` 迁入全部 `screensold` 61 文件与直播频道信息组件，包名改为 `com.doubao.tv.feature.live.ui`；app 依赖 core:ui/core:settings，旧 `screensold` 删除 | `:tv:compileOriginalReleaseKotlin` 通过；`:core:data`/`:core:util`/`:feature:live` 单测全部通过；本地 `:tv:assembleOriginalRelease` 通过（R8/资源压缩/打包） | 包名保留 `PlaybackCoordinator` 的 `feature.live.playback`；`Configs` 仍为 SharedPreferences 兼容层 |
 | 2026-11-28 | 批次 5 | `LineHealth` Flow 化、`core:data` 去 Compose；删除云同步包/页面/字段/枚举；删除调试页/覆盖层/字段；删除推送页与 HTTP 服务；源添加改本机弹窗；收藏写入收口到 `SettingsRepository` | `:tv:compileOriginalReleaseKotlin` 通过；`:core:data`/`:core:util`/`:feature:live` 单测通过 | 本地 `assembleOriginalRelease` 因缺 `keystore.jks` 未完成打包，改走云端签名构建 |
+| 2026-11-28 | 批次 7 / v1.4.11 | `sources_pipeline` 拆包、频道别名统一、`Configs` 读取迁移、单源自签名 TLS、`contentVersion` 跳过重复下载、`:tv` 导航测试 + lint、版本 1.4.11 | unittest 8 项、`:tv:testOriginalReleaseUnitTest`、`:tv:lintOriginalRelease`（0 error/26 warning）通过；云端 run 46126076384 成功；APK 1.4.11 / versionCode 16，签名 SHA-256 `65:E9:...:10:CB`；Release v1.4.11 已发布 | 首次自动发布 GitHub Release；CDN `https://aka.doubaocdn.com/s/1VSKUR1xMy` |
 | 2026-11-28 | 批次 6 | 源清单按 APK 签名证书签名；App 先验签再逐文件校验 SHA-256；新增 `sign_sources.py`；build/refresh 两条 workflow 均接入；SEC-07 随云同步字段删除关闭 | `SourceManifestTest` 3 项通过；`:core:data`/`:core:util`/`:feature:live` 单测通过；`:tv:compileOriginalReleaseKotlin` 通过；云端 run 46121470785 成功；APK 内清单 `Verified OK` | 源清单签名使用现有 APK keystore，不新增密钥；APK 版本仍为 1.4.10 |
 
 ## 4. 构建验证记录
