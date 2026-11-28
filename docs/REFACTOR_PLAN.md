@@ -117,18 +117,18 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 ### 批次 2：源流水线可测试化与质量闭环
 
 - [ ] 拆 `sources_pipeline` 包。
-- [ ] 两阶段选线（playable 优先）。
-- [ ] 国际源去死链/限上限。
-- [ ] `line-audit` 回灌。
-- [ ] seed 哈希化 + 失败退避。
-- [ ] pytest + CI。
+- [x] 两阶段选线（playable 优先）。
+- [x] 国际源去死链/限上限。
+- [x] `line-audit` 回灌，独立深巡检改周度。
+- [x] seed 哈希化 + 失败退避。
+- [x] unittest + CI。
 
 ### 批次 3：设置、状态、网络收敛
 
 - [ ] `SettingsRepository` / `AppSettings`。
 - [ ] 去掉 `Configs`/`SettingsViewModel` 双份字段。
 - [ ] `AppContainer` 注入。
-- [ ] 单例 OkHttpClient、ETag/缓存。
+- [x] 单例 OkHttpClient、统一超时（ETag/缓存未做）。
 - [ ] 初始线路健康快照 + 懒探测。
 
 ### 批次 4：直播 feature 化
@@ -143,6 +143,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 日期 | 批次 | 改动 | 验证 | 备注 |
 | --- | --- | --- | --- | --- |
 | 2026-11-28 | 批次 1 | 建立本清单；HTTP 服务改为开发者模式启动并可 stop；随机 Token + HttpOnly Cookie 鉴权；移除任意文件读写/APK/二进制上传；configs 脱敏；移除全局 TrustAll；Rhino 改 safe objects + ClassShutter + 指令上限；m3u/txt 协议白名单；新增 StreamUrl 单测 | `:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | 基线 `7c41fde`；Token 已加；自签名例外、包签名、密钥加密未做 |
+| 2026-11-28 | 批次 2 | 选线扩池后按 playable 定稿；国际源按频道去死链；line-audit 分数回灌；assets 内容哈希释放 + 失败不写 lastCheck；保留 UA/KODIPROP；OkHttp 单例；README/workflow/mobile 收口；Python unittest + CI | `python3 -m unittest discover -s scripts` 4 项通过；`:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | 未跑全量采集；SRC-01/07/08、SEC-07 加密仍未做 |
 
 ## 4. 风险与回滚
 
