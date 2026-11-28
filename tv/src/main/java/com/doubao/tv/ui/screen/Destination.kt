@@ -1,5 +1,6 @@
 package com.doubao.tv.ui.screen
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,39 +12,51 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface Destination {
     @Serializable
+    @SerialName("Agreement")
     data object Agreement : Destination
 
     @Serializable
+    @SerialName("Loading")
     data object Loading : Destination
 
     @Serializable
+    @SerialName("Dashboard")
     data object Dashboard : Destination
 
     @Serializable
+    @SerialName("Live")
     data object Live : Destination
 
     @Serializable
+    @SerialName("Channels")
     data object Channels : Destination
 
     @Serializable
+    @SerialName("Favorites")
     data object Favorites : Destination
 
     @Serializable
+    @SerialName("Search")
     data object Search : Destination
 
     @Serializable
+    @SerialName("Push")
     data object Push : Destination
 
     @Serializable
+    @SerialName("Settings")
     data class Settings(val startDestination: String? = null) : Destination
 
     @Serializable
+    @SerialName("About")
     data object About : Destination
 
     @Serializable
+    @SerialName("Update")
     data object Update : Destination
 
     @Serializable
+    @SerialName("MultiView")
     data object MultiView : Destination
 
     companion object {

@@ -148,7 +148,7 @@ fun MainScreen(
     fun backFromLive() {
         val previous = navController.previousBackStackEntry?.destination
         val previousRoute = previous?.route?.substringBefore('?')
-        if (previous == null || previousRoute == Destination.Loading::class.qualifiedName || previousRoute == Destination.Agreement::class.qualifiedName) {
+        if (previous == null || previousRoute == "Loading" || previousRoute == "Agreement") {
             navController.navigateSingleTop(Destination.Dashboard)
         } else {
             navController.navigateUp()
