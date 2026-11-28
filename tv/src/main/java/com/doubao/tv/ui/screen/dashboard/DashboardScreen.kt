@@ -1,5 +1,7 @@
 package com.doubao.tv.ui.screen.dashboard
 
+import com.doubao.tv.AppContainer
+
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -75,7 +77,7 @@ fun DashboardScreen(
                 toSettingsIptvSourceScreen = toSettingsIptvSourceScreen,
                 clearCurrentIptvSourceCache = {
                     coroutineScope.launch {
-                        IptvRepository(Configs.iptvSourceCurrent).clearCache()
+                        IptvRepository(AppContainer.settings.current.iptvSourceCurrent).clearCache()
                         onReload()
                     }
                 },

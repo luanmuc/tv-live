@@ -41,7 +41,12 @@ def build_manifest(assets: Path) -> bytes:
         files[path.name] = {"size": path.stat().st_size, "sha256": sha256(path)}
     if not files:
         raise SystemExit(f"没有找到 m3u：{assets}")
-    payload = {"version": 1, "files": files}
+    content = "".join(f"{name}:{info['sha256']};" for name, info in sorted(files.items())).encode("utf-8")
+    payload = {
+        "version": 1,
+        "contentVersion": hashlib.sha256(content).hexdigest()[:16],
+        "files": files,
+    }
     return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 

@@ -1,5 +1,7 @@
 package com.doubao.tv.feature.live.ui.videoplayer.player
 
+import com.doubao.tv.AppContainer
+
 import android.view.SurfaceView
 import android.view.TextureView
 import kotlinx.coroutines.CoroutineScope
@@ -107,7 +109,7 @@ abstract class VideoPlayer(
         onPreparedListeners.forEach { it() }
         loadTimeoutJob?.cancel()
         loadTimeoutJob = coroutineScope.launch {
-            delay(Configs.videoPlayerLoadTimeout)
+            delay(AppContainer.settings.current.videoPlayerLoadTimeout)
             triggerError(PlaybackException.LOAD_TIMEOUT)
         }
         interruptJob?.cancel()
@@ -131,7 +133,7 @@ abstract class VideoPlayer(
         if (currentPosition != position) {
             interruptJob?.cancel()
             interruptJob = coroutineScope.launch {
-                delay(Configs.videoPlayerLoadTimeout)
+                delay(AppContainer.settings.current.videoPlayerLoadTimeout)
                 onInterruptListeners.forEach { it() }
             }
         }

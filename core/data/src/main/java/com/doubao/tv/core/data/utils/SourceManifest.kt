@@ -11,6 +11,7 @@ import java.util.Locale
 @Serializable
 data class SourceManifest(
     val version: Int = 1,
+    val contentVersion: String = "",
     val files: Map<String, SourceManifestFile> = emptyMap(),
 )
 

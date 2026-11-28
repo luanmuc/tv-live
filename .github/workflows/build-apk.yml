@@ -65,7 +65,13 @@ jobs:
         run: python3 scripts/refresh_sources.py --check
 
       - name: 单元测试
-        run: ./gradlew :core:data:testReleaseUnitTest :core:util:testReleaseUnitTest :feature:live:testDebugUnitTest --no-daemon --build-cache
+        run: >-
+          ./gradlew :core:data:testReleaseUnitTest :core:util:testReleaseUnitTest
+          :feature:live:testDebugUnitTest :tv:testOriginalReleaseUnitTest
+          --no-daemon --build-cache
+
+      - name: Android Lint
+        run: ./gradlew :tv:lintOriginalRelease --no-daemon --build-cache
 
       # 只出正式版：签名密钥缺失直接失败，不再回退 debug 包
       - name: 校验签名密钥

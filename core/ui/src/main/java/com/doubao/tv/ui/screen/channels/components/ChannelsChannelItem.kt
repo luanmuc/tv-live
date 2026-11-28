@@ -1,5 +1,7 @@
 package com.doubao.tv.ui.screen.channels.components
 
+import com.doubao.tv.AppContainer
+
 import android.graphics.Bitmap
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -144,9 +146,9 @@ private fun ChannelsChannelItemLogoWithPreview(
 
         if (showChannelPreview) {
             val line = channel.lineList.firstOrNull { line ->
-                Configs.iptvChannelLinePlayableUrlList.contains(line.url)
+                AppContainer.settings.current.iptvChannelLinePlayableUrlList.contains(line.url)
             } ?: channel.lineList.firstOrNull { line ->
-                Configs.iptvChannelLinePlayableHostList.contains(line.url.urlHost())
+                AppContainer.settings.current.iptvChannelLinePlayableHostList.contains(line.url.urlHost())
             } ?: channel.lineList.first()
             preview = M3u8AnalysisUtil.getFirstFrame(line.url)
         }

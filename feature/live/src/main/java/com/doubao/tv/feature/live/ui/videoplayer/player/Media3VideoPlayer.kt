@@ -1,5 +1,7 @@
 package com.doubao.tv.feature.live.ui.videoplayer.player
 
+import com.doubao.tv.AppContainer
+
 import android.content.Context
 import android.net.Uri
 import android.util.Base64
@@ -73,7 +75,7 @@ class Media3VideoPlayer(
         val renderersFactory =
             DefaultRenderersFactory(context)
                 .setExtensionRendererMode(
-                    if (softDecode ?: Configs.videoPlayerForceAudioSoftDecode)
+                    if (softDecode ?: AppContainer.settings.current.videoPlayerForceAudioSoftDecode)
                         DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
                     else DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
                 )
@@ -91,7 +93,7 @@ class Media3VideoPlayer(
         }
 
         // MediaCodecVideoRenderer.skipMultipleFramesOnSameVsync =
-        //     Configs.videoPlayerSkipMultipleFramesOnSameVSync
+        //     AppContainer.settings.current.videoPlayerSkipMultipleFramesOnSameVSync
         return ExoPlayer.Builder(context)
             .setRenderersFactory(renderersFactory)
             .setTrackSelector(trackSelector)
@@ -122,10 +124,10 @@ class Media3VideoPlayer(
         return DefaultDataSource.Factory(
             context,
             DefaultHttpDataSource.Factory().apply {
-                setUserAgent(currentChannelLine.httpUserAgent ?: Configs.videoPlayerUserAgent)
-                setDefaultRequestProperties(Configs.videoPlayerHeaders.toHeaders())
-                setConnectTimeoutMs(Configs.videoPlayerLoadTimeout.toInt())
-                setReadTimeoutMs(Configs.videoPlayerLoadTimeout.toInt())
+                setUserAgent(currentChannelLine.httpUserAgent ?: AppContainer.settings.current.videoPlayerUserAgent)
+                setDefaultRequestProperties(AppContainer.settings.current.videoPlayerHeaders.toHeaders())
+                setConnectTimeoutMs(AppContainer.settings.current.videoPlayerLoadTimeout.toInt())
+                setReadTimeoutMs(AppContainer.settings.current.videoPlayerLoadTimeout.toInt())
                 setKeepPostFor302Redirects(true)
                 setAllowCrossProtocolRedirects(true)
             },
@@ -497,7 +499,7 @@ class Media3VideoPlayer(
     }
 
     override fun prepare(line: ChannelLine) {
-        if (Configs.videoPlayerStopPreviousMediaItem)
+        if (AppContainer.settings.current.videoPlayerStopPreviousMediaItem)
             videoPlayer.stop()
 
         contentTypeAttempts.clear()

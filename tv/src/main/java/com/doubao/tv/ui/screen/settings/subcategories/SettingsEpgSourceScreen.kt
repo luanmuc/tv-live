@@ -128,7 +128,7 @@ fun SettingsEpgSourceScreen(
                         nameHint = "名称，例如：自定义节目单",
                         urlHint = "http://example.com/epg.xml",
                         onDismiss = { visible = false },
-                        onConfirm = { name, url ->
+                        onConfirm = { name, url, _ ->
                             onAddSource(EpgSource(name = name, url = url))
                             visible = false
                         },

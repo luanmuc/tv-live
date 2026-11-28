@@ -1,5 +1,7 @@
 package com.doubao.tv.feature.live.ui.videoplayer.player
 
+import com.doubao.tv.AppContainer
+
 import android.content.Context
 import android.graphics.SurfaceTexture
 import android.view.Surface
@@ -35,7 +37,7 @@ class IjkVideoPlayer(
             setOption(
                 IjkMediaPlayer.OPT_CATEGORY_FORMAT,
                 "timeout",
-                Configs.videoPlayerLoadTimeout
+                AppContainer.settings.current.videoPlayerLoadTimeout
             )
             setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzemaxduration", 100L)
             setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 1)
@@ -61,8 +63,8 @@ class IjkVideoPlayer(
         player.reset()
         player.setDataSource(
             line.playableUrl,
-            Configs.videoPlayerHeaders.toHeaders() + mapOf(
-                "User-Agent" to (line.httpUserAgent ?: Configs.videoPlayerUserAgent),
+            AppContainer.settings.current.videoPlayerHeaders.toHeaders() + mapOf(
+                "User-Agent" to (line.httpUserAgent ?: AppContainer.settings.current.videoPlayerUserAgent),
             )
         )
         setOption()

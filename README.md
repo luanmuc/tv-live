@@ -3,7 +3,7 @@
 电视端直播应用 + 内置直播源，单仓库维护。
 
 - 应用名：电视台
-- 版本：1.4.10
+- 版本：1.4.11
 - 包名：`com.doubao.tv`
 - 内置源：央视/卫视/港澳台多线路包（92 频道 / 764 线路）+ 港澳台及国际（189 条线路）
 - 源随 APK 打包，首次启动释放到应用私有目录，装完即可离线使用；联网后每 6 小时从仓库自动更新，优先走国内加速/可配置的国内 OSS，失败继续用本地副本
@@ -28,7 +28,9 @@ tv-live/
 │   ├── crawl_sources.py     # 源发现爬虫：从专业源站找 m3u/txt
 │   ├── crawl_check.py       # 线路巡检爬虫：测活 + HLS 清单/分片
 │   ├── refresh_sources.py   # 国际源同步 + 逐条探测
-│   ├── build_pack.py        # 多源合并 + 源/线路评分 + 存活/分片探测
+│   ├── build_pack.py        # 多源合并 CLI（抓取/探测/选线/输出）
+│   ├── sources_pipeline/    # 拆出的频道归一、解析与共享参数
+│   ├── sign_sources.py      # 源清单 RSA 签名，构建前自动执行
 │   └── upload_domestic.py   # 可选：同步到阿里云 OSS / 腾讯云 COS
 ├── docs/
 │   └── SOURCES.md           # 接入点与维护说明
@@ -53,7 +55,7 @@ tv-live/
 
 ```bash
 # 云端正式版：打 tag 触发，构建成功后自动发布 Release
-git tag v1.4.10 && git push origin v1.4.10
+git tag v1.4.11 && git push origin v1.4.11
 
 # 云端手动构建：在 Actions 里手动运行 build-apk，只留档 artifact、不发布 Release
 
@@ -61,7 +63,7 @@ git tag v1.4.10 && git push origin v1.4.10
 ./gradlew :tv:assembleOriginalDebug
 ```
 
-签名：在仓库 Secrets 配 `KEYSTORE_BASE64`、`KEYSTORE_PASSWORD`、`KEY_ALIAS`、`KEY_PASSWORD` 即可出 release 包，否则产出 debug 包。
+签名：仓库 Secrets 必须配 `KEYSTORE_BASE64`、`KEYSTORE_PASSWORD`、`KEY_ALIAS`、`KEY_PASSWORD`；缺失时构建直接失败，不再回退 debug 包。
 
 ## 源维护
 

@@ -1,5 +1,7 @@
 package com.doubao.tv.feature.live.ui.videoplayer
 
+import com.doubao.tv.AppContainer
+
 import com.doubao.tv.settings.VideoPlayerDisplayMode
 
 import android.view.SurfaceView
@@ -194,7 +196,7 @@ fun rememberVideoPlayerState(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) state.play()
             else if (event == Lifecycle.Event.ON_STOP) {
-                if (!Configs.appPipEnable) state.pause()
+                if (!AppContainer.settings.current.appPipEnable) state.pause()
             }
         }
 

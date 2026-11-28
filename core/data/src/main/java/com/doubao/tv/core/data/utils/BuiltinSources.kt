@@ -30,6 +30,7 @@ object BuiltinSources {
     private const val PREF_NAME = "builtin_sources"
     private const val KEY_ASSET_HASH = "asset_hash"
     private const val KEY_LAST_CHECK = "last_update_check"
+    private const val KEY_LAST_MANIFEST = "last_manifest_version"
     private const val MANIFEST_NAME = "source-manifest.json"
     private const val SIGNATURE_NAME = "source-manifest.sig"
 
@@ -140,6 +141,7 @@ object BuiltinSources {
         }
 
         var changed = false
+        var lastManifestVersion = ""
         for (mirror in MIRRORS) {
             val manifestBytes = fetchBytes(mirror + MANIFEST_NAME, 512 * 1024) ?: continue
             val signature = fetchBytes(mirror + SIGNATURE_NAME, 64 * 1024)
@@ -150,6 +152,19 @@ object BuiltinSources {
                 continue
             }
             val manifest = SourceManifestVerifier.parse(manifestBytes) ?: continue
+            lastManifestVersion = manifest.contentVersion
+
+            // 清单版本未变且本地文件哈希全部匹配时，只续期检查时间，不重复下载。
+            val cachedVersion = pref.getString(KEY_LAST_MANIFEST, null)
+            val cacheIntact = REMOTE_FILES.all { file ->
+                val target = File(dir, file.name)
+                target.exists() && SourceManifestVerifier.matches(manifest, file.name, target.readBytes())
+            }
+            if (cachedVersion == manifest.contentVersion && cacheIntact) {
+                pref.edit().putLong(KEY_LAST_CHECK, now).apply()
+                Log.i(TAG, "源清单未变化（${manifest.contentVersion}），跳过下载")
+                return false
+            }
 
             var mirrorChanged = false
             REMOTE_FILES.forEach { file ->
@@ -187,7 +202,10 @@ object BuiltinSources {
 
         // 所有镜像都没有拿到可用文件时不能写 lastCheck，否则一次网络抖动会锁死 6 小时。
         if (changed) {
-            pref.edit().putLong(KEY_LAST_CHECK, now).apply()
+            pref.edit()
+                .putLong(KEY_LAST_CHECK, now)
+                .putString(KEY_LAST_MANIFEST, lastManifestVersion)
+                .apply()
             Log.i(TAG, "内置直播源已在线更新")
         } else {
             Log.w(TAG, "本轮在线更新没有可用源，保留 6 小时重试窗口")

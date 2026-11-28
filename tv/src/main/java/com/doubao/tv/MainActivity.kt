@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Configs.appPipEnable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && AppContainer.settings.current.appPipEnable) {
             val aspectRatio = Rational(16, 9)
             val params = PictureInPictureParams.Builder().setAspectRatio(aspectRatio).build()
             enterPictureInPictureMode(params)

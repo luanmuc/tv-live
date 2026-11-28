@@ -1,3 +1,21 @@
+# 1.4.11
+
+## 架构收尾
+
+- `build_pack.py` 拆出 `scripts/sources_pipeline`：共享参数、频道归一、m3u/TXT 解析分模块，原 CLI 参数不变
+- 频道别名只保留 APK 内 `channel_name_alias.json` 一份，Python 打包与 Kotlin 运行期共用
+- 设置读取从 `Configs` 静态字段迁到 `AppContainer.settings.current`，`Configs` 仅作 SharedPreferences 兼容层
+- 内置源清单增加 `contentVersion`；版本未变且本地哈希一致时跳过重复下载
+
+## 直播源
+
+- 单个自定义源可显式开启“允许自签名 HTTPS 证书”，只对该源 host 生效，不恢复全局 TrustAll
+
+## 工程
+
+- 新增导航目的地回归测试，CI 跑 `:tv:testOriginalReleaseUnitTest` 与 `:tv:lintOriginalRelease`
+- 版本 1.4.11（versionCode 16）
+
 # 1.4.10
 
 ## 返回键

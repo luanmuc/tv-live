@@ -28,6 +28,11 @@ data class IptvSource(
      * 转换js
      */
     val transformJs: String? = null,
+
+    /**
+     * 允许该源使用自签名 HTTPS 证书；只对当前源生效，不做全局放行。
+     */
+    val allowSelfSignedTls: Boolean = false,
 ) {
     fun cacheFileName(ext: String) =
         "${cacheDir.name}/iptv_source_${hashCode().toUInt().toString(16)}.$ext"

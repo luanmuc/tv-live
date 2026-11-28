@@ -1,7 +1,7 @@
 # 电视台 / tv-live 架构评审与重构执行清单
 
 > 基线：`main` / `7c41fde`（1.4.10）  
-> 批次 1～4 已同步到 `main`；批次 5 完成本地验证后提交并触发云端构建。  
+> 批次 1～7 已同步到 `main`；批次 7 为 1.4.11 收尾版本。
 > 目的：把已经确认的问题固定下来，按批次执行、逐项勾选，避免后续只做“看得见的功能”而漏掉结构性债。  
 > 原则：不推倒重写；先封风险，再做可测试性，最后迁移 UI。每个批次都必须能单独编译、可回滚。
 
@@ -50,7 +50,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | SEC-01 | HTTP 配置服务默认启动、监听局域网、接口无鉴权 | 原 `MainActivity.onCreate` 无条件 `HttpServer.startService`；`HttpServer` 监听 10481 | 移除 HTTP 配置服务与推送页；不再保留局域网写入口 | DONE（批次 5 已整体删除 `HttpServer`/`HttpServerService`/`PushScreen`、Manifest 服务注册与 Activity 启停；源添加改为本机弹窗） |
 | SEC-02 | `/api/configs` 直接返回 `Configs.toPartial()`，含 Gist/Gitee Token、WebDAV 密码 | 原 `HttpServer.handleConfigsGet` | 响应必须脱敏；任何日志、错误页、导出都不得包含密钥 | DONE（随 HTTP 服务与 `Configs.Partial` 一并删除，接口不再存在） |
 | SEC-03 | 任意路径文件读写、APK/二进制上传安装接口 | 原 `/api/file/content`、`/api/file/content-with-dir`、`/api/upload/apk`、`/api/upload/allinone` | 从 Release 路由中移除；不再保留调试上传入口 | DONE（随 HTTP 服务整体删除） |
-| SEC-04 | 全局信任所有 TLS 证书 | `UnsafeTrustManager.enableUnsafeTrustManager`；`OkHttpExtensions` 每个请求挂 `TrustAllSSLSocketFactory`；`TrustAllSSLSocketFactory` 初始化时改全局 `HttpsURLConnection` | 默认恢复系统证书校验；不再全局修改 `HttpsURLConnection`；自签名源改为显式、单源、可关闭的例外 | DONE（默认校验已恢复；单源例外未提供） |
+| SEC-04 | 全局信任所有 TLS 证书 | `UnsafeTrustManager.enableUnsafeTrustManager`；`OkHttpExtensions` 每个请求挂 `TrustAllSSLSocketFactory`；`TrustAllSSLSocketFactory` 初始化时改全局 `HttpsURLConnection` | 默认恢复系统证书校验；不再全局修改 `HttpsURLConnection`；自签名源改为显式、单源、可关闭的例外 | DONE（默认校验已恢复；新增源弹窗可显式开启“允许自签名 HTTPS”，仅对该 host 生效且禁止重定向） |
 | SEC-05 | 远端 `transformJs` 用 Rhino `initStandardObjects()` 执行，可触达 Java 类、无超时 | `IptvRepository.transform` | 使用安全标准对象 + ClassShutter 禁止 Java 访问 + 指令数超时；最终改为声明式转换 | DONE（安全对象/ClassShutter/指令上限已加；最终声明式转换待后续） |
 | SEC-06 | 源 URL 缺少协议白名单；远端包只校验 `#EXTM3U` + 行数 | `M3uIptvParser` 接受任意非注释行；`BuiltinSources.looksValid` 只数 `#EXTINF` | App 解析器只接受明确的媒体协议；拒绝 `file://`、`javascript:` 等；远端包增加完整性校验 | DONE（协议白名单；批次 6 增加 `source-manifest.json` + RSA 签名，App 用自身 APK 签名证书验签并逐文件校验 SHA-256） |
 | SEC-07 | 密钥明文存 SharedPreferences，`allowBackup` 可能带走 | 原 `Configs` 的 token/password；Manifest | 迁移到 EncryptedSharedPreferences/Keystore；关闭或限制备份 | DONE（批次 5 删除云同步后已无 token/password 字段；`allowBackup=false`。后续若再加密钥，必须走 Keystore） |
@@ -59,7 +59,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 | ID | 问题 | 证据 | 验收标准 | 状态 |
 | --- | --- | --- | --- | --- |
-| APP-01 | `Configs` / `SettingsViewModel` 是双份 god object，新增设置要改 4～5 处 | `Configs` 从 949 行降到 594 行；`SettingsViewModel` 从 700 行降到 347 行；`AppSettings` 51 个字段 | 单一 `SettingsRepository` + 不可变 `AppSettings`；设置读写只有一条路径 | DONE（UI 层单入口；云同步/调试 15 个字段已从 `AppSettings`/`SettingsViewModel`/`Configs` 删除；`Configs` 仍作为 SharedPreferences 兼容层） |
+| APP-01 | `Configs` / `SettingsViewModel` 是双份 god object，新增设置要改 4～5 处 | `Configs` 从 949 行降到 594 行；`SettingsViewModel` 从 700 行降到 347 行；`AppSettings` 51 个字段 | 单一 `SettingsRepository` + 不可变 `AppSettings`；设置读写只有一条路径 | DONE（UI/播放器/更新等 10 个文件读取点迁到 `AppContainer.settings.current`；云同步/调试 15 个字段已删除；`Configs` 仅保留 SharedPreferences 兼容层供 `SettingsRepository` 使用） |
 | APP-02 | 全局单例与组合期副作用 | 原 `MainViewModel.instance`、`SettingsViewModel.instance`、`mainViewModel.needRefresh = {}` | 引入 `AppContainer`（不强制 Hilt）；ViewModel 通过构造注入；移除组合期赋值 | DONE（`AppContainer` + 构造注入；两处 `instance` 已删；组合期赋值改 SharedFlow；`settingsVM` / `mainVM` 直接走 `viewModel()`） |
 | APP-03 | 新旧 UI 半迁移，直播页仍在 `screensold` | 旧 `screensold` 61 文件已删除；直播 UI 全部在 `:feature:live` | 抽出 `feature:live`；直播页、播放器、频道浮层迁移；旧包退场 | DONE（直播 UI 全量迁入 `:feature:live`；`ui:material/theme/tooling/AppScreen` 下沉 `core:ui`；设置层下沉 `core:settings`） |
 | APP-04 | 导航是字符串路由，返回逻辑分散在 App/MainScreen/MainContent | 原 `Screens` 枚举 + route string；`BackHandler` 分散 | 类型安全 `Destination`；统一 `BackDispatcher`；启动页值校验 | DONE（外层与设置内层均类型安全；`BackDispatcher` 统一 AppScreen 返回栈；启动页值校验已加） |
@@ -72,14 +72,14 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 
 | ID | 问题 | 证据 | 验收标准 | 状态 |
 | --- | --- | --- | --- | --- |
-| SRC-01 | `build_pack.py` 单文件承担抓取/归一/探测/选线/输出，脚本互相 import | 957 行；`crawl_check` import `build_pack`；已有少量 unittest，未拆包 | 拆成 `sources_pipeline` 包；CLI 兼容；pytest 覆盖关键函数 | TODO |
+| SRC-01 | `build_pack.py` 单文件承担抓取/归一/探测/选线/输出，脚本互相 import | 957 行；`crawl_check` import `build_pack`；已有少量 unittest，未拆包 | 拆成 `sources_pipeline` 包；CLI 兼容；pytest 覆盖关键函数 | DONE（新增 `scripts/sources_pipeline`：common/channels/parsing；`build_pack.py` 972→789 行，CLI 参数与 `import build_pack` 兼容；unittest 7 项通过） |
 | SRC-02 | 选线只看 `alive`，深检 `playable` 不参与选择 | `pick_lines` 排序键只有 `alive/cost`；总包 764 条中 488 条可拉 | 两阶段选线：深检后按 `playable → alive → latency → 源多样性 → host 上限` | DONE（代码已改：先扩池深检，再按 playable 定稿；待跑全量验证） |
 | SRC-03 | 国际源死链全量写入 | `refresh_sources.probe_blocks` 只排序不剔除；189 条中 77 条存活 | 有活线时不再硬塞死链；每频道设置上限和兜底 | DONE（代码已改：按标准频道 ID 分组，活线优先，无活线才留 2 条兜底；待跑全量验证） |
 | SRC-04 | `line-audit` 不回灌；03:00 与 04:30 重复巡检 | 产物只提交；两个 workflow 都跑 `crawl_check` | 巡检结果进入下一次选线；去掉重复任务或改成周度深检 | DONE（已回灌 route_score；每日重复巡检移除，独立任务改周度） |
 | SRC-05 | 输出丢失 `http-user-agent` / `#KODIPROP` 等元数据 | `build_pack.parse` 只保留 name/logo/group/url；输出不写 KODIPROP | 能透明保留的元数据必须保留；不能支持的源要显式丢弃并记录原因 | DONE（已保留 EXTINF 的 UA、#EXTVLCOPT、#KODIPROP、#EXTGRP；待全量输出验证） |
-| SRC-06 | `SEEDED_VERSION` 手工；更新失败也写 lastCheck | 旧版 `SEEDED_VERSION = 10`，1.4.9→1.4.10 源包 735→764 但版本未变；失败后 6 小时才重试；现已改哈希 | 用 assets 内容哈希判定是否重新释放；失败短退避，成功才记录 lastCheck | DOING（已改为 assets SHA-256 哈希释放；全部失败不写 lastCheck；仍未做内容清单/单文件版本） |
+| SRC-06 | `SEEDED_VERSION` 手工；更新失败也写 lastCheck | 旧版 `SEEDED_VERSION = 10`，1.4.9→1.4.10 源包 735→764 但版本未变；失败后 6 小时才重试；现已改哈希 | 用 assets 内容哈希判定是否重新释放；失败短退避，成功才记录 lastCheck | DONE（assets SHA-256 决定释放；清单带 `contentVersion`；版本未变且本地哈希一致时跳过下载；失败不写 lastCheck） |
 | SRC-07 | 远端包无签名/哈希；镜像可篡改 | `BuiltinSources.looksValid` 只校验开头和行数 | 包级签名或哈希校验；拒绝异常协议；镜像失败不影响旧包 | DONE（批次 6：`source-manifest` 按 APK 证书验签，逐文件 SHA-256；失败保留旧包） |
-| SRC-08 | 频道名/别名逻辑在 Python 与 Kotlin 各一份 | `build_pack.standard_name`、`hkmotw_ids`；`ChannelAlias`、`ChannelUtil` | 一份共享频道目录（JSON/YAML）生成两端资源；单一 ID/别名/排序来源 | TODO |
+| SRC-08 | 频道名/别名逻辑在 Python 与 Kotlin 各一份 | `build_pack.standard_name`、`hkmotw_ids`；`ChannelAlias`、`ChannelUtil` | 一份共享频道目录（JSON/YAML）生成两端资源；单一 ID/别名/排序来源 | DONE（190 个标准名/482 别名统一在 `core/data/src/main/res/raw/channel_name_alias.json`；Python 打包直接读该文件；CCTV 显示全称与排序仅构建侧使用） |
 
 ### P2 工程化与其它
 
@@ -88,7 +88,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | BLD-01 | README 版本/源数量过期 | README 写 1.4.8 / 735；实际 1.4.10 / 764 | README 由版本文件/脚本生成，或发版检查强制同步 | DONE（已同步 1.4.10 / 764 / 189；自动生成仍待做） |
 | BLD-02 | README 说 push main 自动构建，workflow 只接受 tag/手动 | `build-apk.yml` | 文档与 workflow 一致；正式版只走 tag | DONE（已改为 tag 发布 / 手动只留档） |
 | BLD-03 | `mobile` 半成品仍在默认构建 | `settings.gradle.kts` include `:mobile`；docs 明确不要出包 | 从默认构建移除，或改为显式 profile | DONE（默认不 include，-PincludeMobile=true 显式打开） |
-| BLD-04 | 没有有效测试/静态检查 | `tv` 无 test；core 只有模板测试；scripts 无 pytest；CI 只编译 | CI 跑单测、lint、Python pytest；至少覆盖导航、解析、选线 | DOING（Python unittest 4 项 + core 单测已进 CI；tv 测试/lint 未做） |
+| BLD-04 | 没有有效测试/静态检查 | `tv` 无 test；core 只有模板测试；scripts 无 pytest；CI 只编译 | CI 跑单测、lint、Python pytest；至少覆盖导航、解析、选线 | DONE（`NavigationDestinationTest` 2 项；CI 增加 `:tv:testOriginalReleaseUnitTest` 与 `:tv:lintOriginalRelease`；Python unittest 7 项；lint 0 error/26 warning） |
 | BLD-05 | 版本号/种子版本多处手写 | `tv/build.gradle.kts`、README；`SEEDED_VERSION` 已移除，改 assets 哈希 | 单一版本源；tag 与 versionName 自动校验；seed 自动计算 | DONE（`version.properties` 单一版本源；tag 与版本号 CI 校验；README 仍手写但非构建源） |
 
 ## 2. 执行批次
@@ -129,7 +129,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 - [x] 去掉 `SettingsViewModel` 侧的 66 份 `mutableStateOf` 字段，读写统一走仓库。
 - [x] `AppContainer` 提供 `SettingsRepository`，`SettingsViewModel` 构造注入。
 - [x] 移除 `MainViewModel.instance` / `SettingsViewModel.instance`，`settingsVM` / `mainVM` 直接走 `viewModel()`。
-- [ ] `Configs` 仍是 51 字段的 SharedPreferences 兼容层；迁移其余直接读取 `Configs` 的调用点（更新、播放器、UI 默认值等）。
+- [x] `Configs` 仅保留 SharedPreferences 兼容层；10 个 UI/播放器/更新文件的读取点迁到 `AppContainer.settings.current`。
 - [x] 单例 OkHttpClient、统一超时（ETag/缓存未做）。
 - [x] 当前频道/收藏懒探测 + 内置 `line-stats.json` 初始快照。
 - [x] 移除组合期 `needRefresh` 赋值，改事件流。
@@ -154,7 +154,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 - [x] 删除推送页、Dashboard 推送入口、HTTP 服务/前台 Service、Manifest 注册与 Activity 启停。
 - [x] IPTV/EPG“添加其他源”改为本机 `AddSourceDialog`，不再依赖手机网页推送。
 - [x] `MainViewModel.refreshChannelFavoriteList` 改走 `SettingsRepository.update`。
-- [ ] `Configs` 其余直接读取点仍未迁移。
+- [x] `Configs` 其余读取点已迁到 `AppContainer.settings.current`，仓库内部仍用 `Configs` 落盘。
 
 ### 批次 6：源包完整性与签名绑定
 
@@ -165,6 +165,16 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 - [x] `build-apk` 构建前自动签名清单；`refresh-sources` 每日源更新后重新签名并提交。
 - [x] `SourceManifestTest`：解析、哈希匹配、RSA 验签、篡改拒绝。
 - [x] 复核：APK 内 `source-manifest.json` 用 APK 证书 `openssl dgst -verify` 通过。
+
+### 批次 7：1.4.11 收尾
+
+- [x] `build_pack.py` 拆出 `sources_pipeline` 包（common/channels/parsing），CLI 与旧 import 兼容。
+- [x] 频道别名统一到 APK 内 `channel_name_alias.json`，Python 与 Kotlin 共用一份。
+- [x] `Configs` 静态读取迁移到 `AppContainer.settings.current`（10 个文件）。
+- [x] 自定义单源“允许自签名 HTTPS 证书”，仅该 host 生效、禁止重定向。
+- [x] 源清单 `contentVersion` + 本地哈希校验，版本未变跳过下载。
+- [x] `:tv` 导航回归测试、CLI 回归测试、CI lint。
+- [x] 版本 1.4.11 / versionCode 16。
 
 ## 3. 执行记录
 

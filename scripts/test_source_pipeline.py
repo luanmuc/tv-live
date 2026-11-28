@@ -12,6 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import build_pack
 import refresh_sources
+import sign_sources
+from sources_pipeline import channels, parsing
 
 
 class BuildPackTest(unittest.TestCase):
@@ -43,6 +45,39 @@ http://example.com/a.m3u8
         ]
         picked = build_pack.pick_lines(items, 2)
         self.assertEqual("http://b/1", picked[0]["url"])
+
+
+class SourcesPipelinePackageTest(unittest.TestCase):
+    def test_alias_table_is_shared_with_android(self) -> None:
+        self.assertEqual("CCTV1", channels.standard_name("CCTV-1 高清"))
+        self.assertEqual("CCTV1", channels.standard_name("央视一套"))
+        self.assertEqual("湖南卫视", channels.standard_name("Hunan TV"))
+        self.assertEqual("CCTV5+", channels.standard_name("CCTV5+"))
+        self.assertIsNone(channels.standard_name("不存在的频道"))
+
+    def test_parsing_helpers(self) -> None:
+        self.assertEqual("http://a/b.m3u8", parsing.clean_url("http://a/b.m3u8|User-Agent=x"))
+        self.assertFalse(parsing.valid_url("file:///etc/passwd"))
+        items = parsing.parse("#EXTM3U\n#EXTINF:-1,CCTV1\nhttp://a/1.m3u8\n")
+        self.assertEqual("CCTV1", items[0]["raw_name"])
+
+    def test_cli_entry_still_imports(self) -> None:
+        self.assertTrue(callable(build_pack.main))
+        self.assertEqual("CCTV-1 综合", build_pack.display_name("CCTV1"))
+
+
+class SourceManifestScriptTest(unittest.TestCase):
+    def test_content_version_changes_with_file_hash(self) -> None:
+        import json
+
+        with tempfile.TemporaryDirectory() as tmp:
+            assets = Path(tmp)
+            (assets / "a.m3u").write_text("#EXTM3U\n#EXTINF:-1,A\nhttp://a/1\n", encoding="utf-8")
+            first = json.loads(sign_sources.build_manifest(assets))
+            self.assertEqual(16, len(first["contentVersion"]))
+            (assets / "a.m3u").write_text("#EXTM3U\n#EXTINF:-1,A\nhttp://a/2\n", encoding="utf-8")
+            second = json.loads(sign_sources.build_manifest(assets))
+            self.assertNotEqual(first["contentVersion"], second["contentVersion"])
 
 
 class RefreshSourcesTest(unittest.TestCase):

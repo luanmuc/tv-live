@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Button
 import androidx.tv.material3.MaterialTheme
+import androidx.tv.material3.Switch
 import androidx.tv.material3.Text
 
 /**
@@ -35,10 +37,11 @@ fun AddSourceDialog(
     nameHint: String,
     urlHint: String,
     onDismiss: () -> Unit,
-    onConfirm: (name: String, url: String) -> Unit,
+    onConfirm: (name: String, url: String, allowSelfSignedTls: Boolean) -> Unit,
 ) {
     var name by remember { mutableStateOf("") }
     var url by remember { mutableStateOf("") }
+    var allowSelfSignedTls by remember { mutableStateOf(false) }
     val canConfirm = url.isNotBlank()
 
     Column(
@@ -54,13 +57,17 @@ fun AddSourceDialog(
         Text(text = title, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         SourceTextField(value = name, onValueChange = { name = it }, hint = nameHint)
         SourceTextField(value = url, onValueChange = { url = it }, hint = urlHint)
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Switch(checked = allowSelfSignedTls, onCheckedChange = { allowSelfSignedTls = it })
+            Text("允许自签名 HTTPS 证书（仅此源）", fontSize = 14.sp)
+        }
         Spacer(Modifier.height(2.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Button(onClick = onDismiss) { Text("取消") }
             Button(
                 onClick = {
                     if (canConfirm) {
-                        onConfirm(name.ifBlank { "自定义源" }, url.trim())
+                        onConfirm(name.ifBlank { "自定义源" }, url.trim(), allowSelfSignedTls)
                     }
                 },
             ) { Text("添加") }

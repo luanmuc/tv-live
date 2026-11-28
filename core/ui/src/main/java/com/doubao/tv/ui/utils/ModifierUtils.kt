@@ -1,5 +1,7 @@
 package com.doubao.tv.ui.utils
 
+import com.doubao.tv.AppContainer
+
 import android.os.Build
 import android.view.KeyEvent
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -326,7 +328,7 @@ fun NavHostController.navigateSingleTop(destination: SettingsDestination) {
 @Composable
 @OptIn(ExperimentalComposeUiApi::class)
 fun Modifier.saveFocusRestorer(onRestoreFailed: (() -> FocusRequester)? = null): Modifier {
-    if (!Configs.uiFocusOptimize) return this
+    if (!AppContainer.settings.current.uiFocusOptimize) return this
 
     return focusRestorer {
         if (onRestoreFailed == null) return@focusRestorer FocusRequester.Default

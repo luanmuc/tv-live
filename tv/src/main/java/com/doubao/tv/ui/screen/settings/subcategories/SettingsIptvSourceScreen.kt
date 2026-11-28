@@ -216,8 +216,8 @@ private fun SettingsIptvSourceContent(
                     nameHint = "名称，例如：自定义直播源",
                     urlHint = "http://example.com/tv.m3u",
                     onDismiss = { visible = false },
-                    onConfirm = { name, url ->
-                        onAddSource(IptvSource(name = name, url = url))
+                    onConfirm = { name, url, allowSelfSignedTls ->
+                        onAddSource(IptvSource(name = name, url = url, allowSelfSignedTls = allowSelfSignedTls))
                         visible = false
                     },
                 )

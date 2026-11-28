@@ -1,5 +1,7 @@
 package com.doubao.tv.ui.screen.multiview.components
 
+import com.doubao.tv.AppContainer
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -59,9 +61,9 @@ fun MultiViewItem(
     val channel = channelProvider()
     val line = remember(channel) {
         channel.lineList.firstOrNull { line ->
-            Configs.iptvChannelLinePlayableUrlList.contains(line.url)
+            AppContainer.settings.current.iptvChannelLinePlayableUrlList.contains(line.url)
         } ?: channel.lineList.firstOrNull { line ->
-            Configs.iptvChannelLinePlayableHostList.contains(line.url.urlHost())
+            AppContainer.settings.current.iptvChannelLinePlayableHostList.contains(line.url.urlHost())
         } ?: channel.lineList.first()
     }
     val childPadding = rememberChildPadding()

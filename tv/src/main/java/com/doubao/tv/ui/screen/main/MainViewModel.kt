@@ -80,8 +80,8 @@ class MainViewModel : ViewModel() {
 
         flow {
             emit(
-                IptvRepository(Configs.iptvSourceCurrent)
-                    .getChannelGroupList(Configs.iptvSourceCacheTime)
+                IptvRepository(AppContainer.settings.current.iptvSourceCurrent)
+                    .getChannelGroupList(AppContainer.settings.current.iptvSourceCacheTime)
             )
         }
             .retryWhen { e, attempt ->
@@ -102,19 +102,19 @@ class MainViewModel : ViewModel() {
                 _uiState.value = MainUiState.Ready(
                     channelGroupList = groupList,
                     filteredChannelGroupList = withContext(Dispatchers.Default) {
-                        ChannelGroupList(groupList.filter { it.name !in Configs.iptvChannelGroupHiddenList })
+                        ChannelGroupList(groupList.filter { it.name !in AppContainer.settings.current.iptvChannelGroupHiddenList })
                             .withMetadata()
                     }
                 )
                 groupList
             }
-            .map { refreshChannelFavoriteList(Configs.iptvSourceCurrent, it) }
+            .map { refreshChannelFavoriteList(AppContainer.settings.current.iptvSourceCurrent, it) }
             .collect()
     }
 
     private suspend fun mergeSimilarChannel(channelGroupList: ChannelGroupList): ChannelGroupList =
         withContext(Dispatchers.Default) {
-            if (!Configs.iptvSimilarChannelMerge) return@withContext channelGroupList
+            if (!AppContainer.settings.current.iptvSimilarChannelMerge) return@withContext channelGroupList
 
             _uiState.value = MainUiState.Loading("合并相似频道")
 
@@ -150,11 +150,11 @@ class MainViewModel : ViewModel() {
 
     private suspend fun hybridChannel(channelGroupList: ChannelGroupList) =
         withContext(Dispatchers.Default) {
-            if (Configs.iptvHybridMode != Configs.IptvHybridMode.DISABLE) {
+            if (AppContainer.settings.current.iptvHybridMode != Configs.IptvHybridMode.DISABLE) {
                 _uiState.value = MainUiState.Loading("混合直播源")
             }
 
-            return@withContext when (Configs.iptvHybridMode) {
+            return@withContext when (AppContainer.settings.current.iptvHybridMode) {
                 Configs.IptvHybridMode.DISABLE -> channelGroupList
                 Configs.IptvHybridMode.IPTV_FIRST -> {
                     ChannelGroupList(channelGroupList.map { group ->
@@ -183,10 +183,10 @@ class MainViewModel : ViewModel() {
         }
 
     private suspend fun refreshEpg() {
-        if (!Configs.epgEnable) return
+        if (!AppContainer.settings.current.epgEnable) return
 
-        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < Configs.epgRefreshTimeThreshold) {
-            val threshold = Configs.epgRefreshTimeThreshold.toString().padStart(2, '0') + ":00"
+        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < AppContainer.settings.current.epgRefreshTimeThreshold) {
+            val threshold = AppContainer.settings.current.epgRefreshTimeThreshold.toString().padStart(2, '0') + ":00"
             log.i("当前时间未到${threshold}，不获取节目单")
             return
         }
@@ -197,17 +197,17 @@ class MainViewModel : ViewModel() {
             val channelGroupList = (_uiState.value as MainUiState.Ready).channelGroupList
 
             flow {
-                val epgSource = Configs.epgSourceFollowIptv
+                val epgSource = AppContainer.settings.current.epgSourceFollowIptv
                     .takeIf { it }
                     ?.let {
-                        val iptvRepository = IptvRepository(Configs.iptvSourceCurrent)
+                        val iptvRepository = IptvRepository(AppContainer.settings.current.iptvSourceCurrent)
                         iptvRepository.getEpgUrl()?.let { epgUrl ->
                             EpgSource(
-                                name = Configs.iptvSourceCurrent.name,
+                                name = AppContainer.settings.current.iptvSourceCurrent.name,
                                 url = epgUrl,
                             )
                         }
-                    } ?: Configs.epgSourceCurrent
+                    } ?: AppContainer.settings.current.epgSourceCurrent
 
                 emit(EpgRepository(epgSource).getEpgList())
             }
@@ -225,7 +225,7 @@ class MainViewModel : ViewModel() {
                 .map { epgList ->
                     withContext(Dispatchers.Default) {
                         val filteredChannels =
-                            (channelGroupList.channelList + Configs.iptvChannelFavoriteList.map { it.channel }).map { it.epgName }
+                            (channelGroupList.channelList + AppContainer.settings.current.iptvChannelFavoriteList.map { it.channel }).map { it.epgName }
 
                         EpgList(epgList.filter { epg -> epg.channelList.any { it in filteredChannels } })
                     }
@@ -258,15 +258,15 @@ class MainViewModel : ViewModel() {
     }
 
     private suspend fun refreshOtherIptvSource() {
-        val needRefreshNames = Configs.iptvChannelFavoriteList.map { it.iptvSourceName }.distinct()
-            .filter { it != Configs.iptvSourceCurrent.name }
+        val needRefreshNames = AppContainer.settings.current.iptvChannelFavoriteList.map { it.iptvSourceName }.distinct()
+            .filter { it != AppContainer.settings.current.iptvSourceCurrent.name }
 
-        (Constants.IPTV_SOURCE_LIST + Configs.iptvSourceList)
+        (Constants.IPTV_SOURCE_LIST + AppContainer.settings.current.iptvSourceList)
             .filter { it.name in needRefreshNames }
             .forEach { iptvSource ->
                 runCatching {
                     val channelGroupList =
-                        IptvRepository(iptvSource).getChannelGroupList(Configs.iptvSourceCacheTime)
+                        IptvRepository(iptvSource).getChannelGroupList(AppContainer.settings.current.iptvSourceCacheTime)
 
                     refreshChannelFavoriteList(iptvSource, channelGroupList)
                 }
