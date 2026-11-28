@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import com.doubao.tv.core.data.entities.channel.Channel
 import com.doubao.tv.core.data.entities.channel.ChannelGroupList
 import com.doubao.tv.core.data.entities.epgsource.EpgSourceList
+import com.doubao.tv.core.data.entities.iptvsource.IptvSource
 import com.doubao.tv.core.data.entities.iptvsource.IptvSourceList
 import com.doubao.tv.core.data.repositories.epg.EpgRepository
 import com.doubao.tv.core.data.repositories.iptv.IptvRepository
@@ -220,6 +221,17 @@ fun SettingsScreen(
                         onAddSource = {
                             settingsViewModel.iptvSourceList =
                                 IptvSourceList(settingsViewModel.iptvSourceList + it)
+                        },
+                        onUpdateSource = { updated ->
+                            val current = settingsViewModel.iptvSourceCurrent
+                            if (current.name == updated.name && current.url == updated.url) {
+                                settingsViewModel.iptvSourceCurrent = updated
+                            }
+                            settingsViewModel.iptvSourceList = IptvSourceList(
+                                settingsViewModel.iptvSourceList.map {
+                                    if (it.name == updated.name && it.url == updated.url) updated else it
+                                }
+                            )
                         },
                         onBackPressed = {
                             if (!navController.navigateUp()) onBackPressed()

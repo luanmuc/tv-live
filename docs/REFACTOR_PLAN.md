@@ -1,7 +1,7 @@
 # 电视台 / tv-live 架构评审与重构执行清单
 
 > 基线：`main` / `7c41fde`（1.4.10）  
-> 批次 1～7 已同步到 `main`；批次 7 为 1.4.11 收尾版本。
+> 批次 1～7 已同步到 `main`；批次 7 为 1.4.12 收尾版本。
 > 目的：把已经确认的问题固定下来，按批次执行、逐项勾选，避免后续只做“看得见的功能”而漏掉结构性债。  
 > 原则：不推倒重写；先封风险，再做可测试性，最后迁移 UI。每个批次都必须能单独编译、可回滚。
 
@@ -166,7 +166,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 - [x] `SourceManifestTest`：解析、哈希匹配、RSA 验签、篡改拒绝。
 - [x] 复核：APK 内 `source-manifest.json` 用 APK 证书 `openssl dgst -verify` 通过。
 
-### 批次 7：1.4.11 收尾
+### 批次 7：1.4.12 收尾
 
 - [x] `build_pack.py` 拆出 `sources_pipeline` 包（common/channels/parsing），CLI 与旧 import 兼容。
 - [x] 频道别名统一到 APK 内 `channel_name_alias.json`，Python 与 Kotlin 共用一份。
@@ -174,7 +174,8 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 - [x] 自定义单源“允许自签名 HTTPS 证书”，仅该 host 生效、禁止重定向。
 - [x] 源清单 `contentVersion` + 本地哈希校验，版本未变跳过下载。
 - [x] `:tv` 导航回归测试、CLI 回归测试、CI lint。
-- [x] 版本 1.4.11 / versionCode 16。
+- [x] 已有源操作菜单可切换自签名证书。
+- [x] 版本 1.4.12 / versionCode 17。
 
 ## 3. 执行记录
 

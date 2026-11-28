@@ -1,4 +1,4 @@
-# 1.4.11
+# 1.4.12
 
 ## 架构收尾
 
@@ -14,7 +14,8 @@
 ## 工程
 
 - 新增导航目的地回归测试，CI 跑 `:tv:testOriginalReleaseUnitTest` 与 `:tv:lintOriginalRelease`
-- 版本 1.4.11（versionCode 16）
+- 已有自定义源可在操作菜单里切换“允许自签名证书”，无需删除重建
+- 版本 1.4.12（versionCode 17）
 
 # 1.4.10
 

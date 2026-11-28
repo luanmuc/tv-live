@@ -20,6 +20,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.ClearAll
 import androidx.compose.material.icons.outlined.DeleteOutline
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -79,6 +80,7 @@ fun SettingsIptvSourceScreen(
     onDelete: (IptvSource) -> Unit = {},
     onClearCache: (IptvSource) -> Unit = {},
     onAddSource: (IptvSource) -> Unit = {},
+    onUpdateSource: (IptvSource) -> Unit = {},
     onBackPressed: () -> Unit = {},
 ) {
     val iptvSourceList = IptvSourceList(Constants.IPTV_SOURCE_LIST + iptvSourceListProvider())
@@ -139,6 +141,7 @@ fun SettingsIptvSourceScreen(
             onDelete = onDelete,
             onClearCache = onClearCache,
             onAddSource = onAddSource,
+            onUpdateSource = onUpdateSource,
         )
     }
 }
@@ -153,6 +156,7 @@ private fun SettingsIptvSourceContent(
     onDelete: (IptvSource) -> Unit = {},
     onClearCache: (IptvSource) -> Unit = {},
     onAddSource: (IptvSource) -> Unit = {},
+    onUpdateSource: (IptvSource) -> Unit = {},
 ) {
     val iptvSourceList = iptvSourceListProvider()
 
@@ -194,6 +198,7 @@ private fun SettingsIptvSourceContent(
                 onSetCurrent = { onSetCurrent(iptvSource) },
                 onDelete = { onDelete(iptvSource) },
                 onClearCache = { onClearCache(iptvSource) },
+                onUpdateSource = { onUpdateSource(it) },
             )
         }
 
@@ -235,6 +240,7 @@ private fun IptvSourceItem(
     onSetCurrent: () -> Unit = {},
     onDelete: () -> Unit = {},
     onClearCache: () -> Unit = {},
+    onUpdateSource: (IptvSource) -> Unit = {},
 ) {
     val iptvSource = iptvSourceProvider()
     val iptvSourceDetail = iptvSourceDetailProvider()
@@ -349,6 +355,10 @@ private fun IptvSourceItem(
                 onClearCache()
                 actionsVisible = false
             },
+            onUpdateSource = {
+                onUpdateSource(it)
+                actionsVisible = false
+            },
         )
     }
 }
@@ -362,6 +372,7 @@ private fun SettingsIptvSourceActions(
     onSetCurrent: () -> Unit = {},
     onDelete: () -> Unit = {},
     onClearCache: () -> Unit = {},
+    onUpdateSource: (IptvSource) -> Unit = {},
 ) {
     val currentIptvSource = currentIptvSourceProvider()
     val iptvSource = iptvSourceProvider()
@@ -410,6 +421,19 @@ private fun SettingsIptvSourceActions(
                     imageVector = Icons.Outlined.ClearAll,
                     onSelected = onClearCache,
                 )
+            }
+
+            if (!iptvSource.isLocal && iptvSource.url.startsWith("https://")) {
+                item {
+                    SettingsIptvSourceActionItem(
+                        title = if (iptvSource.allowSelfSignedTls) "关闭自签名证书" else "允许自签名证书",
+                        imageVector = Icons.Outlined.Lock,
+                        onSelected = {
+                            onUpdateSource(iptvSource.copy(allowSelfSignedTls = !iptvSource.allowSelfSignedTls))
+                            onDismissRequest()
+                        },
+                    )
+                }
             }
 
             item {
