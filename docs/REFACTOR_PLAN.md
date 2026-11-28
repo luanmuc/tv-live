@@ -90,7 +90,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | BLD-02 | README 说 push main 自动构建，workflow 只接受 tag/手动 | `build-apk.yml` | 文档与 workflow 一致；正式版只走 tag | DONE（已改为 tag 发布 / 手动只留档） |
 | BLD-03 | `mobile` 半成品仍在默认构建 | `settings.gradle.kts` include `:mobile`；docs 明确不要出包 | 从默认构建移除，或改为显式 profile | DONE（默认不 include，-PincludeMobile=true 显式打开） |
 | BLD-04 | 没有有效测试/静态检查 | `tv` 无 test；core 只有模板测试；scripts 无 pytest；CI 只编译 | CI 跑单测、lint、Python pytest；至少覆盖导航、解析、选线 | DOING（Python unittest 4 项 + core 单测已进 CI；tv 测试/lint 未做） |
-| BLD-05 | 版本号/种子版本多处手写 | `tv/build.gradle.kts`、README；`SEEDED_VERSION` 已移除，改 assets 哈希 | 单一版本源；tag 与 versionName 自动校验；seed 自动计算 | DOING（seed 已自动；versionName/tag 仍手写） |
+| BLD-05 | 版本号/种子版本多处手写 | `tv/build.gradle.kts`、README；`SEEDED_VERSION` 已移除，改 assets 哈希 | 单一版本源；tag 与 versionName 自动校验；seed 自动计算 | DONE（`version.properties` 单一版本源；tag 与版本号 CI 校验；README 仍手写但非构建源） |
 
 ## 2. 执行批次
 
@@ -147,7 +147,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | --- | --- | --- | --- | --- |
 | 2026-11-28 | 批次 1 | 建立本清单；HTTP 服务改为开发者模式启动并可 stop；随机 Token + HttpOnly Cookie 鉴权；移除任意文件读写/APK/二进制上传；configs 脱敏；移除全局 TrustAll；Rhino 改 safe objects + ClassShutter + 指令上限；m3u/txt 协议白名单；新增 StreamUrl 单测 | `:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | 基线 `7c41fde`；Token 已加；自签名例外、包签名、密钥加密未做 |
 | 2026-11-28 | 批次 2 | 选线扩池后按 playable 定稿；国际源按频道去死链；line-audit 分数回灌；assets 内容哈希释放 + 失败不写 lastCheck；保留 UA/KODIPROP；OkHttp 单例；README/workflow/mobile 收口；Python unittest + CI | `python3 -m unittest discover -s scripts` 4 项通过；`:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | 未跑全量采集；SRC-01/07/08、SEC-07 加密仍未做 |
-| 2026-11-28 | 批次 3（部分） | MainViewModel 的 `needRefresh` 组合期赋值改为 SharedFlow 事件；LineHealth 从全包扫描改为当前频道 + 收藏频道懒探测；打包 `line-stats.json` 并加载初始健康快照；播放错误换线收敛到 `handlePlayerError` 单入口 | `:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | SettingsRepository/AppContainer 仍未做；APP-06 未抽独立 coordinator |
+| 2026-11-28 | 批次 3（部分） | MainViewModel 的 `needRefresh` 组合期赋值改为 SharedFlow 事件；LineHealth 从全包扫描改为当前频道 + 收藏频道懒探测；打包 `line-stats.json` 并加载初始健康快照；播放错误换线收敛到 `handlePlayerError` 单入口；版本号收敛到 `version.properties` | `:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | SettingsRepository/AppContainer 仍未做；APP-06 未抽独立 coordinator |
 
 ## 4. 风险与回滚
 

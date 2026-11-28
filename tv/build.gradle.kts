@@ -9,6 +9,10 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val appVersion = Properties().apply {
+    rootProject.file("version.properties").inputStream().use { load(it) }
+}
+
 android {
     @Suppress("UNCHECKED_CAST")
     apply(extra["appConfig"] as BaseAppModuleExtension.() -> Unit)
@@ -20,8 +24,8 @@ android {
         applicationId = "com.doubao.tv"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 15
-        versionName = "1.4.10"
+        versionCode = appVersion.getProperty("versionCode").toInt()
+        versionName = appVersion.getProperty("versionName")
         vectorDrawables {
             useSupportLibrary = true
         }
