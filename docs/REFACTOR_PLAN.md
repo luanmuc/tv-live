@@ -63,7 +63,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | APP-01 | `Configs` / `SettingsViewModel` 是双份 god object，新增设置要改 4～5 处 | `Configs` 仍 949 行；`SettingsViewModel` 已从 700 行降到约 500 行；66 个字段仍手写 getter/setter | 单一 `SettingsRepository` + 不可变 `AppSettings`；设置读写只有一条路径 | DONE（UI 层已单入口；`Configs` 作为 SharedPreferences 兼容层保留，其他直接写 `Configs` 的调用点后续迁移） |
 | APP-02 | 全局单例与组合期副作用 | 原 `MainViewModel.instance`、`SettingsViewModel.instance`、`mainViewModel.needRefresh = {}` | 引入 `AppContainer`（不强制 Hilt）；ViewModel 通过构造注入；移除组合期赋值 | DONE（`AppContainer` + 构造注入；两处 `instance` 已删；组合期赋值改 SharedFlow；`settingsVM` / `mainVM` 直接走 `viewModel()`） |
 | APP-03 | 新旧 UI 半迁移，直播页仍在 `screensold` | `screen` 67 文件 / `screensold` 61 文件；`Screens.Live` 走旧 `MainContent` | 抽出 `feature:live`；直播页、播放器、频道浮层迁移；旧包只留兼容壳 | TODO |
-| APP-04 | 导航是字符串路由，返回逻辑分散在 App/MainScreen/MainContent | `Screens` 枚举 + route string；`BackHandler` 分散 | 类型安全 `Destination`；统一 `BackDispatcher`；启动页值校验 | TODO |
+| APP-04 | 导航是字符串路由，返回逻辑分散在 App/MainScreen/MainContent | `Screens` 枚举 + route string；`BackHandler` 分散 | 类型安全 `Destination`；统一 `BackDispatcher`；启动页值校验 | DOING（外层 `MainScreen` 已改 `@Serializable Destination`，启动页值校验已加；设置内层仍字符串路由，统一 BackDispatcher 未抽） |
 | APP-05 | `core:data` 依赖 Compose/Android 状态，领域层不纯 | `LineHealth` 用 `mutableStateMapOf`；实体用 `@Immutable` | 领域模型纯 Kotlin；健康状态改 `StateFlow`；UI 层只消费 | TODO |
 | APP-06 | 播放失败自动换线有两条触发路径 | 原 `VideoPlayerState.onError` 内自增；`MainContent` 又监听 `error` 调 `handlePlayerError`；EPG 回看排除逻辑只在一处 | 单一 `PlaybackCoordinator` 状态机；同一次错误只切换一次；回看/直播策略显式 | DONE（`PlaybackCoordinator` 已抽出并单测；`MainContentState.handlePlayerError` 只调用它；回看/直播、冷却、上限、活线优先均显式） |
 | APP-07 | 每个请求新建 OkHttpClient，无连接池/ETag/统一超时 | `String.request` 每次 `OkHttpClient.Builder()` | 单例 OkHttpClient + 统一拦截器/超时/缓存策略 | DONE（已单例化 + 统一超时；ETag/缓存策略未做） |
@@ -139,7 +139,8 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 ### 批次 4：直播 feature 化
 
 - [ ] `:feature:live`。
-- [ ] 类型安全导航 + 统一返回。
+- [x] 外层类型安全导航 + 启动页值校验（`@Serializable Destination`；设置内层仍字符串路由）。
+- [ ] 统一返回 `BackDispatcher`。
 - [x] `PlaybackCoordinator` 状态机（纯策略类 + 7 项单测，已接入 `MainContentState`）。
 - [ ] 旧 `screensold` 逐步退场。
 
@@ -152,6 +153,7 @@ APK assets → BuiltinSources → 本地 m3u → IptvRepository
 | 2026-11-28 | 批次 3（部分） | MainViewModel 的 `needRefresh` 组合期赋值改为 SharedFlow 事件；LineHealth 从全包扫描改为当前频道 + 收藏频道懒探测；打包 `line-stats.json` 并加载初始健康快照；播放错误换线收敛到 `handlePlayerError` 单入口；版本号收敛到 `version.properties` | `:tv:compileOriginalReleaseKotlin`、`:core:data:testReleaseUnitTest` 通过 | SettingsRepository/AppContainer 仍未做；APP-06 未抽独立 coordinator |
 | 2026-11-28 | 批次 3（设置层） | 新增 `AppSettings`（66 字段不可变快照）与 `SettingsRepository`；`SettingsViewModel` 删除 66 份 `mutableStateOf` 与 `refresh()` 逐字段复制，构造注入仓库；新增 `AppContainer`；Compose 直接观察仓库 `current`；仓库只在字段变化时写 `Configs`；移除 `SettingsViewModel.instance` / `MainViewModel.instance` | `:tv:compileOriginalReleaseKotlin` 通过；run 46096707088 与 run 46097780346 均成功，最终 APK 版本/签名校验通过 | `Configs` 仍是 SharedPreferences 兼容层；其余直接写 `Configs` 的调用点待迁移 |
 | 2026-11-28 | 批次 4（第一刀） | 新增 `PlaybackCoordinator` 纯策略类：回看不换线、单线不换、1 秒冷却、最多 `线路数-1` 次、优先活线；`MainContentState` 删除 `_autoSwitchLineCount` / `_lastAutoSwitchLineAt` 与 `nextAliveLineIndex`，统一调用协调器 | 7 项单测通过；`:tv:compileOriginalReleaseKotlin` 通过；云端 run 46101103087 成功，APK 版本/签名校验通过 | `:feature:live`、类型安全导航、统一返回、旧 `screensold` 退场未做 |
+| 2026-11-28 | 批次 4（导航） | 外层 `MainScreen` 从 `Screens` 字符串路由迁移到 `@Serializable Destination`（Agreement/Loading/Dashboard/Live/…/Settings）；`navigateSingleTop` 增加目的地重载；启动页保存值通过 `Destination.fromStoredName` 校验并回退 Loading；直播返回判断改用目的地 route | `:tv:compileOriginalReleaseKotlin` 通过 | 设置页内部仍是字符串子路由；统一 `BackDispatcher` 未抽 |
 
 ## 4. 构建验证记录
 

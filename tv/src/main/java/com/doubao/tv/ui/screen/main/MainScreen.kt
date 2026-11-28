@@ -9,11 +9,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -26,7 +25,7 @@ import com.doubao.tv.core.data.entities.channel.ChannelList
 import com.doubao.tv.core.data.entities.epg.EpgList
 import com.doubao.tv.BuildConfig
 import com.doubao.tv.ui.material.Snackbar
-import com.doubao.tv.ui.screen.Screens
+import com.doubao.tv.ui.screen.Destination
 import com.doubao.tv.ui.screen.about.AboutScreen
 import com.doubao.tv.ui.screen.agreement.AgreementScreen
 import com.doubao.tv.ui.screen.channels.ChannelsScreen
@@ -76,7 +75,7 @@ fun MainScreen(
 
     fun onChannelSelected(channel: Channel) {
         settingsViewModel.iptvChannelLastPlay = channel
-        navController.navigateSingleTop(Screens.Live())
+        navController.navigateSingleTop(Destination.Live)
     }
 
     fun onChannelFavoriteToggle(channel: Channel) {
@@ -128,7 +127,7 @@ fun MainScreen(
 
             settingsViewModel.appLastLatestVersion = updateViewModel.latestRelease.version
             if (settingsViewModel.updateForceRemind) {
-                navController.navigateSingleTop(Screens.Update())
+                navController.navigateSingleTop(Destination.Update)
             } else {
                 if (quiet) Snackbar.show("发现新版本: v${updateViewModel.latestRelease.version}")
             }
@@ -139,7 +138,7 @@ fun MainScreen(
         settingsViewModel.refresh()
         mainViewModel.init()
         navController.navigateUp()
-        navController.navigateSingleTop(Screens.Loading())
+        navController.navigateSingleTop(Destination.Loading)
     }
 
     /**
@@ -147,9 +146,10 @@ fun MainScreen(
      * 栈里只有 Loading，就回主页 Dashboard，而不是直接退出应用。
      */
     fun backFromLive() {
-        val previous = navController.previousBackStackEntry?.destination?.route
-        if (previous == null || previous == Screens.Loading.name || previous == Screens.Agreement.name) {
-            navController.navigateSingleTop(Screens.Dashboard())
+        val previous = navController.previousBackStackEntry?.destination
+        val previousRoute = previous?.route?.substringBefore('?')
+        if (previous == null || previousRoute == Destination.Loading::class.qualifiedName || previousRoute == Destination.Agreement::class.qualifiedName) {
+            navController.navigateSingleTop(Destination.Dashboard)
         } else {
             navController.navigateUp()
         }
@@ -159,49 +159,49 @@ fun MainScreen(
         NavHost(
             modifier = Modifier.fillMaxSize(),
             navController = navController,
-            startDestination = if (settingsViewModel.appAgreementAgreed) Screens.Loading() else Screens.Agreement(),
+            startDestination = if (settingsViewModel.appAgreementAgreed) Destination.Loading else Destination.Agreement,
             builder = {
-                composable(Screens.Agreement()) {
+                composable<Destination.Agreement> {
                     AgreementScreen(
                         onAgree = {
                             settingsViewModel.appAgreementAgreed = true
-                            navController.navigateSingleTop(Screens.Loading())
+                            navController.navigateSingleTop(Destination.Loading)
                         },
                         onDisagree = onBackPressed,
                         onTouchTested = { settingsViewModel.uiFocusOptimize = false },
                     )
                 }
 
-                composable(Screens.Loading()) {
+                composable<Destination.Loading> {
                     LoadingScreen(
                         mainUiState = uiState,
                         toDashboardScreen = {
                             navController.navigateUp()
-                            navController.navigateSingleTop(settingsViewModel.appStartupScreen)
+                            navController.navigateSingleTop(Destination.fromStoredName(settingsViewModel.appStartupScreen))
                             checkUpdate()
                         },
-                        toSettingsScreen = { navController.navigateSingleTop(Screens.Settings()) },
+                        toSettingsScreen = { navController.navigateSingleTop(Destination.Settings()) },
                         onBackPressed = onBackPressed,
                     )
                 }
 
-                composable(Screens.Dashboard()) {
+                composable<Destination.Dashboard> {
                     DashboardScreen(
                         currentIptvSourceProvider = { settingsViewModel.iptvSourceCurrent },
                         channelFavoriteListProvider = { settingsViewModel.iptvChannelFavoriteList },
                         onChannelSelected = { onChannelSelected(it) },
                         epgListProvider = epgListProvider,
-                        toLiveScreen = { navController.navigateSingleTop(Screens.Live()) },
-                        toChannelsScreen = { navController.navigateSingleTop(Screens.Channels()) },
-                        toFavoritesScreen = { navController.navigateSingleTop(Screens.Favorites()) },
-                        toSearchScreen = { navController.navigateSingleTop(Screens.Search()) },
-                        toMultiViewScreen = { navController.navigateSingleTop(Screens.MultiView()) },
-                        toPushScreen = { navController.navigateSingleTop(Screens.Push()) },
-                        toSettingsScreen = { navController.navigateSingleTop(Screens.Settings()) },
-                        toAboutScreen = { navController.navigateSingleTop(Screens.About()) },
+                        toLiveScreen = { navController.navigateSingleTop(Destination.Live) },
+                        toChannelsScreen = { navController.navigateSingleTop(Destination.Channels) },
+                        toFavoritesScreen = { navController.navigateSingleTop(Destination.Favorites) },
+                        toSearchScreen = { navController.navigateSingleTop(Destination.Search) },
+                        toMultiViewScreen = { navController.navigateSingleTop(Destination.MultiView) },
+                        toPushScreen = { navController.navigateSingleTop(Destination.Push) },
+                        toSettingsScreen = { navController.navigateSingleTop(Destination.Settings()) },
+                        toAboutScreen = { navController.navigateSingleTop(Destination.About) },
                         toSettingsIptvSourceScreen = {
                             navController.navigateSingleTop(
-                                Screens.Settings.withArgs(SettingsSubCategories.IPTV_SOURCE)
+                                Destination.Settings(SettingsSubCategories.IPTV_SOURCE.name)
                             )
                         },
                         onReload = { reload() },
@@ -209,7 +209,7 @@ fun MainScreen(
                     )
                 }
 
-                composable(Screens.Live()) {
+                composable<Destination.Live> {
                     BackHandler { backFromLive() }
 
                     key(settingsViewModel.videoPlayerCore) {
@@ -220,20 +220,20 @@ fun MainScreen(
                             onChannelFavoriteToggle = { onChannelFavoriteToggle(it) },
                             toSettingsScreen = {
                                 if (it != null) {
-                                    navController.navigateSingleTop(Screens.Settings.withArgs(it))
+                                    navController.navigateSingleTop(Destination.Settings(it.name))
                                 } else {
-                                    navController.navigateSingleTop(Screens.Settings())
+                                    navController.navigateSingleTop(Destination.Settings())
                                 }
                             },
                             toDashboardScreen  ={
-                                navController.navigateSingleTop(Screens.Dashboard())
+                                navController.navigateSingleTop(Destination.Dashboard)
                             },
                             onBackPressed = { backFromLive() },
                         )
                     }
                 }
 
-                composable(Screens.Channels()) {
+                composable<Destination.Channels> {
                     ChannelsScreen(
                         channelGroupListProvider = filteredChannelGroupListProvider,
                         onChannelSelected = { onChannelSelected(it) },
@@ -243,7 +243,7 @@ fun MainScreen(
                     )
                 }
 
-                composable(Screens.Favorites()) {
+                composable<Destination.Favorites> {
                     FavoritesScreen(
                         channelFavoriteListProvider = { settingsViewModel.iptvChannelFavoriteList },
                         onChannelSelected = { onChannelSelected(it) },
@@ -254,7 +254,7 @@ fun MainScreen(
                     )
                 }
 
-                composable(Screens.Search()) {
+                composable<Destination.Search> {
                     SearchScreen(
                         channelGroupListProvider = filteredChannelGroupListProvider,
                         onChannelSelected = { onChannelSelected(it) },
@@ -264,26 +264,16 @@ fun MainScreen(
                     )
                 }
 
-                composable(Screens.Push()) {
+                composable<Destination.Push> {
                     PushScreen(
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(
-                    Screens.Settings(),
-                    arguments = listOf(
-                        navArgument(SettingsScreen.START_DESTINATION) { type = NavType.StringType }
-                    ),
-                ) { backStackEntry ->
+                composable<Destination.Settings> { backStackEntry ->
+                    val destination = backStackEntry.toRoute<Destination.Settings>()
                     SettingsScreen(
-                        startDestinationProvider = {
-                            val startDestination =
-                                backStackEntry.arguments?.getString(SettingsScreen.START_DESTINATION)
-
-                            if (startDestination == "{${SettingsScreen.START_DESTINATION}}") null
-                            else startDestination
-                        },
+                        startDestinationProvider = { destination.startDestination },
                         channelGroupListProvider = channelGroupListProvider,
                         onCheckUpdate = { checkUpdate(false) },
                         onReload = { reload() },
@@ -291,21 +281,21 @@ fun MainScreen(
                     )
                 }
 
-                composable(Screens.About()) {
+                composable<Destination.About> {
                     AboutScreen(
                         latestVersionProvider = { updateViewModel.latestRelease.version },
-                        toUpdateScreen = { navController.navigateSingleTop(Screens.Update()) },
+                        toUpdateScreen = { navController.navigateSingleTop(Destination.Update) },
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(Screens.Update()) {
+                composable<Destination.Update> {
                     UpdateScreen(
                         onBackPressed = { navController.navigateUp() },
                     )
                 }
 
-                composable(Screens.MultiView()) {
+                composable<Destination.MultiView> {
                     MultiViewScreen(
                         channelGroupListProvider = filteredChannelGroupListProvider,
                         epgListProvider = epgListProvider,
