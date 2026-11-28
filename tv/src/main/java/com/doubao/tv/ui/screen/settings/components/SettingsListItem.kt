@@ -5,15 +5,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -24,9 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.ListItem
 import androidx.tv.material3.Text
-import com.doubao.tv.ui.material.LocalPopupManager
 import com.doubao.tv.ui.material.SimplePopup
-import com.doubao.tv.ui.screen.push.PushContent
 import com.doubao.tv.ui.theme.MyTvTheme
 import com.doubao.tv.ui.utils.handleKeyEvents
 
@@ -40,13 +34,9 @@ fun SettingsListItem(
     onSelect: (() -> Unit)? = null,
     onLongSelect: () -> Unit = {},
     locK: Boolean = false,
-    remoteConfig: Boolean = false,
     link: Boolean = false,
 ) {
-    val popupManager = LocalPopupManager.current
     val focusRequester = remember { FocusRequester() }
-
-    var showPush by remember { mutableStateOf(false) }
 
     ListItem(
         selected = false,
@@ -70,14 +60,6 @@ fun SettingsListItem(
                     )
                 }
 
-                if (remoteConfig) {
-                    Icon(
-                        Icons.AutoMirrored.Default.OpenInNew,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                    )
-                }
-
                 if (link) {
                     Icon(
                         Icons.Default.ChevronRight,
@@ -92,22 +74,11 @@ fun SettingsListItem(
             .focusRequester(focusRequester)
             .handleKeyEvents(
                 onSelect = {
-                    if (onSelect != null) onSelect()
-                    else if (remoteConfig) {
-                        popupManager.push(focusRequester, true)
-                        showPush = true
-                    }
+                    onSelect?.invoke()
                 },
                 onLongSelect = { onLongSelect() },
             ),
     )
-
-    SimplePopup(
-        visibleProvider = { showPush },
-        onDismissRequest = { showPush = false },
-    ) {
-        PushContent()
-    }
 }
 
 @Composable
@@ -120,7 +91,6 @@ fun SettingsListItem(
     onSelect: (() -> Unit)? = null,
     onLongSelected: () -> Unit = {},
     locK: Boolean = false,
-    remoteConfig: Boolean = false,
     link: Boolean = false,
 ) {
     SettingsListItem(
@@ -138,7 +108,6 @@ fun SettingsListItem(
         onSelect = onSelect,
         onLongSelect = onLongSelected,
         locK = locK,
-        remoteConfig = remoteConfig,
         link = link,
     )
 }
@@ -152,7 +121,6 @@ private fun SettingsListItemPreview() {
             supportingContent = "版本号",
             trailingContent = "1.0.0",
             trailingIcon = Icons.Default.Circle,
-            remoteConfig = true,
             locK = true,
             link = true,
         )

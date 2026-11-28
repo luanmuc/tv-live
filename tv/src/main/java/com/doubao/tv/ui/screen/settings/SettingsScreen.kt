@@ -24,9 +24,7 @@ import com.doubao.tv.core.data.repositories.iptv.IptvRepository
 import com.doubao.tv.ui.material.Snackbar
 import com.doubao.tv.ui.screen.components.AppScreen
 import com.doubao.tv.ui.screen.settings.categories.SettingsAppScreen
-import com.doubao.tv.ui.screen.settings.categories.SettingsCloudSyncScreen
 import com.doubao.tv.ui.screen.settings.categories.SettingsControlScreen
-import com.doubao.tv.ui.screen.settings.categories.SettingsDebugScreen
 import com.doubao.tv.ui.screen.settings.categories.SettingsEpgScreen
 import com.doubao.tv.ui.screen.settings.categories.SettingsIptvScreen
 import com.doubao.tv.ui.screen.settings.categories.SettingsLogScreen
@@ -37,7 +35,6 @@ import com.doubao.tv.ui.screen.settings.categories.SettingsUiScreen
 import com.doubao.tv.ui.screen.settings.categories.SettingsUpdateScreen
 import com.doubao.tv.ui.screen.settings.categories.SettingsVideoPlayerScreen
 import com.doubao.tv.ui.screen.settings.subcategories.SettingsChannelGroupVisibilityScreen
-import com.doubao.tv.ui.screen.settings.subcategories.SettingsCloudSyncProviderScreen
 import com.doubao.tv.ui.screen.settings.subcategories.SettingsEpgRefreshTimeThresholdScreen
 import com.doubao.tv.ui.screen.settings.subcategories.SettingsEpgSourceScreen
 import com.doubao.tv.ui.screen.settings.subcategories.SettingsIptvHybridModeScreen
@@ -188,22 +185,6 @@ fun SettingsScreen(
                     )
                 }
 
-                composable<SettingsDestination.CloudSync> {
-                    SettingsCloudSyncScreen(
-                        toCloudSyncProviderScreen = {
-                            navController.navigateSingleTop(SettingsDestination.CloudSyncProvider)
-                        },
-                        onReload = onReload,
-                        onBackPressed = { navController.navigateUp() },
-                    )
-                }
-
-                composable<SettingsDestination.Debug> {
-                    SettingsDebugScreen(
-                        onBackPressed = { navController.navigateUp() },
-                    )
-                }
-
                 composable<SettingsDestination.Log> {
                     SettingsLogScreen(
                         onBackPressed = { navController.navigateUp() },
@@ -235,6 +216,10 @@ fun SettingsScreen(
                                 IptvRepository(it).clearCache()
                                 Snackbar.show("缓存已清除")
                             }
+                        },
+                        onAddSource = {
+                            settingsViewModel.iptvSourceList =
+                                IptvSourceList(settingsViewModel.iptvSourceList + it)
                         },
                         onBackPressed = {
                             if (!navController.navigateUp()) onBackPressed()
@@ -297,6 +282,10 @@ fun SettingsScreen(
                                 EpgRepository(it).clearCache()
                                 Snackbar.show("缓存已清除")
                             }
+                        },
+                        onAddSource = {
+                            settingsViewModel.epgSourceList =
+                                EpgSourceList(settingsViewModel.epgSourceList + it)
                         },
                         onBackPressed = { navController.navigateUp() },
                     )
@@ -404,16 +393,6 @@ fun SettingsScreen(
                     )
                 }
 
-                composable<SettingsDestination.CloudSyncProvider> {
-                    SettingsCloudSyncProviderScreen(
-                        providerProvider = { settingsViewModel.cloudSyncProvider },
-                        onProviderChanged = {
-                            settingsViewModel.cloudSyncProvider = it
-                            navController.navigateUp()
-                        },
-                        onBackPressed = { navController.navigateUp() },
-                    )
-                }
             }
         )
     }

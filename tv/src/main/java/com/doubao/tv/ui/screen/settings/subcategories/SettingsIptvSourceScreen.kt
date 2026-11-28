@@ -21,6 +21,7 @@ import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.ClearAll
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -63,7 +64,6 @@ import com.doubao.tv.ui.material.TagDefaults
 import com.doubao.tv.ui.rememberChildPadding
 import com.doubao.tv.ui.screen.components.AppScaffoldHeaderBtn
 import com.doubao.tv.ui.screen.components.AppScreen
-import com.doubao.tv.ui.screen.push.PushContent
 import com.doubao.tv.ui.theme.MyTvTheme
 import com.doubao.tv.ui.utils.focusOnLaunched
 import com.doubao.tv.ui.utils.gridColumns
@@ -78,6 +78,7 @@ fun SettingsIptvSourceScreen(
     onSetCurrent: (IptvSource) -> Unit = {},
     onDelete: (IptvSource) -> Unit = {},
     onClearCache: (IptvSource) -> Unit = {},
+    onAddSource: (IptvSource) -> Unit = {},
     onBackPressed: () -> Unit = {},
 ) {
     val iptvSourceList = IptvSourceList(Constants.IPTV_SOURCE_LIST + iptvSourceListProvider())
@@ -137,6 +138,7 @@ fun SettingsIptvSourceScreen(
             onSetCurrent = onSetCurrent,
             onDelete = onDelete,
             onClearCache = onClearCache,
+            onAddSource = onAddSource,
         )
     }
 }
@@ -150,6 +152,7 @@ private fun SettingsIptvSourceContent(
     onSetCurrent: (IptvSource) -> Unit = {},
     onDelete: (IptvSource) -> Unit = {},
     onClearCache: (IptvSource) -> Unit = {},
+    onAddSource: (IptvSource) -> Unit = {},
 ) {
     val iptvSourceList = iptvSourceListProvider()
 
@@ -161,7 +164,9 @@ private fun SettingsIptvSourceContent(
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         item {
-            val summary = LineHealth.summary()
+            val statuses by LineHealth.statusMap.collectAsState()
+            val checkingKeys by LineHealth.checking.collectAsState()
+            val summary = remember(statuses, checkingKeys) { LineHealth.summary() }
             ListItem(
                 headlineContent = { Text("本机线路检测") },
                 supportingContent = {
@@ -206,7 +211,16 @@ private fun SettingsIptvSourceContent(
                 visibleProvider = { visible },
                 onDismissRequest = { visible = false },
             ) {
-                PushContent()
+                AddSourceDialog(
+                    title = "添加直播源",
+                    nameHint = "名称，例如：自定义直播源",
+                    urlHint = "http://example.com/tv.m3u",
+                    onDismiss = { visible = false },
+                    onConfirm = { name, url ->
+                        onAddSource(IptvSource(name = name, url = url))
+                        visible = false
+                    },
+                )
             }
         }
     }

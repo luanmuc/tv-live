@@ -25,6 +25,7 @@ import com.doubao.tv.core.data.entities.channel.ChannelGroupList
 import com.doubao.tv.core.data.entities.channel.ChannelGroupList.Companion.channelList
 import com.doubao.tv.core.data.entities.channel.ChannelLineList
 import com.doubao.tv.core.data.entities.channel.ChannelList
+import com.doubao.tv.AppContainer
 import com.doubao.tv.core.data.entities.epg.EpgList
 import com.doubao.tv.core.data.entities.epg.EpgList.Companion.match
 import com.doubao.tv.core.data.entities.epgsource.EpgSource
@@ -36,8 +37,6 @@ import com.doubao.tv.core.data.utils.ChannelAlias
 import com.doubao.tv.core.data.utils.ChannelUtil
 import com.doubao.tv.core.data.utils.Constants
 import com.doubao.tv.core.data.utils.Logger
-import com.doubao.tv.sync.CloudSync
-import com.doubao.tv.sync.CloudSyncData
 import com.doubao.tv.ui.material.Snackbar
 import com.doubao.tv.ui.material.SnackbarType
 import com.doubao.tv.ui.utils.Configs
@@ -60,7 +59,6 @@ class MainViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            pullCloudSyncData()
             init()
             _lastJob?.join()
             refreshOtherIptvSource()
@@ -74,20 +72,6 @@ class MainViewModel : ViewModel() {
             refreshChannel()
             refreshEpg()
             mergeEpgMetadata()
-        }
-    }
-
-    private suspend fun pullCloudSyncData() {
-        if (!Configs.cloudSyncAutoPull) return
-
-        _uiState.value = MainUiState.Loading("拉取云端数据")
-        runCatching {
-            val syncData = CloudSync.pull()
-
-            if (syncData != CloudSyncData.EMPTY) {
-                syncData.apply()
-                requestRefresh()
-            }
         }
     }
 
@@ -293,16 +277,21 @@ class MainViewModel : ViewModel() {
         iptvSource: IptvSource,
         channelGroupList: ChannelGroupList,
     ) = withContext(Dispatchers.Default) {
-        Configs.iptvChannelFavoriteList =
-            ChannelFavoriteList(Configs.iptvChannelFavoriteList.map { channelFavorite ->
-                if (iptvSource.name != channelFavorite.iptvSourceName) return@map channelFavorite
+        AppContainer.settings.update { snapshot ->
+            snapshot.copy(
+                iptvChannelFavoriteList = ChannelFavoriteList(
+                    snapshot.iptvChannelFavoriteList.map { channelFavorite ->
+                        if (iptvSource.name != channelFavorite.iptvSourceName) return@map channelFavorite
 
-                val newChannel = channelGroupList
-                    .firstOrNull { group -> group.name == channelFavorite.groupName }?.channelList
-                    ?.firstOrNull { channel -> channel.name == channelFavorite.channel.name }
+                        val newChannel = channelGroupList
+                            .firstOrNull { group -> group.name == channelFavorite.groupName }?.channelList
+                            ?.firstOrNull { channel -> channel.name == channelFavorite.channel.name }
 
-                channelFavorite.copy(channel = newChannel ?: channelFavorite.channel)
-            })
+                        channelFavorite.copy(channel = newChannel ?: channelFavorite.channel)
+                    },
+                ),
+            )
+        }
         requestRefresh()
     }
 

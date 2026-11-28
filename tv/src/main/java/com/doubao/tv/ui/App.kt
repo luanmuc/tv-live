@@ -27,13 +27,10 @@ import com.doubao.tv.ui.material.PopupHandleableApplication
 import com.doubao.tv.ui.material.Snackbar
 import com.doubao.tv.ui.material.SnackbarType
 import com.doubao.tv.ui.material.SnackbarUI
-import com.doubao.tv.ui.material.Visibility
 import com.doubao.tv.ui.screen.main.MainScreen
-import com.doubao.tv.ui.screen.monitor.MonitorPopup
 import com.doubao.tv.ui.screen.settings.SettingsViewModel
 import com.doubao.tv.ui.screen.settings.settingsVM
 import com.doubao.tv.ui.theme.DESIGN_WIDTH
-import com.doubao.tv.ui.tooling.PreviewWithLayoutGrids
 import com.doubao.tv.ui.utils.rememberReadExternalStoragePermission
 import java.io.File
 
@@ -77,8 +74,6 @@ fun App(
         }
 
         SnackbarUI()
-        Visibility({ settingsViewModel.debugShowFps }) { MonitorPopup() }
-        Visibility({ settingsViewModel.debugShowLayoutGrids }) { PreviewWithLayoutGrids { } }
     }
 
     if (settingsViewModel.iptvSourceCurrent.needExternalStoragePermission()) {

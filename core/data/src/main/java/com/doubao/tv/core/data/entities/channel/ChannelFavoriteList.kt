@@ -1,10 +1,8 @@
 package com.doubao.tv.core.data.entities.channel
 
-import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Immutable
 data class ChannelFavoriteList(
     val value: List<ChannelFavorite> = emptyList(),
 ) : List<ChannelFavorite> by value {

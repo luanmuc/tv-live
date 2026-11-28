@@ -12,7 +12,6 @@ import com.doubao.tv.core.data.entities.iptvsource.IptvSourceList
 import com.doubao.tv.core.data.utils.Constants
 import com.doubao.tv.core.data.utils.Globals
 import com.doubao.tv.core.data.utils.SP
-import com.doubao.tv.sync.CloudSyncProvider
 import com.doubao.tv.ui.screen.components.AppThemeDef
 import com.doubao.tv.settings.VideoPlayerDisplayMode
 
@@ -36,19 +35,6 @@ object Configs {
 
         /** 打开直接进入直播 */
         APP_STARTUP_SCREEN,
-
-        /** ==================== 调式 ==================== */
-        /** 开发者模式 */
-        DEBUG_DEVELOPER_MODE,
-
-        /** 显示fps */
-        DEBUG_SHOW_FPS,
-
-        /** 播放器详细信息 */
-        DEBUG_SHOW_VIDEO_PLAYER_METADATA,
-
-        /** 显示布局网格 */
-        DEBUG_SHOW_LAYOUT_GRIDS,
 
         /** ==================== 直播源 ==================== */
         /** 当前直播源 */
@@ -191,40 +177,6 @@ object Configs {
         /** 当前应用主题 */
         THEME_APP_CURRENT,
 
-        /** ==================== 云同步 ==================== */
-        /** 云同步 自动拉取 */
-        CLOUD_SYNC_AUTO_PULL,
-
-        /** 云同步 提供商 */
-        CLOUD_SYNC_PROVIDER,
-
-        /** 云同步 github gist id */
-        CLOUD_SYNC_GITHUB_GIST_ID,
-
-        /** 云同步 github gist token */
-        CLOUD_SYNC_GITHUB_GIST_TOKEN,
-
-        /** 云同步 gitee gist id */
-        CLOUD_SYNC_GITEE_GIST_ID,
-
-        /** 云同步 gitee gist token */
-        CLOUD_SYNC_GITEE_GIST_TOKEN,
-
-        /** 云同步 网络链接 */
-        CLOUD_SYNC_NETWORK_URL,
-
-        /** 云同步 本地文件 */
-        CLOUD_SYNC_LOCAL_FILE,
-
-        /** 云同步 webdav url */
-        CLOUD_SYNC_WEBDAV_URL,
-
-        /** 云同步 webdav 用户名 */
-        CLOUD_SYNC_WEBDAV_USERNAME,
-
-        /** 云同步 webdav 密码 */
-        CLOUD_SYNC_WEBDAV_PASSWORD,
-
         /** 肥羊 AllInOne 文件路径 */
         FEIYANG_ALLINONE_FILE_PATH,
     }
@@ -254,27 +206,6 @@ object Configs {
     var appStartupScreen: String
         get() = SP.getString(KEY.APP_STARTUP_SCREEN.name, "Live")
         set(value) = SP.putString(KEY.APP_STARTUP_SCREEN.name, value)
-
-    /** ==================== 调式 ==================== */
-    /** 开发者模式 */
-    var debugDeveloperMode: Boolean
-        get() = SP.getBoolean(KEY.DEBUG_DEVELOPER_MODE.name, false)
-        set(value) = SP.putBoolean(KEY.DEBUG_DEVELOPER_MODE.name, value)
-
-    /** 显示fps */
-    var debugShowFps: Boolean
-        get() = SP.getBoolean(KEY.DEBUG_SHOW_FPS.name, false)
-        set(value) = SP.putBoolean(KEY.DEBUG_SHOW_FPS.name, value)
-
-    /** 播放器详细信息 */
-    var debugShowVideoPlayerMetadata: Boolean
-        get() = SP.getBoolean(KEY.DEBUG_SHOW_VIDEO_PLAYER_METADATA.name, false)
-        set(value) = SP.putBoolean(KEY.DEBUG_SHOW_VIDEO_PLAYER_METADATA.name, value)
-
-    /** 显示布局网格 */
-    var debugShowLayoutGrids: Boolean
-        get() = SP.getBoolean(KEY.DEBUG_SHOW_LAYOUT_GRIDS.name, false)
-        set(value) = SP.putBoolean(KEY.DEBUG_SHOW_LAYOUT_GRIDS.name, value)
 
     /** ==================== 直播源 ==================== */
     /** 当前直播源 */
@@ -580,65 +511,6 @@ object Configs {
             KEY.THEME_APP_CURRENT.name,
             value?.let { Globals.json.encodeToString(value) } ?: "")
 
-    /** ==================== 云同步 ==================== */
-    /** 云同步 自动拉取 */
-    var cloudSyncAutoPull: Boolean
-        get() = SP.getBoolean(KEY.CLOUD_SYNC_AUTO_PULL.name, false)
-        set(value) = SP.putBoolean(KEY.CLOUD_SYNC_AUTO_PULL.name, value)
-
-    /** 云同步 提供商 */
-    var cloudSyncProvider: CloudSyncProvider
-        get() = CloudSyncProvider.fromValue(
-            SP.getInt(KEY.CLOUD_SYNC_PROVIDER.name, CloudSyncProvider.GITHUB_GIST.value)
-        )
-        set(value) = SP.putInt(KEY.CLOUD_SYNC_PROVIDER.name, value.value)
-
-    /** 云同步 github gist id */
-    var cloudSyncGithubGistId: String
-        get() = SP.getString(KEY.CLOUD_SYNC_GITHUB_GIST_ID.name, "")
-        set(value) = SP.putString(KEY.CLOUD_SYNC_GITHUB_GIST_ID.name, value)
-
-    /** 云同步 github gist token */
-    var cloudSyncGithubGistToken: String
-        get() = SP.getString(KEY.CLOUD_SYNC_GITHUB_GIST_TOKEN.name, "")
-        set(value) = SP.putString(KEY.CLOUD_SYNC_GITHUB_GIST_TOKEN.name, value)
-
-    /** 云同步 gitee gist id */
-    var cloudSyncGiteeGistId: String
-        get() = SP.getString(KEY.CLOUD_SYNC_GITEE_GIST_ID.name, "")
-        set(value) = SP.putString(KEY.CLOUD_SYNC_GITEE_GIST_ID.name, value)
-
-    /** 云同步 gitee gist token */
-    var cloudSyncGiteeGistToken: String
-        get() = SP.getString(KEY.CLOUD_SYNC_GITEE_GIST_TOKEN.name, "")
-        set(value) = SP.putString(KEY.CLOUD_SYNC_GITEE_GIST_TOKEN.name, value)
-
-    /** 云同步 网络链接 */
-    var cloudSyncNetworkUrl: String
-        get() = SP.getString(KEY.CLOUD_SYNC_NETWORK_URL.name, "")
-        set(value) = SP.putString(KEY.CLOUD_SYNC_NETWORK_URL.name, value)
-
-    /** 云同步 本地文件 */
-    var cloudSyncLocalFilePath: String
-        get() = SP.getString(KEY.CLOUD_SYNC_LOCAL_FILE.name, "")
-        set(value) = SP.putString(KEY.CLOUD_SYNC_LOCAL_FILE.name, value)
-
-    /** 云同步 webdav url */
-    var cloudSyncWebDavUrl: String
-        get() = SP.getString(KEY.CLOUD_SYNC_WEBDAV_URL.name, "")
-        set(value) = SP.putString(KEY.CLOUD_SYNC_WEBDAV_URL.name, value)
-
-    /** 云同步 webdav 用户名 */
-    // CLOUD_SYNC_WEBDAV_USERNAME,
-    var cloudSyncWebDavUsername: String
-        get() = SP.getString(KEY.CLOUD_SYNC_WEBDAV_USERNAME.name, "")
-        set(value) = SP.putString(KEY.CLOUD_SYNC_WEBDAV_USERNAME.name, value)
-
-    /** 云同步 webdav 密码 */
-    var cloudSyncWebDavPassword: String
-        get() = SP.getString(KEY.CLOUD_SYNC_WEBDAV_PASSWORD.name, "")
-        set(value) = SP.putString(KEY.CLOUD_SYNC_WEBDAV_PASSWORD.name, value)
-
     /** 肥羊 AllInOne 文件路径 */
     var feiyangAllInOneFilePath: String
         get() = SP.getString(KEY.FEIYANG_ALLINONE_FILE_PATH.name, "")
@@ -709,233 +581,7 @@ object Configs {
         }
     }
 
-    fun toPartial(): Partial {
-        return Partial(
-            appBootLaunch = appBootLaunch,
-            appPipEnable = appPipEnable,
-            appLastLatestVersion = appLastLatestVersion,
-            appAgreementAgreed = appAgreementAgreed,
-            appStartupScreen = appStartupScreen,
-            debugDeveloperMode = debugDeveloperMode,
-            debugShowFps = debugShowFps,
-            debugShowVideoPlayerMetadata = debugShowVideoPlayerMetadata,
-            debugShowLayoutGrids = debugShowLayoutGrids,
-            iptvSourceCacheTime = iptvSourceCacheTime,
-            iptvSourceCurrent = iptvSourceCurrent,
-            iptvSourceList = iptvSourceList,
-            iptvChannelGroupHiddenList = iptvChannelGroupHiddenList,
-            iptvHybridMode = iptvHybridMode,
-            iptvSimilarChannelMerge = iptvSimilarChannelMerge,
-            iptvChannelLogoProvider = iptvChannelLogoProvider,
-            iptvChannelLogoOverride = iptvChannelLogoOverride,
-            iptvChannelFavoriteEnable = iptvChannelFavoriteEnable,
-            iptvChannelFavoriteListVisible = iptvChannelFavoriteListVisible,
-            iptvChannelFavoriteList = iptvChannelFavoriteList,
-            iptvChannelLastPlay = iptvChannelLastPlay,
-            iptvChannelLinePlayableHostList = iptvChannelLinePlayableHostList,
-            iptvChannelLinePlayableUrlList = iptvChannelLinePlayableUrlList,
-            iptvChannelChangeFlip = iptvChannelChangeFlip,
-            iptvChannelNoSelectEnable = iptvChannelNoSelectEnable,
-            iptvChannelChangeListLoop = iptvChannelChangeListLoop,
-            epgEnable = epgEnable,
-            epgSourceCurrent = epgSourceCurrent,
-            epgSourceList = epgSourceList,
-            epgRefreshTimeThreshold = epgRefreshTimeThreshold,
-            epgSourceFollowIptv = epgSourceFollowIptv,
-            epgChannelReserveList = epgChannelReserveList,
-            uiShowEpgProgrammeProgress = uiShowEpgProgrammeProgress,
-            uiShowEpgProgrammePermanentProgress = uiShowEpgProgrammePermanentProgress,
-            uiShowChannelLogo = uiShowChannelLogo,
-            uiShowChannelPreview = uiShowChannelPreview,
-            uiUseClassicPanelScreen = uiUseClassicPanelScreen,
-            uiDensityScaleRatio = uiDensityScaleRatio,
-            uiFontScaleRatio = uiFontScaleRatio,
-            uiTimeShowMode = uiTimeShowMode,
-            uiFocusOptimize = uiFocusOptimize,
-            uiScreenAutoCloseDelay = uiScreenAutoCloseDelay,
-            updateForceRemind = updateForceRemind,
-            updateChannel = updateChannel,
-            videoPlayerCore = videoPlayerCore,
-            videoPlayerRenderMode = videoPlayerRenderMode,
-            videoPlayerUserAgent = videoPlayerUserAgent,
-            videoPlayerHeaders = videoPlayerHeaders,
-            videoPlayerLoadTimeout = videoPlayerLoadTimeout,
-            videoPlayerDisplayMode = videoPlayerDisplayMode,
-            videoPlayerForceAudioSoftDecode = videoPlayerForceAudioSoftDecode,
-            videoPlayerStopPreviousMediaItem = videoPlayerStopPreviousMediaItem,
-            videoPlayerSkipMultipleFramesOnSameVSync = videoPlayerSkipMultipleFramesOnSameVSync,
-            themeAppCurrent = themeAppCurrent,
-            cloudSyncAutoPull = cloudSyncAutoPull,
-            cloudSyncProvider = cloudSyncProvider,
-            cloudSyncGithubGistId = cloudSyncGithubGistId,
-            cloudSyncGithubGistToken = cloudSyncGithubGistToken,
-            cloudSyncGiteeGistId = cloudSyncGiteeGistId,
-            cloudSyncGiteeGistToken = cloudSyncGiteeGistToken,
-            cloudSyncNetworkUrl = cloudSyncNetworkUrl,
-            cloudSyncLocalFilePath = cloudSyncLocalFilePath,
-            cloudSyncWebDavUrl = cloudSyncWebDavUrl,
-            cloudSyncWebDavUsername = cloudSyncWebDavUsername,
-            cloudSyncWebDavPassword = cloudSyncWebDavPassword,
-            feiyangAllInOneFilePath = feiyangAllInOneFilePath,
-        )
-    }
 
-    fun fromPartial(configs: Partial) {
-        configs.appBootLaunch?.let { appBootLaunch = it }
-        configs.appPipEnable?.let { appPipEnable = it }
-        configs.appLastLatestVersion?.let { appLastLatestVersion = it }
-        configs.appAgreementAgreed?.let { appAgreementAgreed = it }
-        configs.appStartupScreen?.let { appStartupScreen = it }
-        configs.debugDeveloperMode?.let { debugDeveloperMode = it }
-        configs.debugShowFps?.let { debugShowFps = it }
-        configs.debugShowVideoPlayerMetadata?.let { debugShowVideoPlayerMetadata = it }
-        configs.debugShowLayoutGrids?.let { debugShowLayoutGrids = it }
-        configs.iptvSourceCacheTime?.let { iptvSourceCacheTime = it }
-        configs.iptvSourceCurrent?.let { iptvSourceCurrent = it }
-        configs.iptvSourceList?.let { iptvSourceList = it }
-        configs.iptvChannelGroupHiddenList?.let { iptvChannelGroupHiddenList = it }
-        configs.iptvHybridMode?.let { iptvHybridMode = it }
-        configs.iptvSimilarChannelMerge?.let { iptvSimilarChannelMerge = it }
-        configs.iptvChannelLogoProvider?.let { iptvChannelLogoProvider = it }
-        configs.iptvChannelLogoOverride?.let { iptvChannelLogoOverride = it }
-        configs.iptvChannelFavoriteEnable?.let { iptvChannelFavoriteEnable = it }
-        configs.iptvChannelFavoriteListVisible?.let { iptvChannelFavoriteListVisible = it }
-        configs.iptvChannelFavoriteList?.let { iptvChannelFavoriteList = it }
-        configs.iptvChannelLastPlay?.let { iptvChannelLastPlay = it }
-        configs.iptvChannelLinePlayableHostList?.let { iptvChannelLinePlayableHostList = it }
-        configs.iptvChannelLinePlayableUrlList?.let { iptvChannelLinePlayableUrlList = it }
-        configs.iptvChannelChangeFlip?.let { iptvChannelChangeFlip = it }
-        configs.iptvChannelNoSelectEnable?.let { iptvChannelNoSelectEnable = it }
-        configs.iptvChannelChangeListLoop?.let { iptvChannelChangeListLoop = it }
-        configs.epgEnable?.let { epgEnable = it }
-        configs.epgSourceCurrent?.let { epgSourceCurrent = it }
-        configs.epgSourceList?.let { epgSourceList = it }
-        configs.epgRefreshTimeThreshold?.let { epgRefreshTimeThreshold = it }
-        configs.epgSourceFollowIptv?.let { epgSourceFollowIptv = it }
-        configs.epgChannelReserveList?.let { epgChannelReserveList = it }
-        configs.uiShowEpgProgrammeProgress?.let { uiShowEpgProgrammeProgress = it }
-        configs.uiShowEpgProgrammePermanentProgress?.let {
-            uiShowEpgProgrammePermanentProgress = it
-        }
-        configs.uiShowChannelLogo?.let { uiShowChannelLogo = it }
-        configs.uiShowChannelPreview?.let { uiShowChannelPreview = it }
-        configs.uiUseClassicPanelScreen?.let { uiUseClassicPanelScreen = it }
-        configs.uiDensityScaleRatio?.let { uiDensityScaleRatio = it }
-        configs.uiFontScaleRatio?.let { uiFontScaleRatio = it }
-        configs.uiTimeShowMode?.let { uiTimeShowMode = it }
-        configs.uiFocusOptimize?.let { uiFocusOptimize = it }
-        configs.uiScreenAutoCloseDelay?.let { uiScreenAutoCloseDelay = it }
-        configs.updateForceRemind?.let { updateForceRemind = it }
-        configs.updateChannel?.let { updateChannel = it }
-        configs.videoPlayerCore?.let { videoPlayerCore = it }
-        configs.videoPlayerRenderMode?.let { videoPlayerRenderMode = it }
-        configs.videoPlayerUserAgent?.let { videoPlayerUserAgent = it }
-        configs.videoPlayerHeaders?.let { videoPlayerHeaders = it }
-        configs.videoPlayerLoadTimeout?.let { videoPlayerLoadTimeout = it }
-        configs.videoPlayerDisplayMode?.let { videoPlayerDisplayMode = it }
-        configs.videoPlayerForceAudioSoftDecode?.let { videoPlayerForceAudioSoftDecode = it }
-        configs.videoPlayerStopPreviousMediaItem?.let { videoPlayerStopPreviousMediaItem = it }
-        configs.themeAppCurrent?.let { themeAppCurrent = it }
-        configs.cloudSyncAutoPull?.let { cloudSyncAutoPull = it }
-        configs.cloudSyncProvider?.let { cloudSyncProvider = it }
-        configs.cloudSyncGithubGistId?.let { cloudSyncGithubGistId = it }
-        configs.cloudSyncGithubGistToken?.let { cloudSyncGithubGistToken = it }
-        configs.cloudSyncGiteeGistId?.let { cloudSyncGiteeGistId = it }
-        configs.cloudSyncGiteeGistToken?.let { cloudSyncGiteeGistToken = it }
-        configs.cloudSyncNetworkUrl?.let { cloudSyncNetworkUrl = it }
-        configs.cloudSyncLocalFilePath?.let { cloudSyncLocalFilePath = it }
-        configs.cloudSyncWebDavUrl?.let { cloudSyncWebDavUrl = it }
-        configs.cloudSyncWebDavUsername?.let { cloudSyncWebDavUsername = it }
-        configs.cloudSyncWebDavPassword?.let { cloudSyncWebDavPassword = it }
-        configs.feiyangAllInOneFilePath?.let { feiyangAllInOneFilePath = it }
-    }
-
-    @Serializable
-    data class Partial(
-        val appBootLaunch: Boolean? = null,
-        val appPipEnable: Boolean? = null,
-        val appLastLatestVersion: String? = null,
-        val appAgreementAgreed: Boolean? = null,
-        val appStartupScreen: String? = null,
-        val debugDeveloperMode: Boolean? = null,
-        val debugShowFps: Boolean? = null,
-        val debugShowVideoPlayerMetadata: Boolean? = null,
-        val debugShowLayoutGrids: Boolean? = null,
-        val iptvSourceCacheTime: Long? = null,
-        val iptvSourceCurrent: IptvSource? = null,
-        val iptvSourceList: IptvSourceList? = null,
-        val iptvChannelGroupHiddenList: Set<String>? = null,
-        val iptvHybridMode: IptvHybridMode? = null,
-        val iptvSimilarChannelMerge: Boolean? = null,
-        val iptvChannelLogoProvider: String? = null,
-        val iptvChannelLogoOverride: Boolean? = null,
-        val iptvChannelFavoriteEnable: Boolean? = null,
-        val iptvChannelFavoriteListVisible: Boolean? = null,
-        val iptvChannelFavoriteList: ChannelFavoriteList? = null,
-        val iptvChannelLastPlay: Channel? = null,
-        val iptvChannelLinePlayableHostList: Set<String>? = null,
-        val iptvChannelLinePlayableUrlList: Set<String>? = null,
-        val iptvChannelChangeFlip: Boolean? = null,
-        val iptvChannelNoSelectEnable: Boolean? = null,
-        val iptvChannelChangeListLoop: Boolean? = null,
-        val epgEnable: Boolean? = null,
-        val epgSourceCurrent: EpgSource? = null,
-        val epgSourceList: EpgSourceList? = null,
-        val epgRefreshTimeThreshold: Int? = null,
-        val epgSourceFollowIptv: Boolean? = null,
-        val epgChannelReserveList: EpgProgrammeReserveList? = null,
-        val uiShowEpgProgrammeProgress: Boolean? = null,
-        val uiShowEpgProgrammePermanentProgress: Boolean? = null,
-        val uiShowChannelLogo: Boolean? = null,
-        val uiShowChannelPreview: Boolean? = null,
-        val uiUseClassicPanelScreen: Boolean? = null,
-        val uiDensityScaleRatio: Float? = null,
-        val uiFontScaleRatio: Float? = null,
-        val uiTimeShowMode: UiTimeShowMode? = null,
-        val uiFocusOptimize: Boolean? = null,
-        val uiScreenAutoCloseDelay: Long? = null,
-        val updateForceRemind: Boolean? = null,
-        val updateChannel: String? = null,
-        val videoPlayerCore: VideoPlayerCore? = null,
-        val videoPlayerRenderMode: VideoPlayerRenderMode? = null,
-        val videoPlayerUserAgent: String? = null,
-        val videoPlayerHeaders: String? = null,
-        val videoPlayerLoadTimeout: Long? = null,
-        val videoPlayerDisplayMode: VideoPlayerDisplayMode? = null,
-        val videoPlayerForceAudioSoftDecode: Boolean? = null,
-        val videoPlayerStopPreviousMediaItem: Boolean? = null,
-        val videoPlayerSkipMultipleFramesOnSameVSync: Boolean? = null,
-        val themeAppCurrent: AppThemeDef? = null,
-        val cloudSyncAutoPull: Boolean? = null,
-        val cloudSyncProvider: CloudSyncProvider? = null,
-        val cloudSyncGithubGistId: String? = null,
-        val cloudSyncGithubGistToken: String? = null,
-        val cloudSyncGiteeGistId: String? = null,
-        val cloudSyncGiteeGistToken: String? = null,
-        val cloudSyncNetworkUrl: String? = null,
-        val cloudSyncLocalFilePath: String? = null,
-        val cloudSyncWebDavUrl: String? = null,
-        val cloudSyncWebDavUsername: String? = null,
-        val cloudSyncWebDavPassword: String? = null,
-        val feiyangAllInOneFilePath: String? = null,
-    ) {
-        fun desensitized() = copy(
-            cloudSyncAutoPull = null,
-            cloudSyncProvider = null,
-            cloudSyncGithubGistId = null,
-            cloudSyncGithubGistToken = null,
-            cloudSyncGiteeGistId = null,
-            cloudSyncGiteeGistToken = null,
-            cloudSyncNetworkUrl = null,
-            cloudSyncLocalFilePath = null,
-            cloudSyncWebDavUrl = null,
-            cloudSyncWebDavUsername = null,
-            cloudSyncWebDavPassword = null,
-            iptvChannelLastPlay = null,
-            iptvChannelLinePlayableHostList = null,
-            iptvChannelLinePlayableUrlList = null,
-        )
-    }
 }
 /** fanmingming 旧域名已失效，统一映射到 GitHub 直链 */
 private const val FANMINGMING_RAW = "https://raw.githubusercontent.com/fanmingming/live/main"

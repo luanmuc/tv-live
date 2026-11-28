@@ -52,14 +52,6 @@ sealed interface SettingsDestination {
     data object Theme : SettingsDestination
 
     @Serializable
-    @SerialName("CLOUD_SYNC")
-    data object CloudSync : SettingsDestination
-
-    @Serializable
-    @SerialName("DEBUG")
-    data object Debug : SettingsDestination
-
-    @Serializable
     @SerialName("LOG")
     data object Log : SettingsDestination
 
@@ -127,10 +119,6 @@ sealed interface SettingsDestination {
     @SerialName("UPDATE_CHANNEL")
     data object UpdateChannel : SettingsDestination
 
-    @Serializable
-    @SerialName("CLOUD_SYNC_PROVIDER")
-    data object CloudSyncProvider : SettingsDestination
-
     companion object {
         fun fromStoredName(name: String?): SettingsDestination =
             when (name?.substringBefore('/')) {
@@ -144,8 +132,6 @@ sealed interface SettingsDestination {
                 "UPDATE" -> Update
                 "NETWORK" -> Network
                 "THEME" -> Theme
-                "CLOUD_SYNC" -> CloudSync
-                "DEBUG" -> Debug
                 "LOG" -> Log
                 "PERMISSIONS" -> Permissions
                 "IPTV_SOURCE" -> IptvSource
@@ -163,7 +149,6 @@ sealed interface SettingsDestination {
                 "VIDEO_PLAYER_DISPLAY_MODE" -> VideoPlayerDisplayMode
                 "VIDEO_PLAYER_LOAD_TIMEOUT" -> VideoPlayerLoadTimeout
                 "UPDATE_CHANNEL" -> UpdateChannel
-                "CLOUD_SYNC_PROVIDER" -> CloudSyncProvider
                 else -> Categories
             }
 
@@ -178,8 +163,6 @@ sealed interface SettingsDestination {
                 SettingsCategories.UPDATE -> Update
                 SettingsCategories.NETWORK -> Network
                 SettingsCategories.THEME -> Theme
-                SettingsCategories.CLOUD_SYNC -> CloudSync
-                SettingsCategories.DEBUG -> Debug
                 SettingsCategories.LOG -> Log
                 SettingsCategories.PERMISSIONS -> Permissions
             }
@@ -201,7 +184,6 @@ sealed interface SettingsDestination {
                 SettingsSubCategories.VIDEO_PLAYER_DISPLAY_MODE -> VideoPlayerDisplayMode
                 SettingsSubCategories.VIDEO_PLAYER_LOAD_TIMEOUT -> VideoPlayerLoadTimeout
                 SettingsSubCategories.UPDATE_CHANNEL -> UpdateChannel
-                SettingsSubCategories.CLOUD_SYNC_PROVIDER -> CloudSyncProvider
             }
     }
 }

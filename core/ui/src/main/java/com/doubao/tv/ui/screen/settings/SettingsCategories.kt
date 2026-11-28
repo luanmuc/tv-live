@@ -3,8 +3,6 @@ package com.doubao.tv.ui.screen.settings
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.FormatListBulleted
 import androidx.compose.material.icons.automirrored.outlined.LibraryBooks
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.ControlCamera
 import androidx.compose.material.icons.outlined.Devices
@@ -32,8 +30,6 @@ enum class SettingsCategories(
     // EPG_RESERVE(Icons.Default.BookmarkBorder, "预约"),
     NETWORK(Icons.Outlined.Wifi, "网络"),
     THEME(Icons.Outlined.ColorLens, "主题"),
-    CLOUD_SYNC(Icons.Outlined.CloudSync, "云同步"),
-    DEBUG(Icons.Outlined.BugReport, "调试"),
     LOG(Icons.AutoMirrored.Outlined.FormatListBulleted, "日志"),
     PERMISSIONS(Icons.Outlined.Shield, "权限"),
 }

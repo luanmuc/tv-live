@@ -114,7 +114,6 @@ fun SettingsVideoPlayerScreen(
             SettingsListItem(
                 headlineContent = "自定义ua",
                 trailingContent = settingsViewModel.videoPlayerUserAgent,
-                remoteConfig = true,
             )
         }
 
@@ -124,7 +123,6 @@ fun SettingsVideoPlayerScreen(
             SettingsListItem(
                 headlineContent = "自定义headers",
                 supportingContent = settingsViewModel.videoPlayerHeaders,
-                remoteConfig = true,
                 trailingIcon = if (!isValid) Icons.Default.ErrorOutline else null,
             )
         }

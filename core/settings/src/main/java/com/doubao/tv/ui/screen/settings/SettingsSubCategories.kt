@@ -16,5 +16,4 @@ enum class SettingsSubCategories {
     VIDEO_PLAYER_DISPLAY_MODE,
     VIDEO_PLAYER_LOAD_TIMEOUT,
     UPDATE_CHANNEL,
-    CLOUD_SYNC_PROVIDER,
 }

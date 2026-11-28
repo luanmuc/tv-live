@@ -48,7 +48,6 @@ import com.doubao.tv.ui.material.LocalPopupManager
 import com.doubao.tv.ui.material.SimplePopup
 import com.doubao.tv.ui.rememberChildPadding
 import com.doubao.tv.ui.screen.components.AppScreen
-import com.doubao.tv.ui.screen.push.PushContent
 import com.doubao.tv.ui.screen.settings.settingsVM
 import com.doubao.tv.ui.theme.MyTvTheme
 import com.doubao.tv.ui.utils.focusOnLaunched
@@ -66,6 +65,7 @@ fun SettingsEpgSourceScreen(
     onSetCurrent: (EpgSource) -> Unit = {},
     onDelete: (EpgSource) -> Unit = {},
     onClearCache: (EpgSource) -> Unit = {},
+    onAddSource: (EpgSource) -> Unit = {},
     onBackPressed: () -> Unit = {},
 ) {
     val epgSourceList = Constants.EPG_SOURCE_LIST + epgSourceListProvider()
@@ -123,7 +123,16 @@ fun SettingsEpgSourceScreen(
                     visibleProvider = { visible },
                     onDismissRequest = { visible = false },
                 ) {
-                    PushContent()
+                    AddSourceDialog(
+                        title = "添加节目单",
+                        nameHint = "名称，例如：自定义节目单",
+                        urlHint = "http://example.com/epg.xml",
+                        onDismiss = { visible = false },
+                        onConfirm = { name, url ->
+                            onAddSource(EpgSource(name = name, url = url))
+                            visible = false
+                        },
+                    )
                 }
             }
         }

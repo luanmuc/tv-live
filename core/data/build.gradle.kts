@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -49,7 +48,6 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.activity.compose)
 
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization)

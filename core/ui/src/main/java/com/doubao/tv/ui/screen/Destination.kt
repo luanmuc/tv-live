@@ -40,10 +40,6 @@ sealed interface Destination {
     data object Search : Destination
 
     @Serializable
-    @SerialName("Push")
-    data object Push : Destination
-
-    @Serializable
     @SerialName("Settings")
     data class Settings(val startDestination: String? = null) : Destination
 
@@ -69,7 +65,6 @@ sealed interface Destination {
                 Screens.Channels.name -> Channels
                 Screens.Favorites.name -> Favorites
                 Screens.Search.name -> Search
-                Screens.Push.name -> Push
                 Screens.About.name -> About
                 Screens.Update.name -> Update
                 Screens.MultiView.name -> MultiView

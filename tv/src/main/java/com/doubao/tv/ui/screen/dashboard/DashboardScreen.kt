@@ -58,7 +58,6 @@ fun DashboardScreen(
     toFavoritesScreen: () -> Unit = {},
     toSearchScreen: () -> Unit = {},
     toMultiViewScreen: () -> Unit = {},
-    toPushScreen: () -> Unit = {},
     toSettingsScreen: () -> Unit = {},
     toAboutScreen: () -> Unit = {},
     toSettingsIptvSourceScreen: () -> Unit = {},
@@ -97,7 +96,6 @@ fun DashboardScreen(
                     toFavoritesScreen = toFavoritesScreen,
                     toSearchScreen = toSearchScreen,
                     toMultiViewScreen = toMultiViewScreen,
-                    toPushScreen = toPushScreen,
                     toSettingsScreen = toSettingsScreen,
                     toAboutScreen = toAboutScreen,
                 )

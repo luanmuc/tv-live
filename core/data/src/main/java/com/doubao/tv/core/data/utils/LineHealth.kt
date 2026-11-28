@@ -2,7 +2,6 @@ package com.doubao.tv.core.data.utils
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.mutableStateMapOf
 import com.doubao.tv.core.data.entities.channel.Channel
 import com.doubao.tv.core.data.entities.channel.ChannelLine
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +12,10 @@ import kotlinx.coroutines.channels.Channel as CoroutineChannel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.File
@@ -39,9 +42,13 @@ object LineHealth {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-    private val statusMap = mutableStateMapOf<String, Boolean>()
-    private val checkedAt = mutableStateMapOf<String, Long>()
-    private val checking = mutableStateMapOf<String, Boolean>()
+    private val _statusMap = MutableStateFlow<Map<String, Boolean>>(emptyMap())
+    val statusMap: StateFlow<Map<String, Boolean>> = _statusMap.asStateFlow()
+
+    private val _checking = MutableStateFlow<Set<String>>(emptySet())
+    val checking: StateFlow<Set<String>> = _checking.asStateFlow()
+
+    private val checkedAt = ConcurrentHashMap<String, Long>()
     private val inFlight = ConcurrentHashMap.newKeySet<String>()
 
     private var job: Job? = null
@@ -60,38 +67,48 @@ object LineHealth {
         runCatching {
             val lines = JSONObject(file.readText()).optJSONArray("lines") ?: return@runCatching
             var seeded = 0
+            val seededMap = mutableMapOf<String, Boolean>()
             for (i in 0 until lines.length()) {
                 val row = lines.optJSONObject(i) ?: continue
                 val url = row.optString("url")
                 if (url.isBlank() || row.isNull("alive")) continue
                 val k = key(url)
                 if (k.isEmpty()) continue
-                statusMap[k] = row.optBoolean("alive")
+                seededMap[k] = row.optBoolean("alive")
                 checkedAt[k] = 1L
                 seeded++
             }
-            if (seeded > 0) Log.i(TAG, "载入内置线路健康快照 $seeded 条")
+            if (seeded > 0) {
+                _statusMap.update { it + seededMap }
+                Log.i(TAG, "载入内置线路健康快照 $seeded 条")
+            }
         }.onFailure {
             Log.w(TAG, "载入线路健康快照失败：${it.message}")
         }
     }
 
-    fun summary(): Summary = Summary(
-        checked = statusMap.size,
-        alive = statusMap.count { it.value },
-        dead = statusMap.count { !it.value },
-        checking = checking.size,
-    )
+    fun summary(): Summary {
+        val statuses = _statusMap.value
+        return Summary(
+            checked = statuses.size,
+            alive = statuses.count { it.value },
+            dead = statuses.count { !it.value },
+            checking = _checking.value.size,
+        )
+    }
 
-    fun status(url: String): Boolean? = statusMap[key(url)]
+    fun status(url: String): Boolean? = _statusMap.value[key(url)]
 
-    fun isChecking(url: String): Boolean = checking[key(url)] == true
+    fun isChecking(url: String): Boolean = key(url) in _checking.value
+
+    /** 供 UI 观察单条线路状态时复用；URL 可能带 `$` 后缀。 */
+    fun key(url: String?): String = url?.substringBefore("$")?.trim().orEmpty()
 
     /** 播放器给出的确定结果，优先级高于探测 */
     fun mark(url: String, alive: Boolean) {
         val k = key(url)
         if (k.isEmpty()) return
-        statusMap[k] = alive
+        _statusMap.update { it + (k to alive) }
         checkedAt[k] = System.currentTimeMillis()
     }
 
@@ -120,7 +137,8 @@ object LineHealth {
             delay(4_000)
             Log.i(TAG, "开始后台检测 ${queue.size} 条线路")
             runQueue(queue)
-            Log.i(TAG, "后台检测结束：可用 ${statusMap.count { it.value }} / ${statusMap.size}")
+            val snapshot = _statusMap.value
+            Log.i(TAG, "后台检测结束：可用 ${snapshot.count { it.value }} / ${snapshot.size}")
         }
     }
 
@@ -170,16 +188,16 @@ object LineHealth {
         if (now - (checkedAt[k] ?: 0L) < FRESH_MS) return
         if (!inFlight.add(k)) return
 
-        checking[k] = true
+        _checking.update { it + k }
         try {
             val alive = request(line)
-            statusMap[k] = alive
+            _statusMap.update { it + (k to alive) }
             checkedAt[k] = System.currentTimeMillis()
         } catch (ex: Exception) {
-            statusMap[k] = false
+            _statusMap.update { it + (k to false) }
             checkedAt[k] = System.currentTimeMillis()
         } finally {
-            checking.remove(k)
+            _checking.update { it - k }
             inFlight.remove(k)
         }
     }
@@ -213,5 +231,4 @@ object LineHealth {
         return u.startsWith("http") && !u.contains("://[") && !u.startsWith("webview://")
     }
 
-    private fun key(url: String?) = url?.substringBefore("$")?.trim().orEmpty()
 }

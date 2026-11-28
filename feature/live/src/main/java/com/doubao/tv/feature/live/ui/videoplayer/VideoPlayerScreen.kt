@@ -36,7 +36,6 @@ import com.doubao.tv.ui.utils.Configs
 fun VideoPlayerScreen(
     modifier: Modifier = Modifier,
     state: VideoPlayerState = rememberVideoPlayerState(),
-    showMetadataProvider: () -> Boolean = { false },
 ) {
     val context = LocalContext.current
 
@@ -86,7 +85,6 @@ fun VideoPlayerScreen(
     }
 
     VideoPlayerScreenCover(
-        showMetadataProvider = showMetadataProvider,
         metadataProvider = state::metadata,
         errorProvider = state::error,
     )
@@ -95,20 +93,12 @@ fun VideoPlayerScreen(
 @Composable
 private fun VideoPlayerScreenCover(
     modifier: Modifier = Modifier,
-    showMetadataProvider: () -> Boolean = { false },
     metadataProvider: () -> VideoPlayer.Metadata = { VideoPlayer.Metadata() },
     errorProvider: () -> String? = { null },
 ) {
     val childPadding = rememberChildPadding()
 
     Box(modifier = modifier.fillMaxSize()) {
-        Visibility(showMetadataProvider) {
-            VideoPlayerMetadata(
-                modifier = Modifier.padding(start = childPadding.start, top = childPadding.top),
-                metadataProvider = metadataProvider,
-            )
-        }
-
         VideoPlayerError(
             modifier = Modifier.align(Alignment.Center),
             errorProvider = errorProvider,
@@ -122,7 +112,6 @@ private fun VideoPlayerScreenCoverPreview() {
     MyTvTheme {
         PreviewWithLayoutGrids {
             VideoPlayerScreenCover(
-                showMetadataProvider = { true },
                 metadataProvider = {
                     VideoPlayer.Metadata(
                         video = VideoPlayer.Metadata.Video(

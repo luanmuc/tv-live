@@ -7,7 +7,6 @@ import com.doubao.tv.core.data.entities.epgsource.EpgSource
 import com.doubao.tv.core.data.entities.epgsource.EpgSourceList
 import com.doubao.tv.core.data.entities.iptvsource.IptvSource
 import com.doubao.tv.core.data.entities.iptvsource.IptvSourceList
-import com.doubao.tv.sync.CloudSyncProvider
 import com.doubao.tv.ui.screen.components.AppThemeDef
 import com.doubao.tv.settings.VideoPlayerDisplayMode
 import com.doubao.tv.ui.utils.Configs
@@ -24,21 +23,6 @@ data class AppSettings(
     val appLastLatestVersion: String = "",
     val appAgreementAgreed: Boolean = false,
     val appStartupScreen: String = "Live",
-    val debugDeveloperMode: Boolean = false,
-    val debugShowFps: Boolean = false,
-    val debugShowVideoPlayerMetadata: Boolean = false,
-    val debugShowLayoutGrids: Boolean = false,
-    val cloudSyncAutoPull: Boolean = false,
-    val cloudSyncProvider: CloudSyncProvider = CloudSyncProvider.GITHUB_GIST,
-    val cloudSyncGithubGistId: String = "",
-    val cloudSyncGithubGistToken: String = "",
-    val cloudSyncGiteeGistId: String = "",
-    val cloudSyncGiteeGistToken: String = "",
-    val cloudSyncNetworkUrl: String = "",
-    val cloudSyncLocalFilePath: String = "",
-    val cloudSyncWebDavUrl: String = "",
-    val cloudSyncWebDavUsername: String = "",
-    val cloudSyncWebDavPassword: String = "",
     val feiyangAllInOneFilePath: String = "",
     val iptvSourceCacheTime: Long = 0,
     val iptvSourceCurrent: IptvSource = IptvSource(),

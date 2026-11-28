@@ -1,6 +1,5 @@
 package com.doubao.tv.core.data.entities.epg
 
-import androidx.compose.runtime.Immutable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
@@ -17,7 +16,6 @@ import kotlin.time.measureTimedValue
  * 频道节目单列表
  */
 @Serializable
-@Immutable
 data class EpgList(
     val value: List<Epg> = emptyList(),
 ) : List<Epg> by value {

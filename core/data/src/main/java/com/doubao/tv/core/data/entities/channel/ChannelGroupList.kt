@@ -1,13 +1,11 @@
 package com.doubao.tv.core.data.entities.channel
 
-import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
 /**
  * 频道分组列表
  */
 @Serializable
-@Immutable
 data class ChannelGroupList(
     val value: List<ChannelGroup> = emptyList(),
 ) : List<ChannelGroup> by value {

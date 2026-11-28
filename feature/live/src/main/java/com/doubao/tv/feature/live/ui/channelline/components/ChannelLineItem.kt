@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -48,6 +49,10 @@ fun ChannelLineItem(
     val lineIdx = lineIdxProvider()
     val isSelected = isSelectedProvider()
 
+    val statuses by LineHealth.statusMap.collectAsState()
+    val checkingKeys by LineHealth.checking.collectAsState()
+    val statusKey = LineHealth.key(line.url)
+
     val lineDelay = rememberLineDelay(line)
 
     ListItem(
@@ -70,7 +75,7 @@ fun ChannelLineItem(
 
                     if (ChannelUtil.urlSupportPlayback(line.url)) Tag("回放")
 
-                    when (LineHealth.status(line.url)) {
+                    when (statuses[statusKey]) {
                         true -> Tag(
                             "可用",
                             colors = TagDefaults.colors(containerColor = MaterialTheme.colorScheme.tertiary),
@@ -81,7 +86,7 @@ fun ChannelLineItem(
                             colors = TagDefaults.colors(containerColor = MaterialTheme.colorScheme.error),
                         )
 
-                        null -> if (LineHealth.isChecking(line.url)) Tag("检测中")
+                        null -> if (statusKey in checkingKeys) Tag("检测中")
                     }
 
                     if (lineDelay > 0L) {

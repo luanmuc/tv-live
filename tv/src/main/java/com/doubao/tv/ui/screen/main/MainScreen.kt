@@ -33,7 +33,6 @@ import com.doubao.tv.ui.screen.dashboard.DashboardScreen
 import com.doubao.tv.ui.screen.favorites.FavoritesScreen
 import com.doubao.tv.ui.screen.loading.LoadingScreen
 import com.doubao.tv.ui.screen.multiview.MultiViewScreen
-import com.doubao.tv.ui.screen.push.PushScreen
 import com.doubao.tv.ui.screen.search.SearchScreen
 import com.doubao.tv.ui.screen.settings.SettingsScreen
 import com.doubao.tv.ui.screen.settings.SettingsSubCategories
@@ -196,7 +195,6 @@ fun MainScreen(
                         toFavoritesScreen = { navController.navigateSingleTop(Destination.Favorites) },
                         toSearchScreen = { navController.navigateSingleTop(Destination.Search) },
                         toMultiViewScreen = { navController.navigateSingleTop(Destination.MultiView) },
-                        toPushScreen = { navController.navigateSingleTop(Destination.Push) },
                         toSettingsScreen = { navController.navigateSingleTop(Destination.Settings()) },
                         toAboutScreen = { navController.navigateSingleTop(Destination.About) },
                         toSettingsIptvSourceScreen = {
@@ -260,12 +258,6 @@ fun MainScreen(
                         onChannelSelected = { onChannelSelected(it) },
                         onChannelFavoriteToggle = { onChannelFavoriteToggle(it) },
                         epgListProvider = epgListProvider,
-                        onBackPressed = { navController.navigateUp() },
-                    )
-                }
-
-                composable<Destination.Push> {
-                    PushScreen(
                         onBackPressed = { navController.navigateUp() },
                     )
                 }

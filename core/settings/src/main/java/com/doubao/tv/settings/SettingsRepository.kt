@@ -25,21 +25,6 @@ class SettingsRepository {
         if (next.appLastLatestVersion != old.appLastLatestVersion) Configs.appLastLatestVersion = next.appLastLatestVersion
         if (next.appAgreementAgreed != old.appAgreementAgreed) Configs.appAgreementAgreed = next.appAgreementAgreed
         if (next.appStartupScreen != old.appStartupScreen) Configs.appStartupScreen = next.appStartupScreen
-        if (next.debugDeveloperMode != old.debugDeveloperMode) Configs.debugDeveloperMode = next.debugDeveloperMode
-        if (next.debugShowFps != old.debugShowFps) Configs.debugShowFps = next.debugShowFps
-        if (next.debugShowVideoPlayerMetadata != old.debugShowVideoPlayerMetadata) Configs.debugShowVideoPlayerMetadata = next.debugShowVideoPlayerMetadata
-        if (next.debugShowLayoutGrids != old.debugShowLayoutGrids) Configs.debugShowLayoutGrids = next.debugShowLayoutGrids
-        if (next.cloudSyncAutoPull != old.cloudSyncAutoPull) Configs.cloudSyncAutoPull = next.cloudSyncAutoPull
-        if (next.cloudSyncProvider != old.cloudSyncProvider) Configs.cloudSyncProvider = next.cloudSyncProvider
-        if (next.cloudSyncGithubGistId != old.cloudSyncGithubGistId) Configs.cloudSyncGithubGistId = next.cloudSyncGithubGistId
-        if (next.cloudSyncGithubGistToken != old.cloudSyncGithubGistToken) Configs.cloudSyncGithubGistToken = next.cloudSyncGithubGistToken
-        if (next.cloudSyncGiteeGistId != old.cloudSyncGiteeGistId) Configs.cloudSyncGiteeGistId = next.cloudSyncGiteeGistId
-        if (next.cloudSyncGiteeGistToken != old.cloudSyncGiteeGistToken) Configs.cloudSyncGiteeGistToken = next.cloudSyncGiteeGistToken
-        if (next.cloudSyncNetworkUrl != old.cloudSyncNetworkUrl) Configs.cloudSyncNetworkUrl = next.cloudSyncNetworkUrl
-        if (next.cloudSyncLocalFilePath != old.cloudSyncLocalFilePath) Configs.cloudSyncLocalFilePath = next.cloudSyncLocalFilePath
-        if (next.cloudSyncWebDavUrl != old.cloudSyncWebDavUrl) Configs.cloudSyncWebDavUrl = next.cloudSyncWebDavUrl
-        if (next.cloudSyncWebDavUsername != old.cloudSyncWebDavUsername) Configs.cloudSyncWebDavUsername = next.cloudSyncWebDavUsername
-        if (next.cloudSyncWebDavPassword != old.cloudSyncWebDavPassword) Configs.cloudSyncWebDavPassword = next.cloudSyncWebDavPassword
         if (next.feiyangAllInOneFilePath != old.feiyangAllInOneFilePath) Configs.feiyangAllInOneFilePath = next.feiyangAllInOneFilePath
         if (next.iptvSourceCacheTime != old.iptvSourceCacheTime) Configs.iptvSourceCacheTime = next.iptvSourceCacheTime
         if (next.iptvSourceCurrent != old.iptvSourceCurrent) Configs.iptvSourceCurrent = next.iptvSourceCurrent
@@ -99,21 +84,6 @@ class SettingsRepository {
         appLastLatestVersion = Configs.appLastLatestVersion,
         appAgreementAgreed = Configs.appAgreementAgreed,
         appStartupScreen = Configs.appStartupScreen,
-        debugDeveloperMode = Configs.debugDeveloperMode,
-        debugShowFps = Configs.debugShowFps,
-        debugShowVideoPlayerMetadata = Configs.debugShowVideoPlayerMetadata,
-        debugShowLayoutGrids = Configs.debugShowLayoutGrids,
-        cloudSyncAutoPull = Configs.cloudSyncAutoPull,
-        cloudSyncProvider = Configs.cloudSyncProvider,
-        cloudSyncGithubGistId = Configs.cloudSyncGithubGistId,
-        cloudSyncGithubGistToken = Configs.cloudSyncGithubGistToken,
-        cloudSyncGiteeGistId = Configs.cloudSyncGiteeGistId,
-        cloudSyncGiteeGistToken = Configs.cloudSyncGiteeGistToken,
-        cloudSyncNetworkUrl = Configs.cloudSyncNetworkUrl,
-        cloudSyncLocalFilePath = Configs.cloudSyncLocalFilePath,
-        cloudSyncWebDavUrl = Configs.cloudSyncWebDavUrl,
-        cloudSyncWebDavUsername = Configs.cloudSyncWebDavUsername,
-        cloudSyncWebDavPassword = Configs.cloudSyncWebDavPassword,
         feiyangAllInOneFilePath = Configs.feiyangAllInOneFilePath,
         iptvSourceCacheTime = Configs.iptvSourceCacheTime,
         iptvSourceCurrent = Configs.iptvSourceCurrent,

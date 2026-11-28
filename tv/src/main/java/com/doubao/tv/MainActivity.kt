@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.doubao.tv.ui.App
 import com.doubao.tv.ui.theme.MyTvTheme
 import com.doubao.tv.ui.utils.Configs
-import com.doubao.tv.utlis.HttpServer
 import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
@@ -44,12 +43,9 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
-
-        HttpServer.startService(applicationContext)
     }
 
     override fun onDestroy() {
-        HttpServer.stopService(applicationContext)
         super.onDestroy()
     }
 

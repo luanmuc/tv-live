@@ -11,7 +11,6 @@ enum class Screens(
     Channels,
     Favorites,
     Search,
-    Push,
     Settings(listOf("startDestination")),
     About,
     Update,

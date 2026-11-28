@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CloudUpload
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Info
@@ -32,7 +31,6 @@ fun DashboardModuleList(
     toFavoritesScreen: () -> Unit = {},
     toSearchScreen: () -> Unit = {},
     toMultiViewScreen: () -> Unit = {},
-    toPushScreen: () -> Unit = {},
     toSettingsScreen: () -> Unit = {},
     toAboutScreen: () -> Unit = {},
 ) {
@@ -83,14 +81,6 @@ fun DashboardModuleList(
                 imageVector = Icons.Outlined.ViewCozy,
                 title = "多屏同播",
                 onSelected = toMultiViewScreen,
-            )
-        }
-
-        item {
-            DashboardModuleItem(
-                imageVector = Icons.Outlined.CloudUpload,
-                title = "推送",
-                onSelected = toPushScreen,
             )
         }
 

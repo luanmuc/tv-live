@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.doubao.tv.ui.screen.crash.CrashHandlerScreen
 import com.doubao.tv.ui.theme.MyTvTheme
-import com.doubao.tv.utlis.HttpServer
 import kotlin.system.exitProcess
 
 class CrashHandlerActivity : ComponentActivity() {
@@ -51,12 +50,9 @@ class CrashHandlerActivity : ComponentActivity() {
                 )
             }
         }
-
-        HttpServer.startService(applicationContext)
     }
 
     override fun onDestroy() {
-        HttpServer.stopService(applicationContext)
         super.onDestroy()
     }
 }

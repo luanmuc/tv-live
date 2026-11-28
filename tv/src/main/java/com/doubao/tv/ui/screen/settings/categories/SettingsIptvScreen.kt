@@ -104,7 +104,6 @@ fun SettingsIptvScreen(
                 trailingContent = {
                     Text("共${alias.size}个频道，${alias.values.sumOf { it.size }}个别名")
                 },
-                remoteConfig = true,
             )
         }
 
@@ -126,7 +125,6 @@ fun SettingsIptvScreen(
             SettingsListItem(
                 headlineContent = "频道图标提供",
                 trailingContent = settingsViewModel.iptvChannelLogoProvider,
-                remoteConfig = true,
             )
         }
 

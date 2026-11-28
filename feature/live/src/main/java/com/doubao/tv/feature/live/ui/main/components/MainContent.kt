@@ -162,7 +162,6 @@ fun MainContent(
     ) {
         VideoPlayerScreen(
             state = videoPlayerState,
-            showMetadataProvider = { settingsViewModel.debugShowVideoPlayerMetadata },
         )
 
         Visibility({ mainContentState.currentChannelLine.url.startsWith("webview://") }) {
