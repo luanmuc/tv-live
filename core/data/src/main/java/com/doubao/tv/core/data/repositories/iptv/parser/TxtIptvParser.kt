@@ -2,6 +2,7 @@ package com.doubao.tv.core.data.repositories.iptv.parser
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.doubao.tv.core.data.utils.StreamUrl
 
 /**
  * txt直播源解析
@@ -27,11 +28,13 @@ class TxtIptvParser : IptvParser {
                     val res = line.split(",", "，")
                     if (res.size < 2) return@forEach
 
-                    channelList.addAll(res[1].split("#").map { url ->
+                    channelList.addAll(res[1].split("#").mapNotNull { url ->
+                        val value = url.trim()
+                        if (!StreamUrl.isSupported(value)) return@mapNotNull null
                         IptvParser.ChannelItem(
                             name = res[0].trim(),
                             groupName = groupName ?: "其他",
-                            url = url.trim(),
+                            url = value,
                         )
                     })
                 }

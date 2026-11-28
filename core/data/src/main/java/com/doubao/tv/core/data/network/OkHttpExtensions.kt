@@ -54,13 +54,10 @@ suspend fun <T> String.request(
     val url = this
 
     return withContext(Dispatchers.IO) {
+        // 使用系统默认 TLS 校验；不得为直播源全局放开证书校验。
         val client = OkHttpClient.Builder()
-            .sslSocketFactory(
-                TrustAllSSLSocketFactory.sslSocketFactory,
-                TrustAllSSLSocketFactory.trustManager
-            )
-            .hostnameVerifier { _, _ -> true }
-            .followRedirects(true).build()
+            .followRedirects(true)
+            .build()
         val request = Request.Builder()
             .url(url)
             .let(builder)
@@ -68,8 +65,11 @@ suspend fun <T> String.request(
 
         val response = client.newCall(request).await()
 
-        if (!response.isSuccessful) throw Exception("${response.code}: ${response.message}")
-
-        action(response, response.request)
+        try {
+            if (!response.isSuccessful) throw Exception("${response.code}: ${response.message}")
+            action(response, response.request)
+        } finally {
+            response.close()
+        }
     }
 }

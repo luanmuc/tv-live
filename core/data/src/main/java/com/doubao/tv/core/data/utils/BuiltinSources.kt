@@ -147,10 +147,14 @@ object BuiltinSources {
     private fun looksValid(text: String, minBlocks: Int): Boolean {
         if (!text.startsWith("#EXTM3U")) return false
         var blocks = 0
-        text.lineSequence().forEach {
-            if (it.startsWith("#EXTINF")) blocks++
-            if (blocks >= minBlocks) return true
+        for (raw in text.lineSequence()) {
+            val line = raw.trim()
+            if (line.startsWith("#EXTINF")) {
+                blocks++
+            } else if (line.isNotEmpty() && !line.startsWith("#") && !StreamUrl.isSupported(line)) {
+                return false
+            }
         }
-        return false
+        return blocks >= minBlocks
     }
 }

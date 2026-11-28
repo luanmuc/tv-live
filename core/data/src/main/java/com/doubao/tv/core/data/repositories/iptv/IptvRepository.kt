@@ -12,6 +12,8 @@ import com.doubao.tv.core.data.repositories.iptv.parser.IptvParser
 import com.doubao.tv.core.data.repositories.iptv.parser.IptvParser.ChannelItem.Companion.toChannelGroupList
 import com.doubao.tv.core.data.utils.Globals
 import com.doubao.tv.core.data.utils.Logger
+import org.mozilla.javascript.Context
+import org.mozilla.javascript.ContextFactory
 import kotlin.time.measureTimedValue
 
 /**
@@ -55,10 +57,13 @@ class IptvRepository(private val source: IptvSource) :
         withContext(Dispatchers.IO) {
             if (source.transformJs.isNullOrBlank()) return@withContext channelList
 
-            val context = org.mozilla.javascript.Context.enter()
-            context.optimizationLevel = -1
+            val factory = LimitedTransformContextFactory()
+            val context = factory.enterContext()
             val result = runCatching {
-                val scope = context.initStandardObjects()
+                context.optimizationLevel = -1
+                context.setInstructionObserverThreshold(TRANSFORM_INSTRUCTION_OBSERVER_STEP)
+                context.setClassShutter { false }
+                val scope = context.initSafeStandardObjects()
                 context.evaluateString(
                     scope, """
                     (function() {
@@ -69,7 +74,7 @@ class IptvRepository(private val source: IptvSource) :
                     """.trimIndent(), "JavaScript", 1, null
                 ) as String
             }
-            org.mozilla.javascript.Context.exit()
+            Context.exit()
 
             if (result.isFailure) {
                 log.e("转换直播源（${source.name}）错误: ${result.exceptionOrNull()}")
@@ -117,6 +122,28 @@ class IptvRepository(private val source: IptvSource) :
             IptvSource.cacheDir.deleteRecursively()
         }
     }
+}
+
+private const val TRANSFORM_INSTRUCTION_OBSERVER_STEP = 10_000
+private const val TRANSFORM_INSTRUCTION_LIMIT = 2_000_000
+
+/**
+ * 只允许 transformJs 在受限上下文里执行：禁止访问 Java 类，并限制执行指令数。
+ * 这不是完整的沙箱，最终仍应改成声明式转换。
+ */
+private class LimitedTransformContext : Context() {
+    private var executedInstructions = 0
+
+    override fun observeInstructionCount(instructionCount: Int) {
+        executedInstructions += instructionCount
+        if (executedInstructions > TRANSFORM_INSTRUCTION_LIMIT) {
+            throw IllegalStateException("transformJs execution limit exceeded")
+        }
+    }
+}
+
+private class LimitedTransformContextFactory : ContextFactory() {
+    override fun makeContext(): Context = LimitedTransformContext()
 }
 
 private class IptvRawRepository(private val source: IptvSource) : FileCacheRepository(

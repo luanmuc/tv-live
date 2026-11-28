@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.koushikdutta.async.AsyncServer
 import com.koushikdutta.async.http.body.JSONObjectBody
-import com.koushikdutta.async.http.body.MultipartFormDataBody
 import com.koushikdutta.async.http.body.StringBody
 import com.koushikdutta.async.http.server.AsyncHttpServer
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest
@@ -26,7 +25,6 @@ import com.doubao.tv.core.data.utils.Constants
 import com.doubao.tv.core.data.utils.Globals
 import com.doubao.tv.core.data.utils.Loggable
 import com.doubao.tv.core.data.utils.Logger
-import com.doubao.tv.core.util.utils.ApkInstaller
 import com.doubao.tv.BuildConfig
 import com.doubao.tv.HttpServerService
 import com.doubao.tv.R
@@ -39,128 +37,196 @@ import java.io.File
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.net.SocketException
+import java.util.UUID
 
 
 object HttpServer : Loggable("HttpServer") {
     private const val SERVER_PORT = 10481
-    private val uploadedApkFile by lazy {
-        File(Globals.cacheDir, "uploaded_apk.apk").apply { deleteOnExit() }
+    private const val AUTH_PREF_NAME = "http_server_auth"
+    private const val AUTH_TOKEN_KEY = "token"
+
+    @Volatile
+    private var server: AsyncHttpServer? = null
+
+    @Volatile
+    private var activeToken: String? = null
+
+    fun serverUrl(context: Context): String {
+        return "http://${getLocalIpAddress()}:${SERVER_PORT}/?token=${authToken(context)}"
     }
 
-    val serverUrl by lazy { "http://${getLocalIpAddress()}:${SERVER_PORT}" }
-
     fun start(context: Context) {
+        if (!Configs.debugDeveloperMode) return
+        activeToken = authToken(context)
+        synchronized(this) {
+            if (server != null) return
+            server = AsyncHttpServer()
+        }
+
+        val current = server ?: return
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val server = AsyncHttpServer()
+                val server = current
 
                 server.addAction("OPTIONS", ".+") { _, response ->
                     wrapResponse(response)
                     response.send("ok")
                 }
 
-                server.listen(AsyncServer.getDefault(), SERVER_PORT)
+                server.get("/") { request, response ->
+                    withAuth(request, response, setCookie = true) {
+                        handleRawResource(response, context, "text/html", R.raw.web_push)
+                    }
+                }
+                server.get("/web_push_css.css") { request, response ->
+                    withAuth(request, response) {
+                        handleRawResource(response, context, "text/css", R.raw.web_push_css)
+                    }
+                }
+                server.get("/web_push_js.js") { request, response ->
+                    withAuth(request, response) {
+                        handleRawResource(response, context, "text/javascript", R.raw.web_push_js)
+                    }
+                }
 
-                server.get("/") { _, response ->
-                    handleRawResource(response, context, "text/html", R.raw.web_push)
-                }
-                server.get("/web_push_css.css") { _, response ->
-                    handleRawResource(response, context, "text/css", R.raw.web_push_css)
-                }
-                server.get("/web_push_js.js") { _, response ->
-                    handleRawResource(response, context, "text/javascript", R.raw.web_push_js)
-                }
-
-                server.get("/advance") { _, response ->
-                    handleAssets(response, context, "text/html", "remote-configs/index.html")
+                server.get("/advance") { request, response ->
+                    withAuth(request, response, setCookie = true) {
+                        handleAssets(response, context, "text/html", "remote-configs/index.html")
+                    }
                 }
 
                 server.get("/remote-configs/(.*)") { request, response ->
-                    val contentType = when (request.path.split(".").last()) {
-                        "css" -> "text/css"
-                        "js" -> "text/javascript"
-                        "html" -> "text/html"
-                        "json" -> "application/json"
-                        "svg" -> "image/svg+xml"
-                        "png" -> "image/png"
-                        else -> "text/plain"
-                    }
+                    withAuth(request, response, setCookie = true) {
+                        val contentType = when (request.path.split(".").last()) {
+                            "css" -> "text/css"
+                            "js" -> "text/javascript"
+                            "html" -> "text/html"
+                            "json" -> "application/json"
+                            "svg" -> "image/svg+xml"
+                            "png" -> "image/png"
+                            else -> "text/plain"
+                        }
 
-                    handleAssets(response, context, contentType, request.path.removePrefix("/"))
+                        handleAssets(response, context, contentType, request.path.removePrefix("/"))
+                    }
                 }
 
-                server.get("/api/info") { _, response ->
-                    handleGetInfo(response)
+                server.get("/api/info") { request, response ->
+                    withAuth(request, response) { handleGetInfo(response) }
                 }
 
                 server.post("/api/iptv-source/push") { request, response ->
-                    handleIptvSourcePush(request, response)
+                    withAuth(request, response) { handleIptvSourcePush(request, response) }
                 }
 
                 server.post("/api/epg-source/push") { request, response ->
-                    handleEpgSourcePush(request, response)
+                    withAuth(request, response) { handleEpgSourcePush(request, response) }
                 }
 
-                server.get("/api/channel-alias") { _, response ->
-                    handleGetChannelAlias(response)
+                server.get("/api/channel-alias") { request, response ->
+                    withAuth(request, response) { handleGetChannelAlias(response) }
                 }
 
                 server.post("/api/channel-alias") { request, response ->
-                    handleUpdateChannelAlias(request, response)
+                    withAuth(request, response) { handleUpdateChannelAlias(request, response) }
                 }
 
-                server.get("/api/configs") { _, response ->
-                    handleConfigsGet(response)
+                server.get("/api/configs") { request, response ->
+                    withAuth(request, response) { handleConfigsGet(response) }
                 }
 
                 server.post("/api/configs") { request, response ->
-                    handleConfigsPush(request, response)
+                    withAuth(request, response) { handleConfigsPush(request, response) }
                 }
 
-                server.post("/api/upload/apk") { request, response ->
-                    handleUploadApk(request, response, context)
-                }
-
-                server.get("/api/cloud-sync/data") { _, response ->
-                    handleCloudSyncDataGet(response)
+                server.get("/api/cloud-sync/data") { request, response ->
+                    withAuth(request, response) { handleCloudSyncDataGet(response) }
                 }
 
                 server.post("/api/cloud-sync/data") { request, response ->
-                    handleCloudSyncDataPost(request, response)
+                    withAuth(request, response) { handleCloudSyncDataPost(request, response) }
                 }
 
-                server.get("/api/about") { _, response ->
-                    handleAboutGet(response)
+                server.get("/api/about") { request, response ->
+                    withAuth(request, response) { handleAboutGet(response) }
                 }
 
-                server.get("/api/logs") { _, response ->
-                    handleLogsGet(response)
+                server.get("/api/logs") { request, response ->
+                    withAuth(request, response) { handleLogsGet(response) }
                 }
 
-                server.get("/api/file/content") { request, response ->
-                    handleFileContentGet(request, response)
-                }
+                if (server !== current) return@launch
+                server.listen(AsyncServer.getDefault(), SERVER_PORT)
 
-                server.post("/api/file/content") { request, response ->
-                    handleFileContentPost(request, response)
-                }
-
-                server.post("/api/file/content-with-dir") { request, response ->
-                    handleFileContentWithDirPost(request, response)
-                }
-
-                server.post("/api/upload/allinone") { request, response ->
-                    handleUploadAllInOne(request, response)
-                }
-
-                log.i("设置服务已启动: $serverUrl")
+                log.i("设置服务已启动: http://${getLocalIpAddress()}:${SERVER_PORT}")
             } catch (ex: Exception) {
+                synchronized(this@HttpServer) {
+                    if (server === current) server = null
+                }
                 log.e("设置服务启动失败: ${ex.message}", ex)
                 launch(Dispatchers.Main) {
                     Snackbar.show("设置服务启动失败", type = SnackbarType.ERROR)
                 }
             }
         }
+    }
+
+    fun stop() {
+        val current = synchronized(this) {
+            server.also { server = null }
+        }
+        activeToken = null
+        runCatching { current?.stop() }
+    }
+
+    private fun authToken(context: Context): String {
+        val pref = context.getSharedPreferences(AUTH_PREF_NAME, Context.MODE_PRIVATE)
+        val saved = pref.getString(AUTH_TOKEN_KEY, null)
+        if (!saved.isNullOrBlank()) return saved
+
+        return UUID.randomUUID().toString().replace("-", "").also {
+            pref.edit().putString(AUTH_TOKEN_KEY, it).apply()
+        }
+    }
+
+    private fun requestToken(request: AsyncHttpServerRequest): String? {
+        request.query.getString("token")?.takeIf { it.isNotBlank() }?.let { return it }
+        request.headers["X-Auth-Token"]?.takeIf { it.isNotBlank() }?.let { return it }
+
+        val cookie = request.headers["Cookie"] ?: return null
+        return cookie.split(";")
+            .map { it.trim() }
+            .firstOrNull { it.substringBefore("=") == "http_server_token" }
+            ?.substringAfter("=", "")
+            ?.takeIf { it.isNotBlank() }
+    }
+
+    private fun authorize(
+        request: AsyncHttpServerRequest,
+        response: AsyncHttpServerResponse,
+        setCookie: Boolean = false,
+    ): Boolean {
+        val expected = activeToken
+        if (expected == null || requestToken(request) != expected) {
+            response.code(401).send("Unauthorized")
+            return false
+        }
+        if (setCookie) {
+            response.headers.set(
+                "Set-Cookie",
+                "http_server_token=$expected; Path=/; HttpOnly; SameSite=Strict",
+            )
+        }
+        return true
+    }
+
+    private inline fun withAuth(
+        request: AsyncHttpServerRequest,
+        response: AsyncHttpServerResponse,
+        setCookie: Boolean = false,
+        block: () -> Unit,
+    ) {
+        if (authorize(request, response, setCookie)) block()
     }
 
     private fun wrapResponse(response: AsyncHttpServerResponse) = response.apply {
@@ -234,6 +300,10 @@ object HttpServer : Loggable("HttpServer") {
             }
 
             "file" -> {
+                if (!filePath.startsWith(Globals.fileDir.path + File.separator)) {
+                    response.code(400).send("Invalid file path")
+                    return
+                }
                 newIptvSource = IptvSource(name, filePath, true)
             }
 
@@ -293,7 +363,7 @@ object HttpServer : Loggable("HttpServer") {
     private fun handleConfigsGet(response: AsyncHttpServerResponse) {
         wrapResponse(response).apply {
             setContentType("application/json")
-            send(Globals.json.encodeToString(Configs.toPartial()))
+            send(Globals.json.encodeToString(Configs.toPartial().desensitized()))
         }
     }
 
@@ -303,82 +373,8 @@ object HttpServer : Loggable("HttpServer") {
     ) {
         val body = request.getBody<JSONObjectBody>().get()
         val configs = Globals.json.decodeFromString<Configs.Partial>(body.toString())
-        Configs.fromPartial(configs)
-
-        responseSuccess(response)
-    }
-
-    private fun handleUploadApk(
-        request: AsyncHttpServerRequest,
-        response: AsyncHttpServerResponse,
-        context: Context,
-    ) {
-        val body = request.getBody<MultipartFormDataBody>()
-
-        val os = uploadedApkFile.outputStream()
-        val contentLength = request.headers["Content-Length"]?.toLong() ?: 1
-        var hasReceived = 0L
-
-        body.setMultipartCallback { part ->
-            if (part.isFile) {
-                body.setDataCallback { _, bb ->
-                    val byteArray = bb.allByteArray
-                    hasReceived += byteArray.size
-                    Snackbar.show(
-                        "正在接收文件: ${(hasReceived * 100f / contentLength).toInt()}%",
-                        leadingLoading = true,
-                        id = "uploading_apk",
-                    )
-                    os.write(byteArray)
-                }
-            }
-        }
-
-        body.setEndCallback {
-            Snackbar.show("正在准备安装，请稍后...", leadingLoading = true, duration = 10_000)
-            body.dataEmitter.close()
-            os.flush()
-            os.close()
-            ApkInstaller.installApk(context, uploadedApkFile.path)
-        }
-
-        responseSuccess(response)
-    }
-
-    private fun handleUploadAllInOne(
-        request: AsyncHttpServerRequest,
-        response: AsyncHttpServerResponse,
-    ) {
-        val body = request.getBody<MultipartFormDataBody>()
-
-        val contentLength = request.headers["Content-Length"]?.toLong() ?: 1
-        var hasReceived = 0L
-
-        val allinoneFile = File(Globals.fileDir, "uploads/allinone").apply { parentFile?.mkdirs() }
-
-        body.setMultipartCallback { part ->
-            if (part.isFile) {
-                with(allinoneFile.outputStream()) {
-
-                    body.setDataCallback { _, bb ->
-                        val byteArray = bb.allByteArray
-                        hasReceived += byteArray.size
-                        Snackbar.show(
-                            "正在接收文件: ${(hasReceived * 100f / contentLength).toInt()}%",
-                            leadingLoading = true,
-                            id = "uploading_file",
-                        )
-                        write(byteArray)
-                    }
-                }
-            }
-        }
-
-        body.setEndCallback {
-            body.dataEmitter.close()
-            Configs.feiyangAllInOneFilePath = allinoneFile.absolutePath
-            Snackbar.show("文件接收完成", id = "uploading_file")
-        }
+        // 配置接口不允许写入云同步密钥、播放历史等敏感字段
+        Configs.fromPartial(configs.desensitized())
 
         responseSuccess(response)
     }
@@ -427,64 +423,6 @@ object HttpServer : Loggable("HttpServer") {
         }
     }
 
-    private fun handleFileContentGet(
-        request: AsyncHttpServerRequest,
-        response: AsyncHttpServerResponse
-    ) {
-        val path = request.query.getString("path")
-
-        val file = File(path).takeIf { it.exists() } ?: run {
-            return response.code(404).send("File not found")
-        }
-
-        wrapResponse(response).send(file.readText())
-    }
-
-    private fun handleFileContentPost(
-        request: AsyncHttpServerRequest,
-        response: AsyncHttpServerResponse
-    ) {
-        val body = request.getBody<JSONObjectBody>().get()
-        val path = body.get("path").toString()
-        val content = body.get("content").toString()
-
-        val file = File(path)
-
-        if (file.exists()) {
-            file.writeText(content)
-        } else {
-            file.parentFile?.mkdirs()
-            file.writeText(content)
-        }
-
-        responseSuccess(response)
-    }
-
-    private fun handleFileContentWithDirPost(
-        request: AsyncHttpServerRequest,
-        response: AsyncHttpServerResponse
-    ) {
-        val body = request.getBody<JSONObjectBody>().get()
-        val dir = body.get("dir").toString()
-        val filename = body.get("filename").toString()
-        val content = body.get("content").toString()
-
-        val file = when (dir) {
-            "cache" -> File(Globals.cacheDir, filename)
-            "file" -> File(Globals.fileDir, filename)
-            else -> return response.code(400).send("Invalid dir")
-        }
-
-        if (file.exists()) {
-            file.writeText(content)
-        } else {
-            file.parentFile?.mkdirs()
-            file.writeText(content)
-        }
-
-        wrapResponse(response).send(file.path)
-    }
-
     private fun getLocalIpAddress(): String {
         val defaultIp = "127.0.0.1"
 
@@ -522,12 +460,15 @@ object HttpServer : Loggable("HttpServer") {
     }
 
     fun startService(context: Context) {
+        // 远程配置服务只作为开发者工具启用，Release 默认不监听局域网
+        if (!Configs.debugDeveloperMode) return
         runCatching {
             context.startService(Intent(context, HttpServerService::class.java))
         }.onFailure { it.printStackTrace() }
     }
 
     fun stopService(context: Context) {
+        stop()
         runCatching {
             context.stopService(Intent(context, HttpServerService::class.java))
         }.onFailure { it.printStackTrace() }

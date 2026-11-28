@@ -2,6 +2,7 @@ package com.doubao.tv.core.data.repositories.iptv.parser
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.doubao.tv.core.data.utils.StreamUrl
 
 /**
  * m3u直播源解析
@@ -56,7 +57,10 @@ class M3uIptvParser : IptvParser {
                 } else if (line.startsWith("#") || line.startsWith("//")) {
                     return@forEach
                 } else {
-                    channelList.addAll(addedChannels.map { it.copy(url = line.trim()) })
+                    val url = line.trim()
+                    if (StreamUrl.isSupported(url)) {
+                        channelList.addAll(addedChannels.map { it.copy(url = url) })
+                    }
                 }
             }
 

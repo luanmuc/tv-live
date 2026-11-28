@@ -26,7 +26,6 @@ class MyTVApplication : Application(), ImageLoaderFactory {
         Thread({
             runCatching { BuiltinSources.updateFromNetwork(this) }
         }, "builtin-source-update").start()
-        UnsafeTrustManager.enableUnsafeTrustManager()
     }
 
     override fun newImageLoader(): ImageLoader {
